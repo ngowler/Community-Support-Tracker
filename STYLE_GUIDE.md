@@ -17,3 +17,5 @@ Color 3: \#0F75BC
 Color 4: \#9C8679
 
 ![!](/assets/color4.png)
+
+Color 4: \#FFFFFF (white)
