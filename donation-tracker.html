@@ -24,22 +24,40 @@
     <body>
         <div class="donation-tracker" id="donation-tracker">
             <form class="donation-form">
-                <ul>
+                <h1 class="donation-form-header">Donation Tracker</h1>
+                <ul class="donation-form-list">
                     <li>
                         <label for="donation-charity-name-input">Charity Name: </label><input id="donation-charity-name-input"/>
                     </li>
+                    <div class="donation-error-wrapper" id="donation-charity-error-message">
+                        <span class="donation-error">Please enter a charity name.</span>
+                    </div>
                     <li>
                         <label for="donation-amount-input">Donation Amount: </label><input id="donation-amount-input"/>
                     </li>
+                    <div class="donation-error-wrapper" id="donation-amount-error-message">
+                        <span class="donation-error">Please enter a valid amount.</span>
+                    </div>
                     <li>
-                        <label for="donation-date-input"></label><input id="donation-date-input" type="date"/>
+                        <label for="donation-date-input">Donation Date: </label><input id="donation-date-input" type="date"/>
                     </li>
+                    <div class="donation-error-wrapper" id="donation-date-error-wrapper">
+                        <span class="donation-error">Please enter a valid date.</span>
+                    </div>
                     <li>
                         <label for="donation-message-input">Donation Message: </label><input id="donation-message-input"/>
                     </li>
+                    <div class="donation-error-wrapper" id="donation-message-error-wrapper">
+                        <span class="donation-error">Please enter a donation message.</span>
+                    </div>
+                    <li>
+                        <button type="submit" id="donation-submit-button">Submit</button>
+                    </li>
                 </ul>
+                
             </form>
         </div>
+        <script src="script.js"></script>
     </body>
 
 
