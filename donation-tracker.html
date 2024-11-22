@@ -21,7 +21,7 @@
         </nav>
     </header>
 
-    <body>
+    <body onload="load()">
         <div class="donation-tracker" id="donation-tracker">
             <form class="donation-form">
                 <h1 class="donation-form-header">Donation Tracker</h1>
@@ -29,13 +29,13 @@
                     <li>
                         <label for="donation-charity-name-input">Charity Name: </label><input id="donation-charity-name-input"/>
                     </li>
-                    <div class="donation-error-wrapper" id="donation-charity-error-message">
+                    <div class="donation-error-wrapper" id="donation-charity-name-error-wrapper">
                         <span class="donation-error">Please enter a charity name.</span>
                     </div>
                     <li>
                         <label for="donation-amount-input">Donation Amount: </label><input id="donation-amount-input"/>
                     </li>
-                    <div class="donation-error-wrapper" id="donation-amount-error-message">
+                    <div class="donation-error-wrapper" id="donation-amount-error-wrapper">
                         <span class="donation-error">Please enter a valid amount.</span>
                     </div>
                     <li>

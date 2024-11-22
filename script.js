@@ -6,21 +6,21 @@ const [
   donationMessageErrorWrapper
 ] = [
   document.getElementById('donation-submit-button'),
-  document.getElementById('donation-charity-error-wrapper'),
+  document.getElementById('donation-charity-name-error-wrapper'),
   document.getElementById('donation-amount-error-wrapper'),
   document.getElementById('donation-date-error-wrapper'),
   document.getElementById('donation-message-error-wrapper')
 ]
 
 const inputs = [
-  'donation-charity-input-name',
-  'donation-amount-input',
-  'donation-date-input',
-  'donation-message-input'
+  'donation-charity-name-',
+  'donation-amount-',
+  'donation-date-',
+  'donation-message-'
 ]
 
 function load() {
-  document.addEventListener('click', (e) => validateForm(e))
+  donationSubmitButton.addEventListener('click', (e) => validateForm(e))
 }
 
 
@@ -35,6 +35,8 @@ function validateForm(e) {
       errorFlag = true
     }
   })
+
+
 }
 
 
@@ -46,11 +48,13 @@ function hideErrors() {
 }
 
 function formHasInput(input) {
-  let input = document.getElementById(input)
+  let inputElement = document.getElementById(input + 'input')
+  console.log(inputElement.value)
 
-  if (input.value !== '' || input.value !== null) {
+  if (inputElement.value !== '' && inputElement.value !== null) {
     return true
   } else {
+    document.getElementById(input + 'error-wrapper').style.display = 'flex';
     return false
   }
 }
