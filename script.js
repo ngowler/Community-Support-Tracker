@@ -3,13 +3,15 @@ const [
   donationCharityErrorWrapper,
   donationAmountErrorWrapper,
   donationDateErrorWrapper,
-  donationMessageErrorWrapper
+  donationMessageErrorWrapper,
+  donationAmountError
 ] = [
   document.getElementById('donation-submit-button'),
   document.getElementById('donation-charity-name-error-wrapper'),
   document.getElementById('donation-amount-error-wrapper'),
   document.getElementById('donation-date-error-wrapper'),
-  document.getElementById('donation-message-error-wrapper')
+  document.getElementById('donation-message-error-wrapper'),
+  document.getElementById('donation-amount-error')
 ]
 
 const inputs = [
@@ -18,6 +20,8 @@ const inputs = [
   'donation-date-',
   'donation-message-'
 ]
+
+const formData = {}
 
 function load() {
   donationSubmitButton.addEventListener('click', (e) => validateForm(e))
@@ -36,7 +40,22 @@ function validateForm(e) {
     }
   })
 
+  donationAmountInputValue = document.getElementById('donation-amount-input').value
 
+
+  let numberRegexp = new RegExp(/^[0-9]+$/)
+  if (!numberRegexp.test(donationAmountInputValue)) {
+    donationAmountErrorWrapper.style.display = 'flex';
+    errorFlag = true
+  }
+
+  if (!errorFlag) {
+    formData['charityName'] = document.getElementById('donation-charity-name-input').value
+    formData['donationAmount'] = donationAmountInputValue
+    formData['donationDate'] = document.getElementById('donation-date-input').value
+    formData['donationMessage'] = document.getElementById('donation-message-input').value
+    console.log(formData)
+  }
 }
 
 
@@ -49,7 +68,7 @@ function hideErrors() {
 
 function formHasInput(input) {
   let inputElement = document.getElementById(input + 'input')
-  console.log(inputElement.value)
+  
 
   if (inputElement.value !== '' && inputElement.value !== null) {
     return true
