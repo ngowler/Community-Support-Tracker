@@ -1,14 +1,6 @@
 function load() {
   const donationSubmitButton = document.getElementById('donation-submit-button')
-  
-  const donationInputs = [
-    'donation-charity-name-',
-    'donation-amount-',
-    'donation-date-',
-    'donation-message-'
-  ]
-  
-  const donationFormData = {}
+
   donationSubmitButton.addEventListener('click', (e) => validateForm(e))
 }
 
@@ -17,6 +9,15 @@ function validateForm(e) {
 
   hideErrors();
   errorFlag = false
+
+  const donationInputs = [
+    'donation-charity-name-',
+    'donation-amount-',
+    'donation-date-',
+    'donation-message-'
+  ]
+
+  donationFormData = {}
 
   donationInputs.forEach((input) => {
     if (!formHasInput(input)) {
