@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Community Support Tracker</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+
+    <header>
+        <div class="header-element">
+           <p class="header">Community Support Tracker</p> 
+        </div>
+        
+        <nav class="navbar">
+            <ul class="navbar-list">
+                <li><a href="donation-tracker.html">Donation Tracker</a></li>
+                <li><a href="volunteer-hours-tracker.html">Volunteer Hours Tracker</a></li>
+                <li><a href="event-signup.html">Event Signup</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <body onload="load()">
+        <div class="event-signup" id="event-signup">
+            <form class="event-signup-form">
+                <h1 class="signup-form-header">Event Signup</h1>
+                <ul class="signup-form-list">
+                    <li>
+                        <label for="event-signup-name-input">Event Name: </label><input id="event-signup-name-input"/>
+                    </li>
+                    <div class="event-name-error-wrapper" id="event-name-error-wrapper">
+                        <span class="event-error">Please enter an event name.</span>
+                    </div>
+
+                    <li>
+                        <label for="company-rep-name-input">Company Representative Name: </label><input id="company-rep-name-input"/>
+                    </li>
+                    <div class="company-rep-name-error-wrapper" id="company-rep-name-error-wrapper">
+                        <span class="rep-name-error">Please enter a company representative name.</span>
+                    </div>
+
+                    <li>
+                        <label for="company-rep-email-input">Company Representative Email: </label><input id="company-rep-email-input" type="email"/>
+                    </li>
+                    <div class="company-rep-email-error-wrapper" id="company-rep-emailx-error-wrapper">
+                        <span class="rep-email-error">Please enter a company representative name.</span>
+                    </div>
+
+                    <li>
+                        <label for="company-role-selection-input">Company Representative Role: </label>
+                        <select name="company-role" id="company-role">
+                            <option value="Sponsor">Sponsor</option>
+                            <option value="Participant">Participant</option>
+                            <option value="Organizer">Organizer</option>
+                          </select>
+                    </li>
+                    <li>
+                        <button type="submit" id="event-signup-submit-button">Submit</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <script src="script.js"></script>
+    </body>
+
+
+    <footer>
+        <div class="footer-wrapper">
+            <p class="footer-text">This is a footer!</p>
+        </div>
+    </footer>
+</html>
