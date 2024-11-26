@@ -27,10 +27,9 @@ function validateForm(e) {
 
   donationAmountInputValue = document.getElementById('donation-amount-input').value
 
-
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
-    donationAmountErrorWrapper.style.display = 'flex';
+    document.getElementById('donation-amount-error-wrapper').style.display = 'flex';
     errorFlag = true
   }
 
