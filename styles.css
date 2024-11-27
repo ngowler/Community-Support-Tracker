@@ -135,7 +135,7 @@ body {
     grid-area: volunteer-experience-rating;
 }
 
-.hours-volunteered, .volunteer-hours-date, .volunteer-experience-rating {
+.hours-volunteered, .volunteer-hours-date, .volunteer-experience-rating, .volunteer-form-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,11 +171,26 @@ body {
     cursor: pointer;
 }
 
-.star:hover, .checked{
+.star:hover, .starsSelected {
     color: #0F75BC;
 }
 
-.error {
+#submit-volunteer-form {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
+}
+
+#submit-volunteer-form:hover {
+    background-color: #0F75BC;
+    color: lightgrey;
+}
+
+.volunteer-form-error {
     color: red;
     display: none;
 }
