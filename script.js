@@ -4,6 +4,8 @@ function load() {
   donationSubmitButton.addEventListener('click', (e) => validateForm(e))
 }
 
+// donationFormData = {}
+
 
 function validateForm(e) {
 
@@ -38,9 +40,7 @@ function validateForm(e) {
     donationFormData['donationAmount'] = donationAmountInputValue
     donationFormData['donationDate'] = document.getElementById('donation-date-input').value
     donationFormData['donationMessage'] = document.getElementById('donation-message-input').value
-  }
-
-  if (errorFlag) {
+  } else{
     e.preventDefault()
   }
 }
