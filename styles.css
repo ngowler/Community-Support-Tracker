@@ -6,6 +6,8 @@ html {
 
 body {
     margin: 0px;
+    margin-top: 200px;
+    margin-bottom: 100px;
 }
 
 /* ========================================================================== */
@@ -84,7 +86,99 @@ body {
 /* ================================ Body CSS ================================ */
 /* ========================================================================== */
 
+.volunteer-hours-tracker {
+    display: flex;
+    justify-content: center;
+}
 
+.volunteer-hours-form {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+    padding: 2em;
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "volunteer-hours-header"
+    "charity-name"
+    "hours-volunteered"
+    "volunteer-hours-date"
+    "volunteer-experience-rating"
+}
+
+.volunteer-hours-header {
+    grid-area: volunteer-hours-header;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.charity-name {
+    grid-area: charity-name;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.hours-volunteered {
+    grid-area: hours-volunteered;
+}
+
+.volunteer-hours-date {
+    grid-area: volunteer-hours-date;
+}
+
+.volunteer-experience-rating {
+    grid-area: volunteer-experience-rating;
+}
+
+.hours-volunteered, .volunteer-hours-date, .volunteer-experience-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.volunteer-experience-rating ul {
+    display: flex;
+    padding: 0;
+    list-style: none;
+}
+
+#volunteer-experience-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container label {
+    display: flex;
+    align-items: center;
+    margin-right: 1em;
+    text-align: right;
+}
+
+.star {
+    display: flex;
+    display: inline;
+    font-size: 2em;
+    color: lightgray;
+    cursor: pointer;
+}
+
+.star:hover, .checked{
+    color: #0F75BC;
+}
+
+.error {
+    color: red;
+    display: none;
+}
 
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
