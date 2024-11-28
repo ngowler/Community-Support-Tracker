@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Community Support Tracker</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+
+    <body class="nested-body">
+        <div class="volunteer-hours-tracker" id="volunteer-hours-tracker">
+            <form class="volunteer-hours-form" id="volunteer-hours-form">
+                <h1 class="volunteer-hours-header">Volunteer Hours Tracker</h1>
+                <div class="charity-name">
+                    <div class="input-container">
+                        <label for="charity-name">Charity Name:</label>
+                        <input type="text" id="charity-name" name="charity-name" maxlength="50" value="" />
+                    </div>
+                    <span class="volunteer-form-error" id="charity-name_error">
+                        * Please enter the name of the charity.
+                    </span>
+                </div>
+
+                <div class="hours-volunteered">
+                    <div class="input-container">
+                        <label for="hours-volunteered">Hours Volunteered:</label>
+                        <input type="number" id="hours-volunteered" name="hours-volunteered" maxlength="2" value="" />					
+                    </div>
+                    <span class="volunteer-form-error" id="hours-volunteered_error">
+                        * Please enter the hours spent volunteering.
+                    </span>
+                </div>
+
+                <div class="volunteer-hours-date">
+                    <div class="input-container">
+                        <label for="volunteer-hours-date">Date:</label>
+                        <input type="date" id="volunteer-hours-date" name="volunteer-hours-date" value=""/>
+                    </div>
+                    <span class="volunteer-form-error" id="volunteer-hours-date_error">
+                        * Please enter the date when the volunteering occurred.
+                    </span>
+                </div>
+
+                <div class="volunteer-experience-rating">
+                    <div class="input-container">
+                        <label for="volunteer-experience-rating">Experience Rating:</label>
+                        <ul id="volunteer-experience-rating" name="volunteer-experience-rating">
+                            <li class="star" value="1">&#9733;</li>
+                            <li class="star" value="2">&#9733;</li>
+                            <li class="star" value="3">&#9733;</li>
+                            <li class="star" value="4">&#9733;</li>
+                            <li class="star" value="5">&#9733;</li>
+                        </ul>
+                    </div>
+                    <span class="volunteer-form-error" id="volunteer-experience-rating_error">
+                        * Please give a star rating of your experience.
+                    </span>
+                </div>
+
+                <div class="volunteer-form-buttons">
+                    <button type="submit" id="submit-volunteer-form">Submit</button>
+                </div>
+            </form>
+            <script src="bundle.js"></script>
+        </div>
+    </body>
+</html>
