@@ -46,6 +46,7 @@ body {
     top: 100px;
     width: 100%;
     height: 50px;
+    left: 0px;
 }
 
 .navbar-list {
@@ -63,12 +64,15 @@ body {
     display: inline;
     margin-right: auto;
     margin-left: auto;
-    display: flex;
 }
 
 .navbar-list li a {
     text-decoration: none;
     color: white;
+}
+
+.hamburger-menu {
+    display: none;
 }
 
 @media(max-width:1300px) {
@@ -83,12 +87,56 @@ body {
         margin-right: 5em;
         margin-left: 5em;
     }
+    .navbar {
+        left: 0px;
+        position: fixed;
+    }
 }
 
 @media(max-width:700px) {
     .navbar-list {
-        margin-right: 2.5em;
-        margin-left: 2.5em;
+        display: grid;
+        height: auto;
+        margin-right: 0;
+        margin-left: 0;
+        align-items: normal;
+    }
+    .navbar {
+        position: fixed;
+        width: 300px;
+        height: 100%;
+        z-index: -10;
+        left: -300px;
+        transition: 0.5s;
+    }
+    .hamburger-menu {
+        display: block;
+        height: 50px;
+        width: 50px;
+        position: fixed;
+        z-index: 10;
+        cursor: pointer;
+    }
+    .navbar-list li {
+        display: grid;
+        
+        height: 70px;
+        width: 100%;
+    }
+    .navbar-list li a {
+        width: 100%;
+        height: 100%;
+    }
+    .navbar-list li a p {
+        margin-left: 25px;
+        display: grid;
+        margin-top: 0;
+        margin-bottom: 0;
+        align-items: center;
+        height: 100%;
+    }
+    .navbar-list li:hover {
+        background-color:#185a89
     }
 }
 
