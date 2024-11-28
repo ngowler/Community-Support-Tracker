@@ -4,6 +4,10 @@ function load() {
     hamburgerMenu.addEventListener('click', handleMenuClick);
     mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
     handleMediaQuery(mediaQuery)
+    const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
+    let hamburgerMenuCount = 0;
+    const navbar = document.getElementById("navbar");
+    let mediaQuery = window.matchMedia("(max-width: 700px");
 }
 
 function handleSubmit(event) {
@@ -75,13 +79,6 @@ function clearForm() {
     document.getElementById('company-role-selection-input').selectedIndex = 0;
 }
 
-//to export for testing purposes
-module.exports = { handleSubmit, validateForm };
-
-const hamburgerMenu = document.getElementById('hamburgerMenuSVG')
-let hamburgerMenuCount = 0
-const navbar = document.getElementById('navbar')
-let mediaQuery = window.matchMedia("(max-width: 700px")
 
 function handleMenuClick() {
   if (hamburgerMenuCount == 0) {
@@ -103,3 +100,9 @@ function handleMediaQuery(mediaQuery) {
   }
 }
 
+if (typeof window !== "undefined") {
+    window.onload = load;
+} else {
+    //to export for testing purposes
+    module.exports = { handleSubmit, validateForm };
+}
