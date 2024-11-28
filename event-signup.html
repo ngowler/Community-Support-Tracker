@@ -30,31 +30,35 @@
                         <label for="event-signup-name-input">Event Name: </label><input id="event-signup-name-input"/>
                     </li>
                     <div class="event-name-error-wrapper" id="event-name-error-wrapper">
-                        <span class="event-error">Please enter an event name.</span>
+                        <span class="event-name-error">Please enter an event name.</span>
                     </div>
 
                     <li>
                         <label for="company-rep-name-input">Company Representative Name: </label><input id="company-rep-name-input"/>
                     </li>
                     <div class="company-rep-name-error-wrapper" id="company-rep-name-error-wrapper">
-                        <span class="rep-name-error">Please enter a company representative name.</span>
+                        <span class="company-rep-name-error">Please enter a company representative name.</span>
                     </div>
 
                     <li>
                         <label for="company-rep-email-input">Company Representative Email: </label><input id="company-rep-email-input" type="email"/>
                     </li>
-                    <div class="company-rep-email-error-wrapper" id="company-rep-emailx-error-wrapper">
-                        <span class="rep-email-error">Please enter a company representative name.</span>
+                    <div class="company-rep-email-error-wrapper" id="company-rep-email-error-wrapper">
+                        <span class="company-rep-email-error">Please enter a company representative name.</span>
                     </div>
 
                     <li>
                         <label for="company-role-selection-input">Company Representative Role: </label>
-                        <select name="company-role" id="company-role">
+                        <select name="company-role-selection-input" id="company-role-selection-input">
                             <option value="Sponsor">Sponsor</option>
                             <option value="Participant">Participant</option>
                             <option value="Organizer">Organizer</option>
                           </select>
                     </li>
+                    <div class="company-role-selection-error-wrapper" id="company-role-selection-error-wrapper">
+                        <span class="company-role-selection-error">Please choose a company role.</span>
+                    </div>
+
                     <li>
                         <button type="submit" id="event-signup-submit-button">Submit</button>
                     </li>
