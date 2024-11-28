@@ -1,12 +1,10 @@
-document.addEventListener("DOMContentLoaded", load);
-
 function load() {
     selectStar();
     document.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
 }
 
 function validateVolunteerForm(e) {
-    hideErrors()
+    hideErrors();
     if(formHasErrors()) {
         e.preventDefault();
     } else {
@@ -15,7 +13,6 @@ function validateVolunteerForm(e) {
         volunteerData.hoursVolunteered = parseFloat(document.getElementById("hours-volunteered").value);
         volunteerData.date = document.getElementById("volunteer-hours-date").value;
         volunteerData.stars = document.getElementsByClassName("starsSelected").length;
-        localStorage.setItem("volunteerData", JSON.stringify(volunteerData));
     }
 }
 
@@ -37,7 +34,7 @@ function showError(formField, errorId, errorFlag) {
 }
 
 function formHasErrors() {
-    let errorFlag = false
+    let errorFlag = false;
     let charityName = document.getElementById("charity-name").value;
     if(charityName == "" || charityName == null) {
         showError("charity-name", "charity-name_error", errorFlag);
@@ -66,8 +63,7 @@ function selectStar() {
     stars.forEach((star) => {
         star.addEventListener("click", () => {
             resetStars();
-            let starValue = star.value;
-            for(i=0; i<starValue; i++) {
+            for(i=0; i<star.value; i++) {
                 stars[i].classList.add("starsSelected");
             }
         });
@@ -79,4 +75,10 @@ function resetStars() {
     stars.forEach((star) => {
         star.classList.remove("starsSelected");
     });
+}
+
+if (typeof window !== "undefined") {
+    window.onload = load;
+} else {
+    module.exports = {validateVolunteerForm, hideErrors, showError, formHasErrors, selectStar, resetStars, load};
 }

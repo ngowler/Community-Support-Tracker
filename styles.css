@@ -187,7 +187,8 @@ body {
 
 #submit-volunteer-form:hover {
     background-color: #0F75BC;
-    color: lightgrey;
+    color: white;
+    font-weight: bold;
 }
 
 .volunteer-form-error {
