@@ -48,6 +48,82 @@ test("hideErrors hides the charity error element.", () => {
   expect(document.getElementById('donation-charity-name-error-wrapper').style.display).toBe('none')
 })
 
+test("all error messages show when invalid inputs are given", () => {
+    const dom = new JSDOM(`
+    <!DOCTYPE html>
+    <form id="form">
+      <input id="donation-charity-name-input" value=""/>
+      <input id="donation-amount-input" value=""/>
+      <input id="donation-date-input" value=""/>
+      <input id="donation-message-input" value=""/>
+
+      <div id="donation-charity-name-error-wrapper"></div>
+      <div id="donation-amount-error-wrapper"></div>
+      <div id="donation-date-error-wrapper"></div>
+      <div id="donation-message-error-wrapper"></div>
+    </form>
+  `);
+
+    global.document = dom.window.document;
+
+
+    const form = document.getElementById("form");
+    form.addEventListener("submit", validateForm);
+    form.dispatchEvent(new dom.window.Event("submit"));
+    
+    expect(document.getElementById('donation-charity-name-error-wrapper').style.display).toBe('flex')
+    expect(
+        document.getElementById("donation-amount-error-wrapper").style
+            .display
+    ).toBe("flex");
+    expect(
+        document.getElementById("donation-date-error-wrapper").style
+            .display
+    ).toBe("flex");
+    expect(
+        document.getElementById("donation-message-error-wrapper").style
+            .display
+    ).toBe("flex");
+    
+});
+
+test("all error messages show when invalid inputs are given and amount is not blank", () => {
+    const dom = new JSDOM(`
+    <!DOCTYPE html>
+    <form id="form">
+      <input id="donation-charity-name-input" value=""/>
+      <input id="donation-amount-input" value="-100"/>
+      <input id="donation-date-input" value=""/>
+      <input id="donation-message-input" value=""/>
+
+      <div id="donation-charity-name-error-wrapper"></div>
+      <div id="donation-amount-error-wrapper"></div>
+      <div id="donation-date-error-wrapper"></div>
+      <div id="donation-message-error-wrapper"></div>
+    </form>
+  `);
+
+    global.document = dom.window.document;
+
+    const form = document.getElementById("form");
+    form.addEventListener("submit", validateForm);
+    form.dispatchEvent(new dom.window.Event("submit"));
+
+    expect(
+        document.getElementById("donation-charity-name-error-wrapper").style
+            .display
+    ).toBe("flex");
+    expect(
+        document.getElementById("donation-amount-error-wrapper").style.display
+    ).toBe("flex");
+    expect(
+        document.getElementById("donation-date-error-wrapper").style.display
+    ).toBe("flex");
+    expect(
+        document.getElementById("donation-message-error-wrapper").style.display
+    ).toBe("flex");
+});
+
 test("hideErrors hides the amount error element.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
