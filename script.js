@@ -1,6 +1,4 @@
 
-
-
 function load() {
   const donationSubmitButton = document.getElementById('donation-submit-button')
 
@@ -95,8 +93,10 @@ function handleMediaQuery(mediaQuery) {
 }
 
 if (typeof window !== "undefined") {
+
   window.onload = load;
 } else {
   // CommonJS-style exports are used when in a Node.js environment
   module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput };
 }
+
