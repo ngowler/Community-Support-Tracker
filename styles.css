@@ -6,7 +6,19 @@ html {
 
 body {
     margin: 0px;
+    margin-top: 200px;
+    margin-bottom: 100px;
 }
+
+.nested-body {
+    margin-top: 0px;
+}
+
+/* iframe {
+    border: none;
+    width: 200px;
+    height: 100%;
+} */
 
 /* ========================================================================== */
 /* =============================== Header CSS =============================== */
@@ -132,7 +144,57 @@ body {
 /* ================================ Body CSS ================================ */
 /* ========================================================================== */
 
+.donation-tracker {
+    display: flex;
+    justify-content: center;
+}
 
+.donation-form {
+    border: 2px lightgray solid;
+    border-radius: 5px
+}
+
+.donation-form-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.donation-form-list {
+    list-style-type: none;
+    padding-left: 0px;
+    display: grid;
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.donation-form-list li {
+    margin: 17px;
+    display: flex;
+    justify-content: center;
+}
+
+.donation-form-list label {
+    margin-right: 5px;
+}
+
+.donation-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.donation-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.donation-frame {
+    border: none;
+    width: 100%;
+    height: 500px;
+}
 
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
