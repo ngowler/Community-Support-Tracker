@@ -1,12 +1,12 @@
-const hamburgerMenu = document.getElementById('hamburgerMenuSVG')
-let hamburgerMenuCount = 0
-const navbar = document.getElementById('navbar')
-let mediaQuery = window.matchMedia("(max-width: 700px")
-
 function load() {
   hamburgerMenu.addEventListener('click', handleMenuClick);
   mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
   handleMediaQuery(mediaQuery)
+
+  const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
+  let hamburgerMenuCount = 0;
+  const navbar = document.getElementById("navbar");
+  let mediaQuery = window.matchMedia("(max-width: 700px");
 }
 
 function handleMenuClick() {
@@ -29,4 +29,10 @@ function handleMediaQuery(mediaQuery) {
   }
 }
 
-load()
+if (typeof window !== "undefined") {
+    window.onload = load;
+} else {
+    // CommonJS-style exports are used when in a Node.js environment
+    // FILL IN THESE EXPORTS WITH YOUR FUNCTION EXPORTS FOR TESTING
+    module.exports = {   };
+}
