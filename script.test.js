@@ -1,6 +1,6 @@
 const {JSDOM} = require("jsdom");
 
-const {validateVolunteerForm, hideErrors, showError, formHasErrors, selectStar, resetStars, load} = require("./script");
+const {validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load} = require("./script");
 
 const mockValidateVolunteerForm = jest.fn(validateVolunteerForm);
 
@@ -137,7 +137,7 @@ test("validateVolunteerForm validates incorect number input",() => {
     document.getElementById("hours-volunteered").value = "-4";
     document.getElementById("volunteer-hours-date").value = "2024-11-01";
     document.querySelectorAll(".star").forEach(star => star.classList.add("starsSelected"));
-    expect(formHasErrors()).toBe(true);
+    expect(volunteerFormHasErrors()).toBe(true);
 });
 
 test("validateVolunteerForm validates incorect star input",() => {
@@ -171,7 +171,7 @@ test("validateVolunteerForm validates incorect star input",() => {
     document.getElementById("volunteer-hours-date").value = "2024-11-01";
     document.querySelectorAll(".star").forEach(star => star.classList.remove("starsSelected"));
 
-    expect(formHasErrors()).toBe(true);
+    expect(volunteerFormHasErrors()).toBe(true);
 });
 
 test("validateVolunteerForm correctly populates temporary data object",() => {

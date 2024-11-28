@@ -5,8 +5,8 @@ function load() {
 }
 
 function validateVolunteerForm(e) {
-    hideErrors();
-    if(formHasErrors()) {
+    volunteerHideErrors();
+    if(volunteerFormHasErrors()) {
         e.preventDefault();
     } else {
         let volunteerData = {};
@@ -17,14 +17,14 @@ function validateVolunteerForm(e) {
     }
 }
 
-function hideErrors() {
+function volunteerHideErrors() {
     let errorFields = document.getElementsByClassName("volunteer-form-error");
     for(let i=0; i<errorFields.length; i++) {
         errorFields[i].style.display = "none";
     }
 }
 
-function showError(formField, errorId, errorFlag) {
+function volunteerShowError(formField, errorId, errorFlag) {
 	document.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
 		document.getElementById(formField).focus();
@@ -34,26 +34,26 @@ function showError(formField, errorId, errorFlag) {
 	}
 }
 
-function formHasErrors() {
+function volunteerFormHasErrors() {
     let errorFlag = false;
     let charityName = document.getElementById("charity-name").value;
     if(charityName == "" || charityName == null) {
-        showError("charity-name", "charity-name_error", errorFlag);
+        volunteerShowError("charity-name", "charity-name_error", errorFlag);
         errorFlag=true;
     }
     let hoursVolunteered = document.getElementById("hours-volunteered").value;
     if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
-        showError("hours-volunteered", "hours-volunteered_error", errorFlag);
+        volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
         errorFlag=true;
     }
     let volunteerDate = document.getElementById("volunteer-hours-date").value;
     if(volunteerDate == "" || volunteerDate == null) {
-        showError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
+        volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
         errorFlag=true;
     }
     let numberOfStars = document.getElementsByClassName("starsSelected").length;
     if(numberOfStars == 0){
-        showError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
+        volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
         errorFlag=true;
     }
     return errorFlag;
@@ -81,6 +81,6 @@ function resetStars() {
 if (typeof window !== "undefined") {
     window.onload = load;
 } else {
-    module.exports = {validateVolunteerForm, hideErrors, showError, formHasErrors, selectStar, resetStars, load};
+    module.exports = {validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
 },{}]},{},[1]);
