@@ -2,12 +2,12 @@
 
 function load() {
     selectStar();
+    const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
     document.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
-    document.querySelector('.event-signup-form').addEventListener('submit', handleSubmit);
+    document.getElementById('event-signup-form').addEventListener('submit', handleSubmit);
     hamburgerMenu.addEventListener('click', handleMenuClick);
     mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
     handleMediaQuery(mediaQuery)
-    const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
     let hamburgerMenuCount = 0;
     const navbar = document.getElementById("navbar");
     let mediaQuery = window.matchMedia("(max-width: 700px");
