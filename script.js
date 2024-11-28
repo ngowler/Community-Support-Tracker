@@ -100,7 +100,7 @@ function resetStars() {
     const navbar = document.getElementById("navbar");
     let mediaQuery = window.matchMedia("(max-width: 700px");
 
-
+}
 // donationFormData = {}
 
 
