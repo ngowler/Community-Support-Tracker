@@ -1,8 +1,8 @@
 const { JSDOM } = require("jsdom")
-const { validateForm, hideErrors, formHasInput } = require("./script")
+const { donationValidateForm, donationHideErrors, donationFormHasInput } = require("./script")
 
 
-test("validateForm submits a form with valid inputs", () => {
+test("donationValidateForm submits a form with valid inputs", () => {
 
     const dom = new JSDOM(`
     <!DOCTYPE html>
@@ -21,16 +21,16 @@ test("validateForm submits a form with valid inputs", () => {
 
     global.document = dom.window.document;
 
-    const validateForm = jest.fn()
+    const donationValidateForm = jest.fn()
 
     const form = document.getElementById('form')
-    form.addEventListener('submit', validateForm)
+    form.addEventListener('submit', donationValidateForm)
     form.dispatchEvent(new dom.window.Event('submit'))
 
-    expect(validateForm).toHaveBeenCalled();
+    expect(donationValidateForm).toHaveBeenCalled();
 })
 
-test("hideErrors hides the charity error element.", () => {
+test("donationHideErrors hides the charity error element.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
     <form id="test">
@@ -43,7 +43,7 @@ test("hideErrors hides the charity error element.", () => {
 
   global.document = dom.window.document;
 
-  hideErrors();
+  donationHideErrors();
 
   expect(document.getElementById('donation-charity-name-error-wrapper').style.display).toBe('none')
 })
@@ -68,7 +68,7 @@ test("all error messages show when invalid inputs are given", () => {
 
 
     const form = document.getElementById("form");
-    form.addEventListener("submit", validateForm);
+    form.addEventListener("submit", donationValidateForm);
     form.dispatchEvent(new dom.window.Event("submit"));
     
     expect(document.getElementById('donation-charity-name-error-wrapper').style.display).toBe('flex')
@@ -106,7 +106,7 @@ test("all error messages show when invalid inputs are given and amount is not bl
     global.document = dom.window.document;
 
     const form = document.getElementById("form");
-    form.addEventListener("submit", validateForm);
+    form.addEventListener("submit", donationValidateForm);
     form.dispatchEvent(new dom.window.Event("submit"));
 
     expect(
@@ -124,7 +124,7 @@ test("all error messages show when invalid inputs are given and amount is not bl
     ).toBe("flex");
 });
 
-test("hideErrors hides the amount error element.", () => {
+test("donationHideErrors hides the amount error element.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
     <form id="test">
@@ -137,12 +137,12 @@ test("hideErrors hides the amount error element.", () => {
 
   global.document = dom.window.document;
 
-  hideErrors();
+  donationHideErrors();
 
   expect(document.getElementById('donation-amount-error-wrapper').style.display).toBe('none')
 })
 
-test("hideErrors hides the date error element.", () => {
+test("donationHideErrors hides the date error element.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
     <form id="test">
@@ -155,12 +155,12 @@ test("hideErrors hides the date error element.", () => {
 
   global.document = dom.window.document;
 
-  hideErrors();
+  donationHideErrors();
 
   expect(document.getElementById('donation-date-error-wrapper').style.display).toBe('none')
 })
 
-test("hideErrors hides the message error element.", () => {
+test("donationHideErrors hides the message error element.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
     <form id="test">
@@ -173,12 +173,12 @@ test("hideErrors hides the message error element.", () => {
 
   global.document = dom.window.document;
 
-  hideErrors();
+  donationHideErrors();
 
   expect(document.getElementById('donation-message-error-wrapper').style.display).toBe('none')
 })
 
-test("formHasInput returns true when a form has input.", () => {
+test("donationFormHasInput returns true when a form has input.", () => {
   const dom = new JSDOM(`
       <!DOCTYPE html>
       <form id="test">
@@ -188,10 +188,10 @@ test("formHasInput returns true when a form has input.", () => {
 
     global.document = dom.window.document;
 
-    expect(formHasInput('test-')).toBe(true)
+    expect(donationFormHasInput('test-')).toBe(true)
 })
 
-test("formHasInput returns false when a form doesn't have input.", () => {
+test("donationFormHasInput returns false when a form doesn't have input.", () => {
   const dom = new JSDOM(`
     <!DOCTYPE html>
     <form id="test">
@@ -202,7 +202,7 @@ test("formHasInput returns false when a form doesn't have input.", () => {
 
   global.document = dom.window.document;
 
-  expect(formHasInput('test-')).toBe(false)
+  expect(donationFormHasInput('test-')).toBe(false)
 })
 
 
@@ -225,7 +225,7 @@ test("donationFormData is populated", () => {
     global.document = dom.window.document;
 
     // const form = document.getElementById('form')
-    // form.addEventListener('submit', validateForm)
+    // form.addEventListener('submit', donationValidateForm)
 
     // Code used from this github page https://gist.github.com/blairg/b6575a23ce96603a120d841f70463f76
     // and these documents https://jestjs.io/docs/jest-object#jestspyonobject-methodname
@@ -235,7 +235,7 @@ test("donationFormData is populated", () => {
         preventDefault: preventDefaultListener,
     };
     donationFormData = {}
-    validateForm(mockEvent);
+    donationValidateForm(mockEvent);
 
     
     // Code used from this stack overflow post https://stackoverflow.com/questions/49044994/how-can-i-test-part-of-object-using-jest

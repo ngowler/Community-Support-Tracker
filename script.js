@@ -9,7 +9,7 @@ function load() {
   const navbar = document.getElementById("navbar");
   let mediaQuery = window.matchMedia("(max-width: 700px");
 
-  donationSubmitButton.addEventListener('click', (e) => validateForm(e))
+  donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
   hamburgerMenu.addEventListener('click', handleMenuClick);
   mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
   handleMediaQuery(mediaQuery)
@@ -18,9 +18,9 @@ function load() {
 // donationFormData = {}
 
 
-function validateForm(e) {
+function donationValidateForm(e) {
   e.preventDefault()
-  hideErrors();
+  donationHideErrors();
   errorFlag = false
 
   const donationInputs = [
@@ -33,7 +33,7 @@ function validateForm(e) {
   donationFormData = {}
 
   donationInputs.forEach((input) => {
-    if (!formHasInput(input)) {
+    if (!donationFormHasInput(input)) {
       errorFlag = true
     }
   })
@@ -55,14 +55,14 @@ function validateForm(e) {
 }
 
 
-function hideErrors() {
+function donationHideErrors() {
   document.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
   document.getElementById('donation-amount-error-wrapper').style.display = 'none';
   document.getElementById('donation-date-error-wrapper').style.display = 'none';
   document.getElementById('donation-message-error-wrapper').style.display = 'none';
 }
 
-function formHasInput(input) {
+function donationFormHasInput(input) {
   let inputElement = document.getElementById(input + 'input')
   
 
@@ -98,5 +98,5 @@ if (typeof window !== "undefined") {
   window.onload = load;
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { validateForm, hideErrors, formHasInput };
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput };
 }
