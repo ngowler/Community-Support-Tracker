@@ -60,6 +60,15 @@ body {
     align-items: center;
 }
 
+.hamburger-menu {
+    display: block;
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    z-index: 10;
+    cursor: pointer;
+}
+
 .navbar-list li {
     display: inline;
     margin-right: auto;
@@ -144,23 +153,51 @@ body {
 /* ================================ Body CSS ================================ */
 /* ========================================================================== */
 
+
+.event-signup {
+    display: flex;
+    justify-content: center;
+}
 .donation-tracker {
+
     display: flex;
     justify-content: center;
 }
 
+
+.signup-form {
+    border: 2px lightgray solid;
+    border-radius: 5px
+}
 .donation-form {
+
     border: 2px lightgray solid;
     border-radius: 5px
 }
 
+
+.signup-form-header {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .donation-form-header {
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.signup-form-list {
+    list-style-type: none;
+    padding-left: 0px;
+    display: grid;
+    justify-content: center;
+    margin-top: 0px;
+}
 .donation-form-list {
+
     list-style-type: none;
     padding-left: 0px;
     display: grid;
@@ -168,11 +205,73 @@ body {
     margin-top: 0px;
 }
 
-.donation-form-list li {
+
+.signup-form-list li {
     margin: 17px;
     display: flex;
     justify-content: center;
 }
+.donation-form-list li {
+
+    margin: 17px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.signup-form-list label {
+    margin-right: 5px;
+}
+
+.event-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.event-name-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+.company-rep-name-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.company-rep-name-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.company-rep-email-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.company-rep-email-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.company-rep-selection-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.company-rep-selection-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 
 .donation-form-list label {
     margin-right: 5px;
