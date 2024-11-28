@@ -11,11 +11,6 @@ function load() {
   hamburgerMenu.addEventListener('click', handleMenuClick);
   mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
   handleMediaQuery(mediaQuery)
-
-  const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
-  let hamburgerMenuCount = 0;
-  const navbar = document.getElementById("navbar");
-  let mediaQuery = window.matchMedia("(max-width: 700px");
 }
 
 // donationFormData = {}
