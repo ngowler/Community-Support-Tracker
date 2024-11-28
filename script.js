@@ -1,6 +1,4 @@
 
-
-
 function load() {
   const donationSubmitButton = document.getElementById('donation-submit-button')
 
@@ -13,6 +11,11 @@ function load() {
   hamburgerMenu.addEventListener('click', handleMenuClick);
   mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
   handleMediaQuery(mediaQuery)
+
+  const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
+  let hamburgerMenuCount = 0;
+  const navbar = document.getElementById("navbar");
+  let mediaQuery = window.matchMedia("(max-width: 700px");
 }
 
 // donationFormData = {}
@@ -95,8 +98,10 @@ function handleMediaQuery(mediaQuery) {
 }
 
 if (typeof window !== "undefined") {
+
   window.onload = load;
 } else {
   // CommonJS-style exports are used when in a Node.js environment
   module.exports = { validateForm, hideErrors, formHasInput };
 }
+
