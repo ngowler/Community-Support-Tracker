@@ -1,4 +1,5 @@
 
+
 function load() {
     document.querySelector('.event-signup-form').addEventListener('submit', handleSubmit);
     hamburgerMenu.addEventListener('click', handleMenuClick);
@@ -103,6 +104,8 @@ function handleMediaQuery(mediaQuery) {
 if (typeof window !== "undefined") {
     window.onload = load;
 } else {
+
     //to export for testing purposes
     module.exports = { handleSubmit, validateForm };
+
 }
