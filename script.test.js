@@ -103,7 +103,7 @@ test("validateVolunteerForm correctly flags empty inputs",() => {
     form.addEventListener("submit", mockValidateVolunteerForm);
     form.dispatchEvent(event);
 
-    expect(formHasErrors()).toBe(true);
+    expect(volunteerFormHasErrors()).toBe(true);
 });
 
 test("validateVolunteerForm validates incorect number input",() => {
