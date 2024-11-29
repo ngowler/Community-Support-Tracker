@@ -100,6 +100,7 @@ body {
         margin-right: 0;
         margin-left: 0;
         align-items: normal;
+        z-index: 20;
     }
     .navbar {
         position: fixed;
@@ -147,6 +148,7 @@ body {
 .donation-tracker {
     display: flex;
     justify-content: center;
+    z-index: -10;
 }
 
 .donation-form {

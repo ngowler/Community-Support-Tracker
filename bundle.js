@@ -3,9 +3,9 @@
 function load() {
   const donationSubmitButton = document.getElementById('donation-submit-button')
 
-  const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
+  let hamburgerMenu = document.getElementById("hamburgerMenuSVG");
   let hamburgerMenuCount = 0;
-  const navbar = document.getElementById("navbar");
+
   let mediaQuery = window.matchMedia("(max-width: 700px");
 
   donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
