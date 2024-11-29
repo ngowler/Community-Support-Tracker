@@ -1,20 +1,44 @@
 
-
-
 function load() {
+    
+    // ====================================================== //
+    // =================== VOLUNTEER CODE =================== //
+    // ====================================================== //
 
     selectStar();
-    document.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
-    hamburgerMenu.addEventListener('click', handleMenuClick);
-    mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
-    handleMediaQuery(mediaQuery)
+    window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
+
+    // ====================================================== //
+    // ================== EVENT SIGNUP CODE ================= //
+    // ====================================================== //
+
+    window.frames["event-signup"].contentDocument.getElementById('event-signup-form').addEventListener('submit', handleSubmit);
+
+    // ====================================================== //
+    // ================ NAVIGATION MENU CODE ================ //
+    // ====================================================== //
 
     const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
-    let hamburgerMenuCount = 0;
     const navbar = document.getElementById("navbar");
+    hamburgerMenu.addEventListener('click', handleMenuClick);
     let mediaQuery = window.matchMedia("(max-width: 700px");
+    mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
+    handleMediaQuery(mediaQuery)
+    let hamburgerMenuCount = 0;
 
+    // ====================================================== //
+    // ================ DONATION TRACKER CODE =============== //
+    // ====================================================== //
+
+    const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
+    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
 }
+
+// ========================================================================== //
+// ========================================================================== //
+// ============================= VOLUNTEER CODE ============================= //
+// ========================================================================== //
+// ========================================================================== //
 
 function validateVolunteerForm(e) {
     volunteerHideErrors();
@@ -22,48 +46,48 @@ function validateVolunteerForm(e) {
         e.preventDefault();
     } else {
         let volunteerData = {};
-        volunteerData.charityName = document.getElementById("charity-name").value;
-        volunteerData.hoursVolunteered = parseFloat(document.getElementById("hours-volunteered").value);
-        volunteerData.date = document.getElementById("volunteer-hours-date").value;
-        volunteerData.stars = document.getElementsByClassName("starsSelected").length;
+        volunteerData.charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
+        volunteerData.hoursVolunteered = parseFloat(window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value);
+        volunteerData.date = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
+        volunteerData.stars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
     }
 }
 
 function volunteerHideErrors() {
-    let errorFields = document.getElementsByClassName("volunteer-form-error");
+    let errorFields = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("volunteer-form-error");
     for(let i=0; i<errorFields.length; i++) {
         errorFields[i].style.display = "none";
     }
 }
 
 function volunteerShowError(formField, errorId, errorFlag) {
-	document.getElementById(errorId).style.display = "block";
+	window.frames["volunteer-hours-tracker"].contentDocument.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
-		document.getElementById(formField).focus();
+		window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).focus();
 		if(formField.type == "text") {
-			document.getElementById(formField).select();
+			window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).select();
 		}
 	}
 }
 
 function volunteerFormHasErrors() {
     let errorFlag = false;
-    let charityName = document.getElementById("charity-name").value;
+    let charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
     if(charityName == "" || charityName == null) {
         volunteerShowError("charity-name", "charity-name_error", errorFlag);
         errorFlag=true;
     }
-    let hoursVolunteered = document.getElementById("hours-volunteered").value;
+    let hoursVolunteered = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value;
     if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
         volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
         errorFlag=true;
     }
-    let volunteerDate = document.getElementById("volunteer-hours-date").value;
+    let volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
     if(volunteerDate == "" || volunteerDate == null) {
         volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
         errorFlag=true;
     }
-    let numberOfStars = document.getElementsByClassName("starsSelected").length;
+    let numberOfStars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
     if(numberOfStars == 0){
         volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
         errorFlag=true;
@@ -72,7 +96,7 @@ function volunteerFormHasErrors() {
 }
 
 function selectStar() {
-    const stars = Array.from(document.getElementsByClassName("star"));
+    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
     stars.forEach((star) => {
         star.addEventListener("click", () => {
             resetStars();
@@ -84,25 +108,93 @@ function selectStar() {
 }
 
 function resetStars() {
-    const stars = Array.from(document.getElementsByClassName("star"));
+    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
     stars.forEach((star) => {
         star.classList.remove("starsSelected");
     });
-
-    const donationSubmitButton = document.getElementById('donation-submit-button')
-    document.querySelector('.event-signup-form').addEventListener('submit', handleSubmit);
-    hamburgerMenu.addEventListener('click', handleMenuClick);
-    mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
-    handleMediaQuery(mediaQuery)
-    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
-    const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
-    let hamburgerMenuCount = 0;
-    const navbar = document.getElementById("navbar");
-    let mediaQuery = window.matchMedia("(max-width: 700px");
-
 }
-// donationFormData = {}
 
+
+// ========================================================================== //
+// ========================================================================== //
+// ============================ EVENT SIGNUP CODE =========================== //
+// ========================================================================== //
+// ========================================================================== //
+
+function handleSubmit(event) {
+    event.preventDefault();
+
+    let eventSignupName = window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value;
+    let repSignupName = window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value;
+    let repEmail = window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value;
+    let companyRole = window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').value;
+
+    if (validateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
+        let formData = {
+            eventName: eventSignupName,
+            representativeName: repSignupName,
+            representativeEmail: repEmail,
+            companyRole: companyRole
+        };
+
+        console.log('Form data:', formData);
+        clearForm();
+        return formData;
+    }
+}
+
+//VALIDATION
+function validateForm(eventName, repName, repEmail, companyRole) {
+    let isValid = true;
+
+    if (!eventName.trim()) {
+        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'block';
+        isValid = false;
+    } else {
+        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'none';
+    }
+
+    if (!repName.trim()) {
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'block';
+        isValid = false;
+    } else {
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'none';
+    }
+
+    if (!isValidEmail(repEmail)) {
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'block';
+        isValid = false;
+    } else {
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'none';
+    }
+
+    if (!companyRole || !companyRole.trim()) {
+        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'block';
+        isValid = false;
+    } else {
+        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'none';
+    }
+
+    return isValid;
+}
+
+function isValidEmail(email) {
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function clearForm() {
+    window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value = '';
+    window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value = '';
+    window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value = '';
+    window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').selectedIndex = 0;
+}
+
+// ========================================================================== //
+// ========================================================================== //
+// ========================== DONATION TRACKER CODE ========================= //
+// ========================================================================== //
+// ========================================================================== //
 
 function donationValidateForm(e) {
   e.preventDefault()
@@ -124,112 +216,48 @@ function donationValidateForm(e) {
     }
   })
 
-  donationAmountInputValue = document.getElementById('donation-amount-input').value
+  donationAmountInputValue = window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
-    document.getElementById('donation-amount-error-wrapper').style.display = 'flex';
+    window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'flex';
     errorFlag = true
   }
 
   if (!errorFlag) {
-    donationFormData['charityName'] = document.getElementById('donation-charity-name-input').value
+    donationFormData['charityName'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value
     donationFormData['donationAmount'] = donationAmountInputValue
-    donationFormData['donationDate'] = document.getElementById('donation-date-input').value
-    donationFormData['donationMessage'] = document.getElementById('donation-message-input').value
+    donationFormData['donationDate'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value
+    donationFormData['donationMessage'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value
   }
 }
 
 
 function donationHideErrors() {
-  document.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
-  document.getElementById('donation-amount-error-wrapper').style.display = 'none';
-  document.getElementById('donation-date-error-wrapper').style.display = 'none';
-  document.getElementById('donation-message-error-wrapper').style.display = 'none';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'none';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-error-wrapper').style.display = 'none';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-error-wrapper').style.display = 'none';
 }
 
 function donationFormHasInput(input) {
-  let inputElement = document.getElementById(input + 'input')
+  let inputElement = window.frames["donation-tracker"].contentDocument.getElementById(input + 'input')
   
 
   if (inputElement.value !== '' && inputElement.value !== null) {
     return true
   } else {
-    document.getElementById(input + 'error-wrapper').style.display = 'flex';
+    window.frames["donation-tracker"].contentDocument.getElementById(input + 'error-wrapper').style.display = 'flex';
     return false
   }
-
 }
 
-function handleSubmit(event) {
-    event.preventDefault();
 
-    let eventSignupName = document.getElementById('event-signup-name-input').value;
-    let repSignupName = document.getElementById('company-rep-name-input').value;
-    let repEmail = document.getElementById('company-rep-email-input').value;
-    let companyRole = document.getElementById('company-role-selection-input').value;
-
-    if (validateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
-        let formData = {
-            eventName: eventSignupName,
-            representativeName: repSignupName,
-            representativeEmail: repEmail,
-            companyRole: companyRole
-        };
-
-        console.log('Form data:', formData);
-        clearForm();
-        return formData;
-    }
-}
-
-//VALIDATION
-function validateForm(eventName, repName, repEmail, companyRole) {
-    let isValid = true;
-
-    if (!eventName.trim()) {
-        document.getElementById('event-name-error-wrapper').style.display = 'block';
-        isValid = false;
-    } else {
-        document.getElementById('event-name-error-wrapper').style.display = 'none';
-    }
-
-    if (!repName.trim()) {
-        document.getElementById('company-rep-name-error-wrapper').style.display = 'block';
-        isValid = false;
-    } else {
-        document.getElementById('company-rep-name-error-wrapper').style.display = 'none';
-    }
-
-    if (!isValidEmail(repEmail)) {
-        document.getElementById('company-rep-email-error-wrapper').style.display = 'block';
-        isValid = false;
-    } else {
-        document.getElementById('company-rep-email-error-wrapper').style.display = 'none';
-    }
-
-    if (!companyRole || !companyRole.trim()) {
-        document.getElementById('company-role-selection-error-wrapper').style.display = 'block';
-        isValid = false;
-    } else {
-        document.getElementById('company-role-selection-error-wrapper').style.display = 'none';
-    }
-
-    return isValid;
-}
-
-function isValidEmail(email) {
-    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function clearForm() {
-    document.getElementById('event-signup-name-input').value = '';
-    document.getElementById('company-rep-name-input').value = '';
-    document.getElementById('company-rep-email-input').value = '';
-    document.getElementById('company-role-selection-input').selectedIndex = 0;
-
-}
+// ========================================================================== //
+// ========================================================================== //
+// ========================== NAVIGATION MENU CODE ========================== //
+// ========================================================================== //
+// ========================================================================== //
 
 
 function handleMenuClick() {
@@ -243,22 +271,33 @@ function handleMenuClick() {
 }
 
 // Code used from this website https://www.w3schools.com/howto/howto_js_media_queries.asp
-function handleMediaQuery(mediaQuery) {
+async function handleMediaQuery(mediaQuery) {
   if (mediaQuery.matches) {
+    
     navbar.style.left = '-300px';
     hamburgerMenuCount = 0
+    setTimeout(() => {
+        navbar.style.transition = "0.5s"
+    }, 500)
   } else {
+    navbar.style.transition = "left 0s"
     navbar.style.left = '0px';
   }
-
 }
+
+
+// ========================================================================== //
+// ========================================================================== //
+// =========================== EXPORTS FOR TESTING ========================== //
+// ========================================================================== //
+// ========================================================================== //
+
 
 if (typeof window !== "undefined") {
 
-  window.onload = load;
+    window.onload = load;
+
 } else {
-
-    module.exports = {validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load,donationValidateForm, donationHideErrors, donationFormHasInput, handleSubmit, validateForm};
+  // CommonJS-style exports are used when in a Node.js environment
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, handleSubmit, validateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
-
-

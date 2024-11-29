@@ -6,13 +6,14 @@ html {
 
 body {
     margin: 0px;
-    margin-top: 200px;
+    /* margin-top: 200px; */
     margin-bottom: 100px;
 
 }
 
 .nested-body {
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 /* iframe {
@@ -125,9 +126,9 @@ body {
         position: fixed;
         width: 300px;
         height: 100%;
-        z-index: -10;
+        z-index: 10;
         left: -300px;
-        transition: 0.5s;
+        
     }
     .hamburger-menu {
         display: block;
@@ -156,7 +157,7 @@ body {
         height: 100%;
     }
     .navbar-list li:hover {
-        background-color:#185a89
+        background-color:#0c588e;
     }
 }
 
@@ -169,7 +170,7 @@ body {
     border: none;
     width: 100%;
     height: 670px;
-
+    padding-top: 200px;
 
 }
 
@@ -422,7 +423,7 @@ body {
     border: none;
     width: 100%;
     height: 500px;
-
+    padding-top: 200px;
 }
 
 .event-signup-frame {
@@ -430,7 +431,7 @@ body {
     border: none;
     width: 100%;
     height: 500px;
-
+    padding-top: 200px;
 }
 
 .event-signup-form {
