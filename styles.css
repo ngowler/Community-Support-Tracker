@@ -165,6 +165,10 @@ body {
 /* ================================ Body CSS ================================ */
 /* ========================================================================== */
 
+/* ====================================================== */
+/* =================== VOLUNTEER CODE =================== */
+/* ====================================================== */
+
 .volunteer-frame {
 
     border: none;
@@ -284,35 +288,22 @@ body {
     color: red;
     display: none;
 }
+
+/* ====================================================== */
+/* ================== EVENT SIGNUP CODE ================= */
+/* ====================================================== */
+
 .event-signup {
     display: flex;
     justify-content: center;
 }
-.donation-tracker {
-
-    display: flex;
-    justify-content: center;
-}
-
 
 .signup-form {
     border: 2px lightgray solid;
     border-radius: 5px
 }
-.donation-form {
-
-    border: 2px lightgray solid;
-    border-radius: 5px
-}
-
 
 .signup-form-header {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.donation-form-header {
 
     display: flex;
     justify-content: center;
@@ -326,28 +317,28 @@ body {
     justify-content: center;
     margin-top: 0px;
 }
-.donation-form-list {
-
-    list-style-type: none;
-    padding-left: 0px;
-    display: grid;
-    justify-content: center;
-    margin-top: 0px;
-}
-
 
 .signup-form-list li {
     margin: 17px;
     display: flex;
     justify-content: center;
 }
-.donation-form-list li {
 
-    margin: 17px;
-    display: flex;
-    justify-content: center;
+.event-signup-submit-button {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
 }
 
+.event-signup-submit-button:hover {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+}
 
 .signup-form-list label {
     margin-right: 5px;
@@ -402,30 +393,6 @@ body {
     margin-bottom: 15px;
 }
 
-
-.donation-form-list label {
-    margin-right: 5px;
-}
-
-.donation-error {
-    color: red;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.donation-error-wrapper {
-    display: none;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.donation-frame {
-    border: none;
-    width: 100%;
-    height: 500px;
-    padding-top: 200px;
-}
-
 .event-signup-frame {
 
     border: none;
@@ -437,6 +404,128 @@ body {
 .event-signup-form {
     border: 2px lightgray solid;
     border-radius: 5px;
+}
+
+/* ====================================================== */
+/* ================ DONATION TRACKER CODE =============== */
+/* ====================================================== */
+
+.donation-tracker {
+    display: flex;
+    justify-content: center;
+}
+
+.donation-error-wrapper {
+    display: none;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.donation-frame {
+    border: none;
+    width: 100%;
+    height: 550px;
+    padding-top: 200px;
+}
+
+.donation-form-list label {
+    margin-right: 5px;
+}
+
+.donation-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.donation-form-list li {
+
+    margin: 17px;
+    display: flex;
+    justify-content: center;
+}
+
+.donation-submit-button {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
+}
+
+.donation-submit-button:hover {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+}
+
+.donation-form-list {
+
+    list-style-type: none;
+    padding-left: 0px;
+    display: grid;
+    justify-content: center;
+    margin-top: 0px;
+    grid-template-areas: 
+    'donation-charity-name-input-wrapper'
+    'donation-charity-name-error-wrapper'
+    'donation-amount-input-wrapper'
+    'donation-amount-error-wrapper'
+    'donation-date-input-wrapper'
+    'donation-date-error-wrapper'
+    'donation-message-input-wrapper'
+    'donation-message-error-wrapper'
+    'donation-submit-button-wrapper';
+}
+
+.donation-charity-name-input-wrapper {
+    grid-area: donation-charity-name-input-wrapper;
+}
+
+#donation-charity-name-error-wrapper {
+    grid-area: donation-charity-name-error-wrapper;
+}
+
+.donation-amount-input-wrapper {
+    grid-area: donation-amount-input-wrapper;
+}
+
+#donation-amount-error-wrapper {
+    grid-area: donation-amount-error-wrapper;
+}
+
+.donation-date-input-wrapper {
+    grid-area: donation-date-input-wrapper;
+}
+
+#donation-date-error-wrapper {
+    grid-area: donation-date-error-wrapper;
+}
+
+.donation-message-input-wrapper {
+    grid-area: donation-message-input-wrapper;
+}
+
+#donation-message-error-wrapper {
+    grid-area: donation-message-error-wrapper;
+}
+
+.donation-submit-button-wrapper {
+    grid-area: donation-submit-button-wrapper;
+}
+
+.donation-form-header {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.donation-form {
+    border: 2px lightgray solid;
+    border-radius: 5px
 }
 
 /* ========================================================================== */
