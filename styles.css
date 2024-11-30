@@ -253,6 +253,9 @@ body {
     align-items: center;
     margin-right: 1em;
     text-align: right;
+    margin-right: 0px;
+    justify-content: center;
+    margin-bottom: 5px;
 }
 
 .star {
@@ -354,8 +357,13 @@ body {
     display: none;
     align-items: center;
     margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.event-name-error {
+    color: red;
+}
 
 .company-rep-name-error {
     color: red;
@@ -381,13 +389,13 @@ body {
     margin-bottom: 15px;
 }
 
-.company-rep-selection-error {
+.company-role-selection-error {
     color: red;
     margin-right: auto;
     margin-left: auto;
 }
 
-.company-rep-selection-error-wrapper {
+.company-role-selection-error-wrapper {
     display: none;
     align-items: center;
     margin-bottom: 15px;
@@ -429,7 +437,8 @@ body {
 }
 
 .donation-form-list label {
-    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 25px;
 }
 
 .donation-error {
@@ -438,12 +447,12 @@ body {
     margin-left: auto;
 }
 
-.donation-form-list li {
+/* .donation-form-list li {
 
     margin: 17px;
     display: flex;
     justify-content: center;
-}
+} */
 
 .donation-submit-button {
     font-size: 1em;
@@ -482,6 +491,12 @@ body {
 
 .donation-charity-name-input-wrapper {
     grid-area: donation-charity-name-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
 }
 
 #donation-charity-name-error-wrapper {
@@ -490,6 +505,12 @@ body {
 
 .donation-amount-input-wrapper {
     grid-area: donation-amount-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
 }
 
 #donation-amount-error-wrapper {
@@ -498,6 +519,12 @@ body {
 
 .donation-date-input-wrapper {
     grid-area: donation-date-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
 }
 
 #donation-date-error-wrapper {
@@ -506,6 +533,12 @@ body {
 
 .donation-message-input-wrapper {
     grid-area: donation-message-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
 }
 
 #donation-message-error-wrapper {
@@ -514,6 +547,13 @@ body {
 
 .donation-submit-button-wrapper {
     grid-area: donation-submit-button-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .donation-form-header {

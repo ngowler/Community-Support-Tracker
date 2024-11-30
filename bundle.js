@@ -149,28 +149,28 @@ function validateForm(eventName, repName, repEmail, companyRole) {
     let isValid = true;
 
     if (!eventName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'block';
+        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
         window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'none';
     }
 
     if (!repName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'block';
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
         window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'none';
     }
 
     if (!isValidEmail(repEmail)) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'block';
+        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
         window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'none';
     }
 
     if (!companyRole || !companyRole.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'block';
+        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
         window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'none';
