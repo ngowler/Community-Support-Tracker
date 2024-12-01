@@ -13,7 +13,7 @@ function load() {
     // ================== EVENT SIGNUP CODE ================= //
     // ====================================================== //
 
-    window.frames["event-signup"].contentDocument.getElementById('event-signup-form').addEventListener('submit', handleSubmit);
+    window.frames["event-signup"].contentDocument.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
 
     // ====================================================== //
     // ================ NAVIGATION MENU CODE ================ //
@@ -122,7 +122,7 @@ function resetStars() {
 // ========================================================================== //
 // ========================================================================== //
 
-function handleSubmit(event) {
+function eventHandleSubmit(event) {
     event.preventDefault();
 
     let eventSignupName = window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value;
@@ -130,7 +130,7 @@ function handleSubmit(event) {
     let repEmail = window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value;
     let companyRole = window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').value;
 
-    if (validateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
+    if (eventValidateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
         let formData = {
             eventName: eventSignupName,
             representativeName: repSignupName,
@@ -139,13 +139,13 @@ function handleSubmit(event) {
         };
 
         console.log('Form data:', formData);
-        clearForm();
+        eventClearForm();
         return formData;
     }
 }
 
 //VALIDATION
-function validateForm(eventName, repName, repEmail, companyRole) {
+function eventValidateForm(eventName, repName, repEmail, companyRole) {
     let isValid = true;
 
     if (!eventName.trim()) {
@@ -184,7 +184,7 @@ function isValidEmail(email) {
     return re.test(email);
 }
 
-function clearForm() {
+function eventClearForm() {
     window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value = '';
     window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value = '';
     window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value = '';
@@ -300,6 +300,6 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, handleSubmit, validateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
 },{}]},{},[1]);

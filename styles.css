@@ -173,7 +173,7 @@ body {
 
     border: none;
     width: 100%;
-    height: 670px;
+    height: 650px;
     padding-top: 200px;
 
 }
@@ -322,8 +322,12 @@ body {
 }
 
 .signup-form-list li {
-    margin: 17px;
+    margin-top: 17px;
     display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
     justify-content: center;
 }
 
@@ -344,7 +348,8 @@ body {
 }
 
 .signup-form-list label {
-    margin-right: 5px;
+    /* margin-right: 5px; */
+    margin-bottom: 7px;
 }
 
 .event-error {
@@ -356,9 +361,10 @@ body {
 .event-name-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
     margin-left: auto;
     margin-right: auto;
+    margin-top: 5px;
 }
 
 .event-name-error {
@@ -374,7 +380,8 @@ body {
 .company-rep-name-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    margin-top: 5px;
+    /* margin-bottom: 10px; */
 }
 
 .company-rep-email-error {
@@ -386,7 +393,8 @@ body {
 .company-rep-email-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 5px;
 }
 
 .company-role-selection-error {
@@ -398,14 +406,15 @@ body {
 .company-role-selection-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 5px;
 }
 
 .event-signup-frame {
 
     border: none;
     width: 100%;
-    height: 500px;
+    height: 505px;
     padding-top: 200px;
 }
 
@@ -426,19 +435,21 @@ body {
 .donation-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .donation-frame {
     border: none;
     width: 100%;
-    height: 550px;
+    height: 505px;
     padding-top: 200px;
 }
 
 .donation-form-list label {
     margin-bottom: 5px;
-    margin-top: 25px;
+    /* margin-top: 25px; */
 }
 
 .donation-error {
@@ -497,6 +508,7 @@ body {
     margin-right: 80px;
     align-items: center;
     justify-content: center;
+    /* margin-top: 10px; */
 }
 
 #donation-charity-name-error-wrapper {
@@ -511,6 +523,7 @@ body {
     margin-right: 80px;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 }
 
 #donation-amount-error-wrapper {
@@ -525,6 +538,7 @@ body {
     margin-right: 80px;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 }
 
 #donation-date-error-wrapper {
@@ -539,6 +553,7 @@ body {
     margin-right: 80px;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 }
 
 #donation-message-error-wrapper {
