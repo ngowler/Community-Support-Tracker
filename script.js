@@ -21,7 +21,7 @@ function load() {
     const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
     const navbar = document.getElementById("navbar");
     hamburgerMenu.addEventListener('click', handleMenuClick);
-    let mediaQuery = window.matchMedia("(max-width: 700px");
+    let mediaQuery = window.matchMedia("(max-width: 700px)");
     mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
     handleMediaQuery(mediaQuery)
     let hamburgerMenuCount = 0;
@@ -32,7 +32,10 @@ function load() {
 
     const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
     donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
-    updateDonationTable();
+    
+    setTimeout(() => {
+        updateDonationTable();
+    }, 100)
 }
 
 // ========================================================================== //
@@ -262,11 +265,12 @@ function donationFormHasInput(input) {
 }
 
 function updateDonationTable() {
-    let donationTable = window.frames['donation-tracker'].contentDocument.getElementById('donation-table-body')
-    // let donationTable = document.getElementById('donation-table')
+    let donationTable = window.frames['donation-tracker'].contentDocument.getElementById('donation-table')
+
     let donations = JSON.parse(localStorage.donations)
     for (let donation of donations) {
         let tableRow = window.frames['donation-tracker'].contentDocument.createElement('tr')
+        let tableBody = window.frames['donation-tracker'].contentDocument.createElement('tbody')
         let { charityName, donationAmount, donationDate, donationMessage } = donation
         let [
             donationCharityNameData,
@@ -294,11 +298,11 @@ function updateDonationTable() {
         donationMessageData.innerHTML = donationMessage
         tableRow.appendChild(donationMessageData)
 
-        donationTable.appendChild(tableRow)
+        tableBody.appendChild(tableRow)
+
+        donationTable.appendChild(tableBody)
     }
 }
-
-updateDonationTable()
 
 function clearDonationFrom() {
     window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value = '';
@@ -362,6 +366,7 @@ async function handleMediaQuery(mediaQuery) {
 if (typeof window !== "undefined") {
 
     window.onload = load;
+    // updateDonationTable();
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
