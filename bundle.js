@@ -33,6 +33,7 @@ function load() {
 
     const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
     donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
+    updateDonationTable();
 }
 
 // ========================================================================== //
@@ -236,8 +237,8 @@ function donationValidateForm(e) {
     donationFormData['donationMessage'] = donationMessageInputValue
 
     updateDonationLocalStorage(donationFormData)
-    console.log('this code is running')
     clearDonationFrom()
+    updateDonationTable();
   }
 }
 
@@ -261,9 +262,44 @@ function donationFormHasInput(input) {
   }
 }
 
-// function updateDonationTable() {
-//     let donations = JSON.parse(localStorage.)
-// }
+function updateDonationTable() {
+    // let donationTable = window.frames['donation-tracker'].contentDocument.getElementById('donation-table')
+    let donationTable = document.getElementById('donation-table')
+    let donations = JSON.parse(localStorage.donations)
+    for (let donation of donations) {
+        let tableRow = window.frames['donation-tracker'].contentDocument.createElement('tr')
+        let { charityName, donationAmount, donationDate, donationMessage } = donation
+        let [
+            donationCharityNameData,
+            donationAmountData,
+            donationDateData,
+            donationMessageData,
+            donationDeleteRow 
+        ] = [
+            window.frames['donation-tracker'].contentDocument.createElement('td'),
+            window.frames['donation-tracker'].contentDocument.createElement('td'),
+            window.frames['donation-tracker'].contentDocument.createElement('td'),
+            window.frames['donation-tracker'].contentDocument.createElement('td'),
+            window.frames['donation-tracker'].contentDocument.createElement('button')
+        ]
+
+        donationCharityNameData.innerHTML = charityName
+        tableRow.appendChild(donationCharityNameData)
+
+        donationAmountData.innerHTML = donationAmount
+        tableRow.appendChild(donationAmountData)
+
+        donationDateData.innerHTML = donationDate
+        tableRow.appendChild(donationDateData)
+
+        donationMessageData.innerHTML = donationMessage
+        tableRow.appendChild(donationMessageData)
+
+        donationTable.appendChild(tableRow)
+    }
+}
+
+updateDonationTable()
 
 function clearDonationFrom() {
     window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value = '';
