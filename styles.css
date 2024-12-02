@@ -588,6 +588,22 @@ body {
     border-radius: 5px;
 }
 
+.donation-table-wrapper {
+    margin-right: 200px;
+    margin-left: 200px;
+    margin-top: 50px;
+    padding: 50px;
+    padding-top: 20px;
+}
+
+.donation-table {
+    width: 100%;
+}
+
+.donation-table-wrapper tbody tr td, th {
+    border: 1px black solid;
+}
+
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
 /* ========================================================================== */
