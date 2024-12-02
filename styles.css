@@ -600,8 +600,12 @@ body {
     width: 100%;
 }
 
-.donation-table-wrapper tbody tr td, th {
+.donation-table-wrapper tr td, th {
     border: 1px black solid;
+}
+
+.donation-delete-button {
+    background-color: red;
 }
 
 /* ========================================================================== */

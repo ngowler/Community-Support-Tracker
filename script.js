@@ -277,14 +277,20 @@ function updateDonationTable() {
             donationAmountData,
             donationDateData,
             donationMessageData,
-            donationDeleteRow 
+            donationDeleteRow ,
+            donationDeleteButton
         ] = [
+            window.frames['donation-tracker'].contentDocument.createElement('td'),
             window.frames['donation-tracker'].contentDocument.createElement('td'),
             window.frames['donation-tracker'].contentDocument.createElement('td'),
             window.frames['donation-tracker'].contentDocument.createElement('td'),
             window.frames['donation-tracker'].contentDocument.createElement('td'),
             window.frames['donation-tracker'].contentDocument.createElement('button')
         ]
+
+        donationDeleteButton.innerHTML = 'Delete'
+        donationDeleteButton.classList = 'donation-delete-button'
+        donationDeleteButton.onclick = (e) => removeDonationRow(e)
 
         donationCharityNameData.innerHTML = charityName
         tableRow.appendChild(donationCharityNameData)
@@ -298,9 +304,13 @@ function updateDonationTable() {
         donationMessageData.innerHTML = donationMessage
         tableRow.appendChild(donationMessageData)
 
-        tableBody.appendChild(tableRow)
+        donationDeleteRow.appendChild(donationDeleteButton)
+        tableRow.appendChild(donationDeleteRow)
+        donationDeleteRow.classList = 'donation-delete-button-td'
 
-        donationTable.appendChild(tableBody)
+        // tableBody.appendChild(tableRow)
+
+        donationTable.appendChild(tableRow)
     }
 }
 
@@ -321,6 +331,19 @@ function updateDonationLocalStorage(data) {
         let newDonations = [data]
         localStorage.setItem('donations', JSON.stringify(newDonations))
     }
+}
+
+function removeDonationRow(event) {
+    const button = event.currentTarget
+    console.log(button.parentNode.parentNode)
+
+    const oldLocalStorage = localStorage.donations
+
+    const newLocalStorage = oldLocalStorage.forEach(() => {})
+
+
+
+    button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
 }
 
 // ========================================================================== //
