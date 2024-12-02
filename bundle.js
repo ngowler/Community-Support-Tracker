@@ -217,7 +217,11 @@ function donationValidateForm(e) {
     }
   })
 
+  donationCharityNameInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-charity-name-input').value
   donationAmountInputValue = window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value
+  donationDateInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-date-input').value
+  donationMessageInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-message-input').value
+
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
@@ -226,10 +230,14 @@ function donationValidateForm(e) {
   }
 
   if (!errorFlag) {
-    donationFormData['charityName'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value
+    donationFormData['charityName'] = donationCharityNameInputValue
     donationFormData['donationAmount'] = donationAmountInputValue
-    donationFormData['donationDate'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value
-    donationFormData['donationMessage'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value
+    donationFormData['donationDate'] = donationDateInputValue
+    donationFormData['donationMessage'] = donationMessageInputValue
+
+    updateDonationLocalStorage(donationFormData)
+    console.log('this code is running')
+    clearDonationFrom()
   }
 }
 
@@ -253,6 +261,28 @@ function donationFormHasInput(input) {
   }
 }
 
+// function updateDonationTable() {
+//     let donations = JSON.parse(localStorage.)
+// }
+
+function clearDonationFrom() {
+    window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value = '';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value = '';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value = '';
+  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value = '';
+}
+
+function updateDonationLocalStorage(data) {
+    if (localStorage.getItem('donations')) {
+        let donations = JSON.parse(localStorage.getItem('donations'))
+        let newDonations = [data]
+        donations.forEach((obj) => {newDonations.push(obj)})
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    } else {
+        let newDonations = [data]
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    }
+}
 
 // ========================================================================== //
 // ========================================================================== //
