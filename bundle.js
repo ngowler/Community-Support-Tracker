@@ -234,6 +234,10 @@ function donationValidateForm(e) {
   donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
   donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
+//   console.log(donationCharityNameInputValue)
+//   console.log(donationAmountInputValue)
+//   console.log(donationDateInputValue)
+//   console.log(donationMessageInputValue)
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
@@ -289,61 +293,68 @@ function updateDonationTable() {
 
     let donationTable = innerDonationDoc.getElementById('donation-table')
 
-    let donations = JSON.parse(localStorage.donations)
-    for (let donation of donations) {
-        let tableRow = innerDonationDoc.createElement('tr')
-        let tableBody = innerDonationDoc.createElement('tbody')
-        let { charityName, donationAmount, donationDate, donationMessage } = donation
-        let [
-            donationCharityNameData,
-            donationAmountData,
-            donationDateData,
-            donationMessageData,
-            donationDeleteRow ,
-            donationDeleteButton
-        ] = [
-            innerDonationDoc.createElement('td'),
-            innerDonationDoc.createElement('td'),
-            innerDonationDoc.createElement('td'),
-            innerDonationDoc.createElement('td'),
-            innerDonationDoc.createElement('td'),
-            innerDonationDoc.createElement('button')
-        ]
+    if (localStorage.donations) {
+        let donations = JSON.parse(localStorage.donations)
+        for (let donation of donations) {
+            let tableRow = innerDonationDoc.createElement('tr')
+            let tableBody = innerDonationDoc.createElement('tbody')
+            let { charityName, donationAmount, donationDate, donationMessage } = donation
+            let [
+                donationCharityNameData,
+                donationAmountData,
+                donationDateData,
+                donationMessageData,
+                donationDeleteRow ,
+                donationDeleteButton
+            ] = [
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('button')
+            ]
 
-        donationDeleteButton.innerHTML = 'Delete'
-        donationDeleteButton.classList = 'donation-delete-button'
-        donationDeleteButton.onclick = (e) => removeDonationRow(e)
+            donationDeleteButton.innerHTML = 'Delete'
+            donationDeleteButton.classList = 'donation-delete-button'
+            donationDeleteButton.onclick = (e) => removeDonationRow(e)
 
-        donationCharityNameData.innerHTML = charityName
-        tableRow.appendChild(donationCharityNameData)
+            donationCharityNameData.innerHTML = charityName
+            tableRow.appendChild(donationCharityNameData)
 
-        donationAmountData.innerHTML = donationAmount
-        tableRow.appendChild(donationAmountData)
+            donationAmountData.innerHTML = donationAmount
+            tableRow.appendChild(donationAmountData)
 
-        donationDateData.innerHTML = donationDate
-        tableRow.appendChild(donationDateData)
+            donationDateData.innerHTML = donationDate
+            tableRow.appendChild(donationDateData)
 
-        donationMessageData.innerHTML = donationMessage
-        tableRow.appendChild(donationMessageData)
+            donationMessageData.innerHTML = donationMessage
+            tableRow.appendChild(donationMessageData)
 
-        donationDeleteRow.appendChild(donationDeleteButton)
-        tableRow.appendChild(donationDeleteRow)
-        donationDeleteRow.classList = 'donation-delete-button-td'
+            donationDeleteRow.appendChild(donationDeleteButton)
+            tableRow.appendChild(donationDeleteRow)
+            donationDeleteRow.classList = 'donation-delete-button-td'
 
-        // tableBody.appendChild(tableRow)
+            // tableBody.appendChild(tableRow)
 
-        donationTable.appendChild(tableRow)
+            donationTable.appendChild(tableRow)
+        }
     }
+    
 }
 
 function clearDonationForm() {
-    window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-charity-name-input').value = '';
-  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-amount-input').value = '';
-  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-date-input').value = '';
-  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-message-input').value = '';
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+    innerDonationDoc.getElementById('donation-charity-name-input').value = '';
+    innerDonationDoc.getElementById('donation-amount-input').value = '';
+    innerDonationDoc.getElementById('donation-date-input').value = '';
+    innerDonationDoc.getElementById('donation-message-input').value = '';
 }
 
 function updateDonationLocalStorage(data) {
+    console.log('this is running')
     if (localStorage.getItem('donations')) {
         let donations = JSON.parse(localStorage.getItem('donations'))
         let newDonations = [data]

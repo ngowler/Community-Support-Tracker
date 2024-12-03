@@ -220,7 +220,7 @@ function donationValidateForm(e) {
     'donation-message-'
   ]
 
-  let donationFormData = {}
+  donationFormData = {}
 
   donationInputs.forEach((input) => {
     if (!donationFormHasInput(input)) {
@@ -232,6 +232,11 @@ function donationValidateForm(e) {
   donationAmountInputValue = innerDonationDoc.getElementById('donation-amount-input').value
   donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
   donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
+
+//   console.log(donationCharityNameInputValue)
+//   console.log(donationAmountInputValue)
+//   console.log(donationDateInputValue)
+//   console.log(donationMessageInputValue)
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
@@ -245,9 +250,9 @@ function donationValidateForm(e) {
     donationFormData['donationDate'] = donationDateInputValue
     donationFormData['donationMessage'] = donationMessageInputValue
 
-    // updateDonationLocalStorage(donationFormData)
-    // clearDonationForm()
-    // updateDonationTable();
+    updateDonationLocalStorage(donationFormData)
+    clearDonationForm()
+    updateDonationTable();
   }
 }
 
@@ -348,6 +353,7 @@ function clearDonationForm() {
 }
 
 function updateDonationLocalStorage(data) {
+    console.log('this is running')
     if (localStorage.getItem('donations')) {
         let donations = JSON.parse(localStorage.getItem('donations'))
         let newDonations = [data]
