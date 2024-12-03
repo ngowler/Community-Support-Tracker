@@ -205,7 +205,7 @@ function eventClearForm() {
 // ========================================================================== //
 // ========================================================================== //
 
-function donationValidateForm(e) {
+function donationValidateForm(e, donations) {
   e.preventDefault()
   donationHideErrors();
   errorFlag = false
@@ -250,7 +250,7 @@ function donationValidateForm(e) {
     updateDonationLocalStorage(donationFormData)
     clearDonationForm()
     updateDonationTable();
-    updateDonationSummary(localStorage)
+    updateDonationSummary(donations)
   }
 }
 
@@ -374,6 +374,8 @@ function removeDonationRow(event, donations) {
 
     const donationLocalStorage = JSON.parse(donationStorage.donations)
 
+    console.log(donationLocalStorage)
+
     // const newLocalStorage = oldLocalStorage.forEach(() => {})
 
     let tableRow = button.parentNode.parentNode
@@ -386,15 +388,6 @@ function removeDonationRow(event, donations) {
         'donationMessage': tableRowChildren[3].innerText
     }
 
-    // const newLocalStorage = oldLocalStorage.filter(obj => {
-    //     console.log(obj.charityName)
-    //     console.log(currentDonation.charityName)
-    //     if (obj.charityName !== currentDonation.charityName && obj.donationAmount !== currentDonation.donationAmount && obj.donationDate !== currentDonation.donationDate && obj.donationMessage !== currentDonation.donationMessage) {
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // })
 
     const indexOfDonation = donationLocalStorage.findIndex(obj => {
         return (
@@ -407,12 +400,12 @@ function removeDonationRow(event, donations) {
 
     donationLocalStorage.splice(indexOfDonation, 1)
 
-    donationStorage.setItem('donations', JSON.stringify(donationLocalStorage))
+    localStorage.setItem('donations', JSON.stringify(donationLocalStorage))
 
 
     button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
 
-    updateDonationSummary(localStorage)
+    updateDonationSummary(donationStorage)
 }
 
 function updateDonationSummary(donations) {
@@ -501,5 +494,5 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow, resetDonationTable, updateDonationSummary, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
