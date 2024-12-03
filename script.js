@@ -353,7 +353,6 @@ function clearDonationForm() {
 }
 
 function updateDonationLocalStorage(data) {
-    console.log('this is running')
     if (localStorage.getItem('donations')) {
         let donations = JSON.parse(localStorage.getItem('donations'))
         let newDonations = [data]
