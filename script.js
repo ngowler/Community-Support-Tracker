@@ -233,11 +233,6 @@ function donationValidateForm(e) {
   donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
   donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
-//   console.log(donationCharityNameInputValue)
-//   console.log(donationAmountInputValue)
-//   console.log(donationDateInputValue)
-//   console.log(donationMessageInputValue)
-
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
     innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'flex';
@@ -252,7 +247,7 @@ function donationValidateForm(e) {
 
     updateDonationLocalStorage(donationFormData)
     clearDonationForm()
-    updateDonationTable();
+    updateDonationTable(localStorage);
   }
 }
 
@@ -285,15 +280,17 @@ function donationFormHasInput(input) {
   }
 }
 
-function updateDonationTable() {
+function updateDonationTable(storage) {
     let donationFrame = document.getElementById("donation-tracker-frame");
     let innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
 
     let donationTable = innerDonationDoc.getElementById('donation-table')
 
-    if (localStorage.donations) {
-        let donations = JSON.parse(localStorage.donations)
+    if (storage.donations) {
+        console.log(storage)
+        console.log(storage.donations)
+        let donations = JSON.parse(storage.donations)
         for (let donation of donations) {
             let tableRow = innerDonationDoc.createElement('tr')
             let tableBody = innerDonationDoc.createElement('tbody')
@@ -338,6 +335,8 @@ function updateDonationTable() {
 
             donationTable.appendChild(tableRow)
         }
+    } else {
+        console.log('no donations :(')
     }
     
 }

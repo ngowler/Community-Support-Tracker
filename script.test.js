@@ -11,30 +11,30 @@ const {
 const { JSDOM } = require("jsdom");
 
 beforeEach(() => {
-  class LocalStorageMock {
-    constructor() {
-      this.store = {};
+    class LocalStorageMock {
+      constructor() {
+        this.store = {};
+      }
+  
+      clear() {
+        this.store = {};
+      }
+  
+      getItem(key) {
+        return this.store[key] || null;
+      }
+  
+      setItem(key, value) {
+        this.store[key] = value;
+      }
+  
+      removeItem(key) {
+        delete this.store[key];
+      }
     }
-
-    clear() {
-      this.store = {};
-    }
-
-    getItem(key) {
-      return this.store[key] || null;
-    }
-
-    setItem(key, value) {
-      this.store[key] = String(value);
-    }
-
-    removeItem(key) {
-      delete this.store[key];
-    }
-  }
-
-  global.localStorage = new LocalStorageMock();
-});
+  
+    global.localStorage = new LocalStorageMock();
+  });
 
 test("donationValidateForm submits a form with valid inputs", () => {
   const dom = new JSDOM(`
@@ -97,7 +97,6 @@ test("donationValidateForm submits a form with valid inputs", () => {
   const donationValidateForm = jest.fn();
 
   const form = innerDoc.getElementById("donation-form");
-  console.log(form);
 
   form.addEventListener("submit", donationValidateForm);
   form.dispatchEvent(new dom.window.Event("submit"));
@@ -674,7 +673,8 @@ test('donationFormData is correctly stored in localStorage', () => {
     
 })
 
-test('donation-table is populated with localStorage data', () => {
+test('donation-table is populated with localStorage data', async () => {
+    global.localStorage.removeItem('donations')
     const dom = new JSDOM(`
         <body>
           <iframe id="donation-tracker-frame"></iframe>
@@ -741,27 +741,36 @@ test('donation-table is populated with localStorage data', () => {
                                 <th>Delete a Donation</th>
                             </tr> 
                         </tbody>
-                                
-                
                     </table>
                 </div>
     
           </body>
 
         `;
-
-    const submitEvent = { preventDefault: jest.fn() };
-    donationValidateForm(submitEvent);
       
-    const storedDonationFormData = JSON.parse(localStorage.getItem('donations'));
+    global.localStorage.setItem('donations', JSON.stringify([{
+        charityName: 'name',
+        donationAmount: '100',
+        donationDate: '2024-11-20',
+        donationMessage: 'message',
+    }]))
+
+    // console.log(global.localStorage)
+
+    await updateDonationTable(global.localStorage.store);
+
+    // const submitEvent = { preventDefault: jest.fn() };
+    // donationValidateForm(submitEvent);
+
+    console.log(global.localStorage)
 
     const donationTable = innerDoc.getElementById('donation-table');
-    console.log(donationTable)
+    console.log(donationTable.innerHTML)
     const tableRows = donationTable.getElementsByTagName('tr');
-    console.log(tableRows)
 
-    expect(tableRows[1].children[0].textContent).toBe('Charity Name');
+    expect(tableRows.length).toBe(2)
+    expect(tableRows[1].children[0].textContent).toBe('name');
     expect(tableRows[1].children[1].textContent).toBe('100');
-    expect(tableRows[1].children[2].textContent).toBe('2023-04-01');
-    expect(tableRows[1].children[3].textContent).toBe('Test donation message');
+    expect(tableRows[1].children[2].textContent).toBe('2024-11-20');
+    expect(tableRows[1].children[3].textContent).toBe('message');
 })

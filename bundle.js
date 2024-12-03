@@ -234,11 +234,6 @@ function donationValidateForm(e) {
   donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
   donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
-//   console.log(donationCharityNameInputValue)
-//   console.log(donationAmountInputValue)
-//   console.log(donationDateInputValue)
-//   console.log(donationMessageInputValue)
-
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
     innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'flex';
@@ -294,6 +289,8 @@ function updateDonationTable() {
     let donationTable = innerDonationDoc.getElementById('donation-table')
 
     if (localStorage.donations) {
+        console.log(localStorage)
+        console.log(localStorage.donations)
         let donations = JSON.parse(localStorage.donations)
         for (let donation of donations) {
             let tableRow = innerDonationDoc.createElement('tr')
@@ -339,6 +336,8 @@ function updateDonationTable() {
 
             donationTable.appendChild(tableRow)
         }
+    } else {
+        console.log('no donations :(')
     }
     
 }
@@ -354,7 +353,6 @@ function clearDonationForm() {
 }
 
 function updateDonationLocalStorage(data) {
-    console.log('this is running')
     if (localStorage.getItem('donations')) {
         let donations = JSON.parse(localStorage.getItem('donations'))
         let newDonations = [data]
