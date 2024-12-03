@@ -31,7 +31,11 @@ function load() {
     // ================ DONATION TRACKER CODE =============== //
     // ====================================================== //
 
-    const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
+
+    let donationFrame = document.getElementById('donation-tracker-frame')
+    let innerDonationDoc = donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    const donationSubmitButton = innerDonationDoc.getElementById('donation-submit-button')
     donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
     
     setTimeout(() => {
@@ -206,6 +210,10 @@ function donationValidateForm(e) {
   donationHideErrors();
   errorFlag = false
 
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
   const donationInputs = [
     'donation-charity-name-',
     'donation-amount-',
@@ -221,15 +229,15 @@ function donationValidateForm(e) {
     }
   })
 
-  donationCharityNameInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-charity-name-input').value
-  donationAmountInputValue = window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value
-  donationDateInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-date-input').value
-  donationMessageInputValue = window.frames['donation-tracker'].contentDocument.getElementById('donation-message-input').value
+  donationCharityNameInputValue = innerDonationDoc.getElementById("donation-charity-name-input").value;
+  donationAmountInputValue = innerDonationDoc.getElementById('donation-amount-input').value
+  donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
+  donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
-    window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'flex';
     errorFlag = true
   }
 
@@ -240,38 +248,51 @@ function donationValidateForm(e) {
     donationFormData['donationMessage'] = donationMessageInputValue
 
     updateDonationLocalStorage(donationFormData)
-    clearDonationFrom()
+    clearDonationForm()
     updateDonationTable();
   }
 }
 
 
 function donationHideErrors() {
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-error-wrapper').style.display = 'none';
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  innerDonationDoc.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-date-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-message-error-wrapper').style.display = 'none';
 }
 
 function donationFormHasInput(input) {
-  let inputElement = window.frames["donation-tracker"].contentDocument.getElementById(input + 'input')
+
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  let inputElement = innerDonationDoc.getElementById(input + 'input')
   
 
   if (inputElement.value !== '' && inputElement.value !== null) {
     return true
   } else {
-    window.frames["donation-tracker"].contentDocument.getElementById(input + 'error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById(input + 'error-wrapper').style.display = 'flex';
     return false
   }
 }
 
 function updateDonationTable() {
-    let donationTable = window.frames['donation-tracker'].contentDocument.getElementById('donation-table')
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
 
     let donations = JSON.parse(localStorage.donations)
     for (let donation of donations) {
-        let tableRow = window.frames['donation-tracker'].contentDocument.createElement('tr')
-        let tableBody = window.frames['donation-tracker'].contentDocument.createElement('tbody')
+        let tableRow = innerDonationDoc.createElement('tr')
+        let tableBody = innerDonationDoc.createElement('tbody')
         let { charityName, donationAmount, donationDate, donationMessage } = donation
         let [
             donationCharityNameData,
@@ -281,12 +302,12 @@ function updateDonationTable() {
             donationDeleteRow ,
             donationDeleteButton
         ] = [
-            window.frames['donation-tracker'].contentDocument.createElement('td'),
-            window.frames['donation-tracker'].contentDocument.createElement('td'),
-            window.frames['donation-tracker'].contentDocument.createElement('td'),
-            window.frames['donation-tracker'].contentDocument.createElement('td'),
-            window.frames['donation-tracker'].contentDocument.createElement('td'),
-            window.frames['donation-tracker'].contentDocument.createElement('button')
+            innerDonationDoc.createElement('td'),
+            innerDonationDoc.createElement('td'),
+            innerDonationDoc.createElement('td'),
+            innerDonationDoc.createElement('td'),
+            innerDonationDoc.createElement('td'),
+            innerDonationDoc.createElement('button')
         ]
 
         donationDeleteButton.innerHTML = 'Delete'
@@ -315,11 +336,11 @@ function updateDonationTable() {
     }
 }
 
-function clearDonationFrom() {
-    window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value = '';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value = '';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value = '';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value = '';
+function clearDonationForm() {
+    window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-charity-name-input').value = '';
+  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-amount-input').value = '';
+  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-date-input').value = '';
+  window.frames["donation-tracker-frame"].contentDocument.getElementById('donation-message-input').value = '';
 }
 
 function updateDonationLocalStorage(data) {
@@ -337,6 +358,13 @@ function updateDonationLocalStorage(data) {
 function removeDonationRow(event) {
     const button = event.currentTarget
     console.log(button.parentNode.parentNode)
+
+    const oldLocalStorage = localStorage.donations
+
+    const newLocalStorage = oldLocalStorage.forEach(() => {})
+
+
+
     button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
 }
 
@@ -387,6 +415,6 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
 },{}]},{},[1]);

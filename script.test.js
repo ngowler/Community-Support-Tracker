@@ -1,26 +1,99 @@
+const { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow } = require('./script')
+
+const {JSDOM} = require("jsdom");
+
+beforeEach(() => {
+    class LocalStorageMock {
+        constructor() {
+            this.store = {};
+        }
+
+        clear() {
+            this.store = {};
+        }
+
+        getItem(key) {
+            return this.store[key] || null;
+        }
+
+        setItem(key, value) {
+            this.store[key] = String(value);
+        }
+
+        removeItem(key) {
+            delete this.store[key];
+        }
+    }
+
+    global.localStorage = new LocalStorageMock();
+});
 
 test("donationValidateForm submits a form with valid inputs", () => {
 
     const dom = new JSDOM(`
-    <!DOCTYPE html>
-    <form id="form">
-      <input id="donation-charity-name-input" value="name"/>
-      <input id="donation-amount-input" value="100"/>
-      <input id="donation-date-input" value="2024-20-11"/>
-      <input id="donation-message-input" value="message"/>
-
-      <div id="donation-charity-name-error-wrapper"></div>
-      <div id="donation-amount-error-wrapper"></div>
-      <div id="donation-date-error-wrapper"></div>
-      <div id="donation-message-error-wrapper"></div>
-    </form>
+    <body>
+      <iframe id="donation-tracker-frame"></iframe>
+    </body>
   `);
+
+    // Get the iframe element
+    const donationFrame = dom.window.document.getElementById(
+        "donation-tracker-frame"
+    );
+
+    const innerDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
 
     global.document = dom.window.document;
 
+    innerDoc.body.innerHTML = `
+        <body class="nested-body">
+          <div class="donation-tracker">
+              <form class="donation-form" id="donation-form">
+                  <h1 class="donation-form-header">Donation Tracker</h1>
+                  <ul class="donation-form-list">
+                      <li class="donation-charity-name-input-wrapper">
+                    <label for="donation-charity-name-input">Charity Name: </label>
+                    <input id="donation-charity-name-input" value="name"/>
+                </li>
+                <div class="donation-error-wrapper" id="donation-charity-name-error-wrapper" style="display: none;">
+                    <span class="donation-error">Please enter a charity name.</span>
+                </div>
+                      <li class="donation-amount-input-wrapper">
+                          <label for="donation-amount-input">Donation Amount: </label><input id="donation-amount-input" value="100"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-amount-error-wrapper">
+                          <span class="donation-error" id="donation-amount-error">Please enter a valid number.</span>
+                      </div>
+                      <li class="donation-date-input-wrapper">
+                          <label for="donation-date-input">Donation Date: </label><input id="donation-date-input" type="date" value="2024-20-11"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-date-error-wrapper">
+                          <span class="donation-error">Please enter a valid date.</span>
+                      </div>
+                      <li class="donation-message-input-wrapper">
+                          <label for="donation-message-input">Donation Message: </label><input id="donation-message-input" value="message"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-message-error-wrapper">
+                          <span class="donation-error">Please enter a donation message.</span>
+                      </div>
+                      <li class="donation-submit-button-wrapper">
+                          <button type="submit" id="donation-submit-button" class="donation-submit-button">Submit</button>
+                      </li>
+                  </ul>
+                  
+              </form>
+          </div>
+
+      </body>
+    `;
+    
+
     const donationValidateForm = jest.fn()
 
-    const form = document.getElementById('form')
+    const form = document.getElementById('donation-form')
+    console.log(form)
+
     form.addEventListener('submit', donationValidateForm)
     form.dispatchEvent(new dom.window.Event('submit'))
 
@@ -203,23 +276,63 @@ test("donationFormHasInput returns false when a form doesn't have input.", () =>
 })
 
 
-test("donationFormData is populated", () => {
-  const dom = new JSDOM(`
-      <!DOCTYPE html>
-    <form id="form">
-      <input id="donation-charity-name-input" value="name"/>
-      <input id="donation-amount-input" value="100"/>
-      <input id="donation-date-input" value="2024-20-11"/>
-      <input id="donation-message-input" value="message"/>
+test("donationFormData is populated", async () => {
 
-      <div id="donation-charity-name-error-wrapper"></div>
-      <div id="donation-amount-error-wrapper"></div>
-      <div id="donation-date-error-wrapper"></div>
-      <div id="donation-message-error-wrapper"></div>
-    </form>
-    `)
+    document.body.innerHTML = `
+      <iframe id="donation-tracker-frame"></iframe>
+    `
 
-    global.document = dom.window.document;
+    const donationFrame = document.getElementById("donation-tracker-frame");
+    const innerDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    innerDoc.body.innerHTML = `
+        <body class="nested-body">
+          <div class="donation-tracker">
+              <form class="donation-form">
+                  <h1 class="donation-form-header">Donation Tracker</h1>
+                  <ul class="donation-form-list">
+                      <li class="donation-charity-name-input-wrapper">
+                    <label for="donation-charity-name-input">Charity Name: </label>
+                    <input id="donation-charity-name-input" value="name"/>
+                </li>
+                <div class="donation-error-wrapper" id="donation-charity-name-error-wrapper" style="display: none;">
+                    <span class="donation-error">Please enter a charity name.</span>
+                </div>
+                      <li class="donation-amount-input-wrapper">
+                          <label for="donation-amount-input">Donation Amount: </label><input id="donation-amount-input" value="100"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-amount-error-wrapper">
+                          <span class="donation-error" id="donation-amount-error">Please enter a valid number.</span>
+                      </div>
+                      <li class="donation-date-input-wrapper">
+                          <label for="donation-date-input">Donation Date: </label><input id="donation-date-input" type="date" value="2024-20-11"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-date-error-wrapper">
+                          <span class="donation-error">Please enter a valid date.</span>
+                      </div>
+                      <li class="donation-message-input-wrapper">
+                          <label for="donation-message-input">Donation Message: </label><input id="donation-message-input" value="message"/>
+                      </li>
+                      <div class="donation-error-wrapper" id="donation-message-error-wrapper">
+                          <span class="donation-error">Please enter a donation message.</span>
+                      </div>
+                      <li class="donation-submit-button-wrapper">
+                          <button type="submit" id="donation-submit-button" class="donation-submit-button">Submit</button>
+                      </li>
+                  </ul>
+                  
+              </form>
+          </div>
+
+      </body>
+    `;
+
+    global.updateDonationLocalStorage = jest.fn();
+    global.clearDonationForm = jest.fn();
+    global.updateDonationTable = jest.fn();
+    global.donationFormHasInput = jest.fn().mockReturnValue(true);
+
 
     // const form = document.getElementById('form')
     // form.addEventListener('submit', donationValidateForm)
@@ -232,7 +345,9 @@ test("donationFormData is populated", () => {
         preventDefault: preventDefaultListener,
     };
     donationFormData = {}
-    donationValidateForm(mockEvent);
+
+
+    donationValidateForm(mockEvent)
 
     
     // Code used from this stack overflow post https://stackoverflow.com/questions/49044994/how-can-i-test-part-of-object-using-jest
