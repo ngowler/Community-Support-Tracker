@@ -755,17 +755,10 @@ test('donation-table is populated with localStorage data', async () => {
         donationMessage: 'message',
     }]))
 
-    // console.log(global.localStorage)
-
     await updateDonationTable(global.localStorage.store);
 
-    // const submitEvent = { preventDefault: jest.fn() };
-    // donationValidateForm(submitEvent);
-
-    console.log(global.localStorage)
-
     const donationTable = innerDoc.getElementById('donation-table');
-    console.log(donationTable.innerHTML)
+
     const tableRows = donationTable.getElementsByTagName('tr');
 
     expect(tableRows.length).toBe(2)

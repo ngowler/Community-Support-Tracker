@@ -36,7 +36,8 @@ function load() {
     let innerDonationDoc = donationFrame.contentDocument || donationFrame.contentWindow.document;
 
     const donationSubmitButton = innerDonationDoc.getElementById('donation-submit-button')
-    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
+    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e, localStorage))
+    updateDonationSummary(localStorage)
     
     setTimeout(() => {
         updateDonationTable();
@@ -246,9 +247,11 @@ function donationValidateForm(e) {
     donationFormData['donationDate'] = donationDateInputValue
     donationFormData['donationMessage'] = donationMessageInputValue
 
+    resetDonationTable()
     updateDonationLocalStorage(donationFormData)
     clearDonationForm()
     updateDonationTable();
+    updateDonationSummary(localStorage)
   }
 }
 
@@ -281,17 +284,17 @@ function donationFormHasInput(input) {
   }
 }
 
-function updateDonationTable() {
+function updateDonationTable(donations) {
+    let donationStorage = donations || localStorage
+
     let donationFrame = document.getElementById("donation-tracker-frame");
     let innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
 
     let donationTable = innerDonationDoc.getElementById('donation-table')
 
-    if (localStorage.donations) {
-        console.log(localStorage)
-        console.log(localStorage.donations)
-        let donations = JSON.parse(localStorage.donations)
+    if (donationStorage.donations) {
+        let donations = JSON.parse(donationStorage.donations)
         for (let donation of donations) {
             let tableRow = innerDonationDoc.createElement('tr')
             let tableBody = innerDonationDoc.createElement('tbody')
@@ -335,6 +338,7 @@ function updateDonationTable() {
             // tableBody.appendChild(tableRow)
 
             donationTable.appendChild(tableRow)
+
         }
     } else {
         console.log('no donations :(')
@@ -364,17 +368,91 @@ function updateDonationLocalStorage(data) {
     }
 }
 
-function removeDonationRow(event) {
+function removeDonationRow(event, donations) {
+    let donationStorage = donations || localStorage
+
     const button = event.currentTarget
-    console.log(button.parentNode.parentNode)
 
-    const oldLocalStorage = localStorage.donations
+    const donationLocalStorage = JSON.parse(donationStorage.donations)
 
-    const newLocalStorage = oldLocalStorage.forEach(() => {})
+    // const newLocalStorage = oldLocalStorage.forEach(() => {})
 
+    let tableRow = button.parentNode.parentNode
+    let tableRowChildren = tableRow.children
+
+    let currentDonation = {
+        'charityName': tableRowChildren[0].innerText,
+        'donationAmount': tableRowChildren[1].innerText,
+        'donationDate': tableRowChildren[2].innerText,
+        'donationMessage': tableRowChildren[3].innerText
+    }
+
+    // const newLocalStorage = oldLocalStorage.filter(obj => {
+    //     console.log(obj.charityName)
+    //     console.log(currentDonation.charityName)
+    //     if (obj.charityName !== currentDonation.charityName && obj.donationAmount !== currentDonation.donationAmount && obj.donationDate !== currentDonation.donationDate && obj.donationMessage !== currentDonation.donationMessage) {
+    //         return true
+    //     } else {
+    //         return false
+    //     }
+    // })
+
+    const indexOfDonation = donationLocalStorage.findIndex(obj => {
+        return (
+            obj.charityName == currentDonation.charityName
+            && obj.donationAmount == currentDonation.donationAmount
+            && obj.donationDate == currentDonation.donationDate
+            && obj.donationMessage == currentDonation.donationMessage
+        )
+    })
+
+    donationLocalStorage.splice(indexOfDonation, 1)
+
+    donationStorage.setItem('donations', JSON.stringify(donationLocalStorage))
 
 
     button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
+
+    updateDonationSummary(localStorage)
+}
+
+function updateDonationSummary(donations) {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTextElement = innerDonationDoc.getElementById('donation-summary-text')
+
+    let donationStorage = donations || localStorage
+
+    let donationArray = JSON.parse(donationStorage.donations)
+
+    let donationSum = 0
+    for (let i=0; i < donationArray.length; i++) {
+        donationSum += Number(donationArray[i].donationAmount)
+    }
+
+    console.log(donationSum)
+
+    donationTextElement.innerText = `The total donation amount is: $${donationSum}`
+}
+
+function resetDonationTable() {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
+
+    donationTable.innerHTML = `
+    <tr>
+        <th>Charity Name</th>
+        <th>Donation Amount</th>
+        <th>Donation Date</th>
+        <th>Donor's Comment</th>
+        <th>Delete a Donation</th>
+    </tr> 
+    `
 }
 
 // ========================================================================== //
