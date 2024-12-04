@@ -49,12 +49,12 @@ test("donationValidateForm submits a form with valid inputs", () => {
     "donation-tracker-frame"
   );
 
-  const innerDoc =
+  const innerDonationDoc =
     donationFrame.contentDocument || donationFrame.contentWindow.document;
 
   global.document = dom.window.document;
 
-  innerDoc.body.innerHTML = `
+  innerDonationDoc.body.innerHTML = `
         <body class="nested-body">
             <div class="donation-tracker">
                 <form class="donation-form" id="donation-form">
@@ -98,7 +98,7 @@ test("donationValidateForm submits a form with valid inputs", () => {
 
   const donationValidateForm = jest.fn();
 
-  const form = innerDoc.getElementById("donation-form");
+  const form = innerDonationDoc.getElementById("donation-form");
 
   form.addEventListener("submit", donationValidateForm);
   form.dispatchEvent(new dom.window.Event("submit"));
@@ -117,12 +117,12 @@ test("donationHideErrors hides the charity error element.", () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -169,7 +169,7 @@ test("donationHideErrors hides the charity error element.", () => {
   donationHideErrors();
 
   expect(
-    innerDoc.getElementById("donation-charity-name-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-charity-name-error-wrapper").style.display
   ).toBe("none");
 });
 
@@ -184,12 +184,12 @@ test("all error messages show when invalid inputs are given", () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -233,21 +233,21 @@ test("all error messages show when invalid inputs are given", () => {
 
   global.document = dom.window.document;
 
-  const form = innerDoc.getElementById("donation-form");
+  const form = innerDonationDoc.getElementById("donation-form");
   form.addEventListener("submit", donationValidateForm);
   form.dispatchEvent(new dom.window.Event("submit"));
 
   expect(
-    innerDoc.getElementById("donation-charity-name-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-charity-name-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-amount-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-amount-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-date-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-date-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-message-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-message-error-wrapper").style.display
   ).toBe("flex");
 });
 
@@ -262,12 +262,12 @@ test("all error messages show when invalid inputs are given and amount is not bl
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -311,21 +311,21 @@ test("all error messages show when invalid inputs are given and amount is not bl
 
   global.document = dom.window.document;
 
-  const form = innerDoc.getElementById("donation-form");
+  const form = innerDonationDoc.getElementById("donation-form");
   form.addEventListener("submit", donationValidateForm);
   form.dispatchEvent(new dom.window.Event("submit"));
 
   expect(
-    innerDoc.getElementById("donation-charity-name-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-charity-name-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-amount-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-amount-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-date-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-date-error-wrapper").style.display
   ).toBe("flex");
   expect(
-    innerDoc.getElementById("donation-message-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-message-error-wrapper").style.display
   ).toBe("flex");
 });
 
@@ -340,12 +340,12 @@ test("donationHideErrors hides all error elements.", () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -391,12 +391,12 @@ test("donationHideErrors hides all error elements.", () => {
 
   donationHideErrors();
 
-  expect(innerDoc.getElementById('donation-charity-name-error-wrapper').style.display).toBe('none')
+  expect(innerDonationDoc.getElementById('donation-charity-name-error-wrapper').style.display).toBe('none')
   expect(
-    innerDoc.getElementById("donation-amount-error-wrapper").style.display
+    innerDonationDoc.getElementById("donation-amount-error-wrapper").style.display
   ).toBe("none");
-  expect(innerDoc.getElementById('donation-date-error-wrapper').style.display).toBe('none')
-  expect(innerDoc.getElementById('donation-message-error-wrapper').style.display).toBe('none')
+  expect(innerDonationDoc.getElementById('donation-date-error-wrapper').style.display).toBe('none')
+  expect(innerDonationDoc.getElementById('donation-message-error-wrapper').style.display).toBe('none')
 });
 
 
@@ -411,12 +411,12 @@ test("donationFormHasInput returns true when a form has input.", () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -477,12 +477,12 @@ test("donationFormHasInput returns false when a form doesn't have input.", () =>
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -543,12 +543,12 @@ test("donationFormData is populated", () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -631,12 +631,12 @@ test('donationFormData is correctly stored in localStorage', () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -721,12 +721,12 @@ test('donation-table is populated with localStorage data', async () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -793,7 +793,7 @@ test('donation-table is populated with localStorage data', async () => {
 
     await updateDonationTable(global.localStorage.store);
 
-    const donationTable = innerDoc.getElementById('donation-table');
+    const donationTable = innerDonationDoc.getElementById('donation-table');
 
     const tableRows = donationTable.getElementsByTagName('tr');
 
@@ -816,12 +816,12 @@ test('donationSummary is correctly calculated', () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -900,12 +900,12 @@ test('donationSummary is correctly calculated', () => {
 
     
 
-    const donationTable = innerDoc.getElementById('donation-table');
+    const donationTable = innerDonationDoc.getElementById('donation-table');
     const tableRows = donationTable.getElementsByTagName('tr');
 
     updateDonationSummary(global.localStorage.store)
 
-    expect(innerDoc.getElementById('donation-summary-text').innerText).toBe('The total donation amount is: $1100')
+    expect(innerDonationDoc.getElementById('donation-summary-text').innerText).toBe('The total donation amount is: $1100')
 })
 
 test('resetDonationTable correctly resets the donation-table table to just the headers.', () => {
@@ -920,12 +920,12 @@ test('resetDonationTable correctly resets the donation-table table to just the h
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -1012,7 +1012,7 @@ test('resetDonationTable correctly resets the donation-table table to just the h
 
     
 
-    const donationTable = innerDoc.getElementById('donation-table');
+    const donationTable = innerDonationDoc.getElementById('donation-table');
     const tableRows = donationTable.getElementsByTagName('tr');
 
     resetDonationTable();
@@ -1043,12 +1043,12 @@ test('removeDonationRow removes a row from the donation-table', () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -1139,12 +1139,12 @@ test('removeDonationRow removes a row from the donation-table', () => {
         }
     ]))
 
-    let testButton = innerDoc.getElementById('test-button')
+    let testButton = innerDonationDoc.getElementById('test-button')
     testButton.addEventListener('click', (e) => {removeDonationRow(e, global.localStorage.store)})
 
     testButton.click()
 
-    const donationTable = innerDoc.getElementById('donation-table');
+    const donationTable = innerDonationDoc.getElementById('donation-table');
     console.log(donationTable.innerHTML)
     const tableRows = donationTable.getElementsByTagName('tr');
 
@@ -1165,12 +1165,12 @@ test('removeDonationRow removes a row from localStorage', () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -1261,7 +1261,7 @@ test('removeDonationRow removes a row from localStorage', () => {
         }
     ]))
 
-    let testButton = innerDoc.getElementById('test-button')
+    let testButton = innerDonationDoc.getElementById('test-button')
     testButton.addEventListener('click', (e) => {removeDonationRow(e, global.localStorage.store)})
 
     testButton.click()
@@ -1289,12 +1289,12 @@ test('donation-summary-text is updated when a record is removed from the table',
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -1387,12 +1387,12 @@ test('donation-summary-text is updated when a record is removed from the table',
 
     
 
-    let testButton = innerDoc.getElementById('test-button')
+    let testButton = innerDonationDoc.getElementById('test-button')
     testButton.addEventListener('click', (e) => {removeDonationRow(e, global.localStorage.store)})
 
     testButton.click()
 
-    expect(innerDoc.getElementById('donation-summary-text').innerText).toBe('The total donation amount is: $100')
+    expect(innerDonationDoc.getElementById('donation-summary-text').innerText).toBe('The total donation amount is: $100')
 
     
 })
@@ -1409,12 +1409,12 @@ test('clearDonationForm resets all inputs in the form', () => {
         "donation-tracker-frame"
       );
     
-      const innerDoc =
+      const innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
     
       global.document = dom.window.document;
     
-      innerDoc.body.innerHTML = `
+      innerDonationDoc.body.innerHTML = `
             <body class="nested-body">
                 <div class="donation-tracker">
                     <form class="donation-form" id="donation-form">
@@ -1490,10 +1490,10 @@ test('clearDonationForm resets all inputs in the form', () => {
         `;
     clearDonationForm()
 
-    let donationNameValue = innerDoc.getElementById('donation-charity-name-input').value
-    let donationAmountValue = innerDoc.getElementById('donation-amount-input').value
-    let donationDateValue = innerDoc.getElementById('donation-date-input').value
-    let donationMessageValue = innerDoc.getElementById('donation-message-input').value
+    let donationNameValue = innerDonationDoc.getElementById('donation-charity-name-input').value
+    let donationAmountValue = innerDonationDoc.getElementById('donation-amount-input').value
+    let donationDateValue = innerDonationDoc.getElementById('donation-date-input').value
+    let donationMessageValue = innerDonationDoc.getElementById('donation-message-input').value
 
     expect(donationNameValue).toBe('')
     expect(donationAmountValue).toBe('')
