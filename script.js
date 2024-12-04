@@ -106,6 +106,6 @@ if (typeof window !== "undefined") {
 } else {
 
     //to export for testing purposes
-    module.exports = { handleSubmit, validateForm };
+    module.exports = { haalidatndleSubmit, veForm };
 
 }
