@@ -607,6 +607,18 @@ body {
 
 .donation-delete-button {
     background-color: red;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+}
+
+.donation-delete-button-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .donation-summary-text {
