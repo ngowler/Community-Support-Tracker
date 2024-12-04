@@ -1396,3 +1396,109 @@ test('donation-summary-text is updated when a record is removed from the table',
 
     
 })
+
+test('clearDonationForm resets all inputs in the form', () => {
+    global.localStorage.removeItem('donations')
+    const dom = new JSDOM(`
+        <body>
+          <iframe id="donation-tracker-frame"></iframe>
+        </body>
+      `);
+    
+      const donationFrame = dom.window.document.getElementById(
+        "donation-tracker-frame"
+      );
+    
+      const innerDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+    
+      global.document = dom.window.document;
+    
+      innerDoc.body.innerHTML = `
+            <body class="nested-body">
+                <div class="donation-tracker">
+                    <form class="donation-form" id="donation-form">
+                        <h1 class="donation-form-header">Donation Tracker</h1>
+                        <ul class="donation-form-list">
+                            <li class="donation-charity-name-input-wrapper">
+                                <label for="donation-charity-name-input">Charity Name: </label>
+                                <input id="donation-charity-name-input" value="name"/>
+                            </li>
+                            <div class="donation-error-wrapper" id="donation-charity-name-error-wrapper" style="display: none;">
+                                <span class="donation-error">Please enter a charity name.</span>
+                            </div>
+                            <li class="donation-amount-input-wrapper">
+                                <label for="donation-amount-input">Donation Amount: </label><input id="donation-amount-input" value="100"/>
+                            </li>
+                            <div class="donation-error-wrapper" id="donation-amount-error-wrapper" style="display: none;">
+                                <span class="donation-error" id="donation-amount-error">Please enter a valid number.</span>
+                            </div>
+                            <li class="donation-date-input-wrapper">
+                                <label for="donation-date-input">Donation Date: </label><input id="donation-date-input" type="date" value="2024-11-20"/>
+                            </li>
+                            <div class="donation-error-wrapper" id="donation-date-error-wrapper" style="display: none;">
+                                <span class="donation-error">Please enter a valid date.</span>
+                            </div>
+                            <li class="donation-message-input-wrapper">
+                                <label for="donation-message-input">Donation Message: </label><input id="donation-message-input" value="message"/>
+                            </li>
+                            <div class="donation-error-wrapper" id="donation-message-error-wrapper" style="display: none;">
+                                <span class="donation-error">Please enter a donation message.</span>
+                            </div>
+                            <li class="donation-submit-button-wrapper">
+                                <button type="submit" id="donation-submit-button" class="donation-submit-button">Submit</button>
+                            </li>
+                        </ul>
+                        
+                    </form>
+                </div>
+
+                <div class="donation-table-wrapper" id="donation-table-wrapper">
+                    <h1 class="donation-form-header">Previous Donations</h1>
+                    <table id="donation-table" class="donation-table">
+                        <tbody>
+                            <tr>
+                                <th>Charity Name</th>
+                                <th>Donation Amount</th>
+                                <th>Donation Date</th>
+                                <th>Donor's Comment</th>
+                                <th>Delete a Donation</th>
+                            </tr> 
+                        </tbody>
+                        <tr>
+                            <td>name</td>
+                            <td>100</td>
+                            <td>2024-11-20</td>
+                            <td>message</td>
+                            <td class="donation-delete-button-td"><button class="donation-delete-button">Delete</button></td>
+                        </tr>
+                        <tr>
+                            <td>name2</td>
+                            <td>1000</td>
+                            <td>2024-10-20</td>
+                            <td>message2</td>
+                            <td class="donation-delete-button-td"><button class="donation-delete-button" id="test-button">Delete</button></td>
+                        </tr>
+                    </table>
+                    <div class="donation-summary-wrapper" id="donation-summary-wrapper">
+                        <p id="donation-summary-text" class="donation-summary-text"></p>
+                    </div>
+                </div>
+    
+          </body>
+
+        `;
+    clearDonationForm()
+
+    let donationNameValue = innerDoc.getElementById('donation-charity-name-input').value
+    let donationAmountValue = innerDoc.getElementById('donation-amount-input').value
+    let donationDateValue = innerDoc.getElementById('donation-date-input').value
+    let donationMessageValue = innerDoc.getElementById('donation-message-input').value
+
+    expect(donationNameValue).toBe('')
+    expect(donationAmountValue).toBe('')
+    expect(donationDateValue).toBe('')
+    expect(donationMessageValue).toBe('')
+
+    
+})
