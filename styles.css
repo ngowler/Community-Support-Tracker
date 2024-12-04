@@ -292,6 +292,17 @@ body {
     display: none;
 }
 
+.volunteer-table {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+}
+
+.volunteer-table th, .volunteer-table td {
+    padding: 1em 2em 1em 2em;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
 /* ====================================================== */
 /* ================== EVENT SIGNUP CODE ================= */
 /* ====================================================== */

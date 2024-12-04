@@ -7,6 +7,8 @@ function load() {
 
     selectStar();
     window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
+    window.frames["volunteer-hours-tracker"].contentDocument.getElementById("remove-volunteers").addEventListener("click", removeVolunteers);
+    displayVolunteers();
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -41,16 +43,25 @@ function load() {
 // ========================================================================== //
 
 function validateVolunteerForm(e) {
-    volunteerHideErrors();
-    if(volunteerFormHasErrors()) {
-        e.preventDefault();
-    } else {
-        let volunteerData = {};
-        volunteerData.charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
-        volunteerData.hoursVolunteered = parseFloat(window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value);
-        volunteerData.date = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
-        volunteerData.stars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+  volunteerHideErrors();
+  if(volunteerFormHasErrors()) {
+    e.preventDefault();
+  } else {
+    let volunteerDataArray = [];
+    let curentVolunteerData = JSON.parse(localStorage.getItem("volunteerData"));
+    if(curentVolunteerData != null) {
+      volunteerDataArray = curentVolunteerData;
     }
+    let volunteerData = {};
+    volunteerData.volunteerCharity = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
+    volunteerData.volunteerHours = parseFloat(window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value);
+    volunteerData.volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
+    volunteerData.volunteerRating = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+        
+    volunteerDataArray.push(volunteerData);
+
+    localStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+  }
 }
 
 function volunteerHideErrors() {
@@ -71,49 +82,86 @@ function volunteerShowError(formField, errorId, errorFlag) {
 }
 
 function volunteerFormHasErrors() {
-    let errorFlag = false;
-    let charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
-    if(charityName == "" || charityName == null) {
-        volunteerShowError("charity-name", "charity-name_error", errorFlag);
-        errorFlag=true;
-    }
-    let hoursVolunteered = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value;
-    if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
-        volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
-        errorFlag=true;
-    }
-    let volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
-    if(volunteerDate == "" || volunteerDate == null) {
-        volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
-        errorFlag=true;
-    }
-    let numberOfStars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
-    if(numberOfStars == 0){
-        volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
-        errorFlag=true;
-    }
-    return errorFlag;
+  let errorFlag = false;
+  let charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
+  if(charityName == "" || charityName == null) {
+    volunteerShowError("charity-name", "charity-name_error", errorFlag);
+    errorFlag=true;
+  }
+  let hoursVolunteered = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value;
+  if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
+    volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
+    errorFlag=true;
+  }
+  let volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
+  let today = new Date().toLocaleDateString();
+  if(volunteerDate == "" || volunteerDate == null || volunteerDate > today) {
+    volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
+    errorFlag=true;
+  }
+  let numberOfStars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+  if(numberOfStars == 0){
+    volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
+    errorFlag=true;
+  }
+  return errorFlag;
 }
 
 function selectStar() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
-    stars.forEach((star) => {
-        star.addEventListener("click", () => {
-            resetStars();
-            for(i=0; i<star.value; i++) {
-                stars[i].classList.add("starsSelected");
-            }
-        });
+  const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      resetStars();
+      for(i=0; i<star.value; i++) {
+        stars[i].classList.add("starsSelected");
+      }
     });
+  });
 }
 
 function resetStars() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
-    stars.forEach((star) => {
-        star.classList.remove("starsSelected");
-    });
+  const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
+  stars.forEach((star) => {
+    star.classList.remove("starsSelected");
+  });
 }
 
+function displayVolunteers() {
+  let tbody = document.getElementById("volunteer-table-body");
+  while(tbody.rows.length > 0) {
+    tbody.deleteRow(0);
+  }
+
+  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  if(volunteerDataArray != null) {
+    volunteerDataArray.forEach((volunteerData) => {
+      let volunteerRecord = document.createElement("tr");
+      let volunteerCharity = document.createElement("td");
+      let volunteerHours = document.createElement("tr");
+      let volunteerDate = document.createElement("td");
+      let volunteerRating = document.createElement("td");
+
+      volunteerCharity.textContent = volunteerData.volunteerCharity;
+      volunteerHours.textContent = volunteerData.volunteerHours;
+      volunteerDate.textContent = volunteerData.volunteerDate;
+      volunteerRating.textContent = volunteerData.volunteerRating;
+
+      volunteerRecord.appendChild(volunteerCharity);
+      volunteerRecord.appendChild(volunteerHours);
+      volunteerRecord.appendChild(volunteerDate);
+      volunteerRecord.appendChild(volunteerRating);
+
+      tbody.appendChild(volunteerRecord);
+    });
+  }
+}
+function removeVolunteers() {
+  let tbody = document.getElementById("volunteer-table-body");
+  while(tbody.rows.length > 0) {
+    tbody.deleteRow(0);
+  }
+  localStorage.removeItem("volunteerData");
+}
 
 // ========================================================================== //
 // ========================================================================== //
