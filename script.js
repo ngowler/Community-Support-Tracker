@@ -15,6 +15,7 @@ function load() {
     let eventFrame = document.getElementById("event-signup");
     let innerEventDoc =
         eventFrame.contentDocument || eventFrame.contentWindow.document;
+    updateEventTable(localStorage);
 
     innerEventDoc.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
 
@@ -147,8 +148,11 @@ function eventHandleSubmit(event) {
         };
 
         console.log('Form data:', formData);
+        updateEventLocalStorage(formData)
+        updateEventTable(localStorage)
+
         eventClearForm();
-        return formData;
+        // return formData;
     }
 }
 
@@ -205,9 +209,6 @@ function eventClearForm() {
     innerEventDoc.getElementById('company-rep-email-input').value = '';
     innerEventDoc.getElementById('company-role-selection-input').selectedIndex = 0;
 
-    updateEventLocalStorage()
-    updateEventTable()
-
     
 }
 
@@ -219,13 +220,13 @@ function updateEventTable(events) {
   let innerEventDoc =
       eventFrame.contentDocument || eventFrame.contentWindow.document;
 
-  let eventTable = innerDonationDoc.getElementById('signup-table')
+  let eventTable = innerEventDoc.getElementById('signup-table')
 
-  if (donationStorage.donations) {
+  if (eventStorage.events) {
       let events = JSON.parse(eventStorage.events)
       for (let event of events) {
-          let tableRow = innerDonationDoc.createElement('tr')
-          let tableBody = innerDonationDoc.createElement('tbody')
+          let tableRow = innerEventDoc.createElement('tr')
+          let tableBody = innerEventDoc.createElement('tbody')
           let { eventSignupName, repSignupName, repEmail, companyRole } = event
           let [
               eventSignupNameData,

@@ -13,7 +13,12 @@ function load() {
     // ================== EVENT SIGNUP CODE ================= //
     // ====================================================== //
 
-    window.frames["event-signup"].contentDocument.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+    updateEventTable(localStorage);
+
+    innerEventDoc.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
 
     // ====================================================== //
     // ================ NAVIGATION MENU CODE ================ //
@@ -122,13 +127,18 @@ function resetStars() {
 // ========================================================================== //
 // ========================================================================== //
 
+
 function eventHandleSubmit(event) {
     event.preventDefault();
 
-    let eventSignupName = window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value;
-    let repSignupName = window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value;
-    let repEmail = window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value;
-    let companyRole = window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').value;
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+
+    let eventSignupName = innerEventDoc.getElementById('event-signup-name-input').value;
+    let repSignupName = innerEventDoc.getElementById('company-rep-name-input').value;
+    let repEmail = innerEventDoc.getElementById('company-rep-email-input').value;
+    let companyRole = innerEventDoc.getElementById('company-role-selection-input').value;
 
     if (eventValidateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
         let formData = {
@@ -139,44 +149,51 @@ function eventHandleSubmit(event) {
         };
 
         console.log('Form data:', formData);
+        updateEventLocalStorage(formData)
+        updateEventTable(localStorage)
+
         eventClearForm();
-        return formData;
+        // return formData;
     }
 }
 
 //VALIDATION
 function eventValidateForm(eventName, repName, repEmail, companyRole) {
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
     let isValid = true;
 
     if (!eventName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('event-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('event-name-error-wrapper').style.display = 'none';
     }
 
     if (!repName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-rep-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-rep-name-error-wrapper').style.display = 'none';
     }
 
     if (!isValidEmail(repEmail)) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-rep-email-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-rep-email-error-wrapper').style.display = 'none';
     }
 
     if (!companyRole || !companyRole.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-role-selection-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-role-selection-error-wrapper').style.display = 'none';
     }
 
     return isValid;
+
 }
 
 function isValidEmail(email) {
@@ -185,11 +202,95 @@ function isValidEmail(email) {
 }
 
 function eventClearForm() {
-    window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').selectedIndex = 0;
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+    innerEventDoc.getElementById('event-signup-name-input').value = '';
+    innerEventDoc.getElementById('company-rep-name-input').value = '';
+    innerEventDoc.getElementById('company-rep-email-input').value = '';
+    innerEventDoc.getElementById('company-role-selection-input').selectedIndex = 0;
+
+    
 }
+
+//TABLES
+function updateEventTable(events) {
+  let eventStorage = events || localStorage
+
+  let eventFrame = document.getElementById("event-signup");
+  let innerEventDoc =
+      eventFrame.contentDocument || eventFrame.contentWindow.document;
+
+  let eventTable = innerEventDoc.getElementById('signup-table')
+
+  if (eventStorage.events) {
+      let events = JSON.parse(eventStorage.events)
+      for (let event of events) {
+          let tableRow = innerEventDoc.createElement('tr')
+          let tableBody = innerEventDoc.createElement('tbody')
+          let { eventSignupName, repSignupName, repEmail, companyRole } = event
+          let [
+              eventSignupNameData,
+              repSignupNameData,
+              repEmailData,
+              companyRoleData,
+              eventDeleteRow ,
+              eventDeleteButton
+          ] = [
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('button')
+          ]
+
+          eventDeleteButton.innerHTML = 'Delete'
+          eventDeleteButton.classList = 'event-delete-button'
+          eventDeleteButton.onclick = (e) => removeEventRow(e)
+
+          eventSignupNameData.innerHTML = eventSignupName
+          tableRow.appendChild(eventSignupNameData)
+
+          repSignupNameData.innerHTML = repSignupName
+          tableRow.appendChild(repSignupNameData)
+
+          repEmailData.innerHTML = repEmail
+          tableRow.appendChild(repEmailData)
+
+          companyRoleData.innerHTML = companyRole
+          tableRow.appendChild(companyRoleData)
+
+          eventDeleteRow.appendChild(eventDeleteButton)
+          tableRow.appendChild(eventDeleteRow)
+          eventDeleteRow.classList = 'event-delete-button-td'
+
+          // tableBody.appendChild(tableRow)
+
+          eventTable.appendChild(tableRow)
+
+      }
+  } else {
+      console.log('no current event signups')
+  }
+  
+}
+
+function updateEventLocalStorage(data) {
+  if (localStorage.getItem('events')) {
+      let events = JSON.parse(localStorage.getItem('events'))
+      let newEvents = [data]
+      events.forEach((obj) => {newEvents.push(obj)})
+      localStorage.setItem('donations', JSON.stringify(newEvents))
+  } else {
+      let newEvents = [data]
+      localStorage.setItem('events', JSON.stringify(newEvents))
+  }
+}
+
+
+
+
 
 // ========================================================================== //
 // ========================================================================== //
