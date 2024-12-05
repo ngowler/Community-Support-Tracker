@@ -154,7 +154,6 @@ function eventHandleSubmit(event) {
             companyRole: companyRole
         };
 
-        console.log('Form data:', formData);
         eventClearForm();
         return formData;
     }
@@ -353,8 +352,6 @@ function updateDonationTable(donations) {
             donationTable.appendChild(tableRow)
 
         }
-    } else {
-        console.log('no donations :(')
     }
     
 }
@@ -387,8 +384,6 @@ function removeDonationRow(event, donations) {
     const button = event.currentTarget
 
     const donationLocalStorage = JSON.parse(donationStorage.donations)
-
-    console.log(donationLocalStorage)
 
     // const newLocalStorage = oldLocalStorage.forEach(() => {})
 
@@ -437,8 +432,6 @@ function updateDonationSummary(donations) {
     for (let i=0; i < donationArray.length; i++) {
         donationSum += Number(donationArray[i].donationAmount)
     }
-
-    console.log(donationSum)
 
     donationTextElement.innerText = `The total donation amount is: $${donationSum}`
 }

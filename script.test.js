@@ -96,6 +96,8 @@ test("donationValidateForm submits a form with valid inputs", () => {
       </body>
     `;
 
+    
+
   const donationValidateForm = jest.fn();
 
   const form = innerDonationDoc.getElementById("donation-form");
@@ -1017,8 +1019,6 @@ test('resetDonationTable correctly resets the donation-table table to just the h
 
     resetDonationTable();
 
-    console.log(donationTable.innerHTML)
-
 
     expect(donationTable.innerHTML).toBe(`
     <tbody><tr>
@@ -1145,7 +1145,6 @@ test('removeDonationRow removes a row from the donation-table', () => {
     testButton.click()
 
     const donationTable = innerDonationDoc.getElementById('donation-table');
-    console.log(donationTable.innerHTML)
     const tableRows = donationTable.getElementsByTagName('tr');
 
     expect(tableRows.length).toBe(2)
