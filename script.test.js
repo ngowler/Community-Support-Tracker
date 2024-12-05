@@ -216,6 +216,12 @@ test("validateVolunteerForm correctly populates temporary data object",() => {
     expect(volunteerData.stars).toBe(5)
 });
 
+// ========================================================================== //
+// ========================================================================== //
+// ============================ EVENT SIGNUP CODE =========================== //
+// ========================================================================== //
+// ========================================================================== //
+
 test("to validate that the handleSubmit for submission works", () => {
     //purely for mocking a test user input for the form
     const dom = new JSDOM(`

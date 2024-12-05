@@ -125,6 +125,7 @@ function resetStars() {
 // ========================================================================== //
 // ========================================================================== //
 
+
 function eventHandleSubmit(event) {
     event.preventDefault();
 
@@ -187,6 +188,7 @@ function eventValidateForm(eventName, repName, repEmail, companyRole) {
     }
 
     return isValid;
+
 }
 
 function isValidEmail(email) {
@@ -202,71 +204,91 @@ function eventClearForm() {
     innerEventDoc.getElementById('company-rep-name-input').value = '';
     innerEventDoc.getElementById('company-rep-email-input').value = '';
     innerEventDoc.getElementById('company-role-selection-input').selectedIndex = 0;
+
+    updateEventLocalStorage()
+    updateEventTable()
+
+    
 }
 
-//ARRAYS 
-let signups = [];
+//TABLES
+function updateEventTable(events) {
+  let eventStorage = events || localStorage
 
-//Save to localStorage
-function saveSignups() {
-    localStorage.setItem('signups', JSON.stringify(signups));
+  let eventFrame = document.getElementById("event-signup");
+  let innerEventDoc =
+      eventFrame.contentDocument || eventFrame.contentWindow.document;
+
+  let eventTable = innerDonationDoc.getElementById('signup-table')
+
+  if (donationStorage.donations) {
+      let events = JSON.parse(eventStorage.events)
+      for (let event of events) {
+          let tableRow = innerDonationDoc.createElement('tr')
+          let tableBody = innerDonationDoc.createElement('tbody')
+          let { eventSignupName, repSignupName, repEmail, companyRole } = event
+          let [
+              eventSignupNameData,
+              repSignupNameData,
+              repEmailData,
+              companyRoleData,
+              eventDeleteRow ,
+              eventDeleteButton
+          ] = [
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('td'),
+              innerEventDoc.createElement('button')
+          ]
+
+          eventDeleteButton.innerHTML = 'Delete'
+          eventDeleteButton.classList = 'event-delete-button'
+          eventDeleteButton.onclick = (e) => removeEventRow(e)
+
+          eventSignupNameData.innerHTML = eventSignupName
+          tableRow.appendChild(eventSignupNameData)
+
+          repSignupNameData.innerHTML = repSignupName
+          tableRow.appendChild(repSignupNameData)
+
+          repEmailData.innerHTML = repEmail
+          tableRow.appendChild(repEmailData)
+
+          companyRoleData.innerHTML = companyRole
+          tableRow.appendChild(companyRoleData)
+
+          eventDeleteRow.appendChild(eventDeleteButton)
+          tableRow.appendChild(eventDeleteRow)
+          eventDeleteRow.classList = 'event-delete-button-td'
+
+          // tableBody.appendChild(tableRow)
+
+          eventTable.appendChild(tableRow)
+
+      }
+  } else {
+      console.log('no current event signups')
   }
-function loadSignups() {
-    const storedSignups = localStorage.getItem('signups');
-    if (storedSignups) {
-      signups = JSON.parse(storedSignups);
-      updateTable();
-    }
-  }
-
-// Function to add a new signup
-function addSignup(eventName, participantName, email, role) {
-  const signup = { eventName, participantName, email, role };
-  signups.push(signup);
-  updateTable();
-  saveSignups()
-}
-
-
-function deleteSignup(index) {
-  signups.splice(index, 1);
-  updateTable();
-  saveSignups()
-}
-
-//To call loadSignups() when page load
-window.addEventListener('load', loadSignups);
-
-
-function updateTable() {
-  const tableBody = document.getElementById('signup-table-body');
-  tableBody.innerHTML = '';
   
-  signups.forEach((signup, index) => {
-    const row = tableBody.insertRow();
-    row.innerHTML = `
-      <td>${signup.eventName}</td>
-      <td>${signup.participantName}</td>
-      <td>${signup.email}</td>
-      <td>${signup.role}</td>
-      <td><button onclick="deleteSignup(${index})">Delete</button></td>
-    `;
-  });
 }
 
-// Modify the existing eventHandleSubmit function
-function eventHandleSubmit(event) {
-  event.preventDefault();
-  // ... (existing validation code)
-  
-  if (eventValidateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
-    addSignup(eventSignupName, repSignupName, repEmail, companyRole);
-    eventClearForm();
+function updateEventLocalStorage(data) {
+  if (localStorage.getItem('events')) {
+      let events = JSON.parse(localStorage.getItem('events'))
+      let newEvents = [data]
+      events.forEach((obj) => {newEvents.push(obj)})
+      localStorage.setItem('donations', JSON.stringify(newEvents))
+  } else {
+      let newEvents = [data]
+      localStorage.setItem('events', JSON.stringify(newEvents))
   }
 }
 
-// Initial table update
-updateTable();
+
+
+
 
 // ========================================================================== //
 // ========================================================================== //

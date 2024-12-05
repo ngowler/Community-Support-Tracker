@@ -423,6 +423,45 @@ body {
     border-radius: 5px;
 }
 
+/* table */
+.table-wrapper {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+}
+
+.signup-table-wrapper {
+    margin-right: 200px;
+    margin-left: 200px;
+    margin-top: 50px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.signup-table {
+    width: 100%;
+}
+
+.signup-table-wrapper tr td, th {
+    border: 1px black solid;
+}
+
+.signup-delete-button {
+    background-color: red;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+}
+
+.signup-delete-button-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ====================================================== */
 /* ================ DONATION TRACKER CODE =============== */
 /* ====================================================== */
