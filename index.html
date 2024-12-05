@@ -7,27 +7,50 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
 
+
     <header>
         <div class="header-element">
            <p class="header">Community Support Tracker</p> 
         </div>
 
+
+
+
         <div id="hamburgerMenu" class="hamburger-menu">
-            <img src="https://www.svgrepo.com/show/524617/hamburger-menu.svg" class="hamburger-menu" id="hamburgerMenuSVG"/>  
+            <img src="assets/hamburger-menu.svg" class="hamburger-menu" id="hamburgerMenuSVG"/>  
         </div>
         
-        <nav class="navbar">
+
+        
+        <nav class="navbar" id="navbar">
             <ul class="navbar-list">
-                <li><a href="donation-tracker.html">Donation Tracker</a></li>
-                <li><a href="volunteer-hours-tracker.html">Volunteer Hours Tracker</a></li>
-                <li><a href="event-signup.html">Event Signup</a></li>
+                <li><a href="#donation-tracker"><p>Donation Tracker</p></a></li>
+                <li><a href="#volunteer-hours-tracker"><p>Volunteer Hours Tracker</p></a></li>
+                <li><a href="#event-signup"><p>Event Signup</p></a></li>
+
             </ul>
         </nav>
     </header>
 
+
     <body>
 
+
+
+
+        <iframe src="donation-tracker.html" class="donation-frame" id="donation-tracker"></iframe>
+      
+        <iframe src="volunteer-hours-tracker.html" class="volunteer-frame" id="volunteer-hours-tracker"></iframe>
+
+        <iframe src="event-signup.html" class="event-signup-frame" id="event-signup"></iframe>
+
+
+
+
+        <script src="bundle.js"></script>
+        <script src="parentcode.js"></script>
     </body>
+
 
 
     <footer>
@@ -35,4 +58,6 @@
             <p class="footer-text">This is a footer!</p>
         </div>
     </footer>
+
 </html>
+

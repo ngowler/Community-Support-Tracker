@@ -6,7 +6,31 @@ html {
 
 body {
     margin: 0px;
+    /* margin-top: 200px; */
+    margin-bottom: 100px;
+
 }
+
+.nested-body {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* iframe {
+    border: none;
+    width: 200px;
+    height: 100%;
+} */
+
+.nested-body {
+    margin-top: 0px;
+}
+
+/* iframe {
+    border: none;
+    width: 200px;
+    height: 100%;
+} */
 
 /* ========================================================================== */
 /* =============================== Header CSS =============================== */
@@ -102,9 +126,9 @@ body {
         position: fixed;
         width: 300px;
         height: 100%;
-        z-index: -10;
+        z-index: 10;
         left: -300px;
-        transition: 0.5s;
+        
     }
     .hamburger-menu {
         display: block;
@@ -133,13 +157,144 @@ body {
         height: 100%;
     }
     .navbar-list li:hover {
-        background-color:#185a89
+        background-color:#0c588e;
     }
 }
 
 /* ========================================================================== */
 /* ================================ Body CSS ================================ */
 /* ========================================================================== */
+
+/* ====================================================== */
+/* =================== VOLUNTEER CODE =================== */
+/* ====================================================== */
+
+.volunteer-frame {
+
+    border: none;
+    width: 100%;
+    /* height: 650px; */
+    padding-top: 200px;
+
+}
+
+.volunteer-hours-tracker {
+    display: flex;
+    justify-content: center;
+}
+
+.volunteer-hours-form {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+    padding: 2em;
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "volunteer-hours-header"
+    "charity-name"
+    "hours-volunteered"
+    "volunteer-hours-date"
+    "volunteer-experience-rating"
+}
+
+.volunteer-hours-header {
+    grid-area: volunteer-hours-header;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.charity-name {
+    grid-area: charity-name;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.hours-volunteered {
+    grid-area: hours-volunteered;
+}
+
+.volunteer-hours-date {
+    grid-area: volunteer-hours-date;
+}
+
+.volunteer-experience-rating {
+    grid-area: volunteer-experience-rating;
+}
+
+.hours-volunteered, .volunteer-hours-date, .volunteer-experience-rating, .volunteer-form-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.volunteer-experience-rating ul {
+    display: flex;
+    padding: 0;
+    list-style: none;
+}
+
+#volunteer-experience-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container label {
+    display: flex;
+    align-items: center;
+    margin-right: 1em;
+    text-align: right;
+    margin-right: 0px;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.star {
+    display: flex;
+    display: inline;
+    font-size: 2em;
+    color: lightgray;
+    cursor: pointer;
+}
+
+.star:hover, .starsSelected {
+    color: #0F75BC;
+}
+
+
+#submit-volunteer-form {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
+}
+
+#submit-volunteer-form:hover {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+}
+
+.volunteer-form-error {
+    color: red;
+    display: none;
+}
+
+/* ====================================================== */
+/* ================== EVENT SIGNUP CODE ================= */
+/* ====================================================== */
 
 .event-signup {
     display: flex;
@@ -152,6 +307,7 @@ body {
 }
 
 .signup-form-header {
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -166,13 +322,34 @@ body {
 }
 
 .signup-form-list li {
-    margin: 17px;
+    margin-top: 17px;
     display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
     justify-content: center;
 }
 
+.event-signup-submit-button {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
+}
+
+.event-signup-submit-button:hover {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+}
+
 .signup-form-list label {
-    margin-right: 5px;
+    /* margin-right: 5px; */
+    margin-bottom: 7px;
 }
 
 .event-error {
@@ -184,9 +361,15 @@ body {
 .event-name-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
 }
 
+.event-name-error {
+    color: red;
+}
 
 .company-rep-name-error {
     color: red;
@@ -197,7 +380,8 @@ body {
 .company-rep-name-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    margin-top: 5px;
+    /* margin-bottom: 10px; */
 }
 
 .company-rep-email-error {
@@ -209,21 +393,234 @@ body {
 .company-rep-email-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 5px;
 }
 
-.company-rep-selection-error {
+.company-role-selection-error {
     color: red;
     margin-right: auto;
     margin-left: auto;
 }
 
-.company-rep-selection-error-wrapper {
+.company-role-selection-error-wrapper {
     display: none;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 5px;
 }
 
+.event-signup-frame {
+
+    border: none;
+    width: 100%;
+    /* height: 505px; */
+    padding-top: 200px;
+}
+
+.event-signup-form {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+}
+
+/* table */
+.table-wrapper {
+    border: 2px lightgray solid;
+    border-radius: 5px;
+}
+
+.signup-table-wrapper {
+    margin-right: 200px;
+    margin-left: 200px;
+    margin-top: 50px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.signup-table {
+    width: 100%;
+}
+
+.signup-table-wrapper tr td, th {
+    border: 1px black solid;
+}
+
+.signup-delete-button {
+    background-color: red;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+}
+
+.signup-delete-button-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ====================================================== */
+/* ================ DONATION TRACKER CODE =============== */
+/* ====================================================== */
+
+.donation-tracker {
+    display: flex;
+    justify-content: center;
+}
+
+.donation-error-wrapper {
+    display: none;
+    align-items: center;
+    /* margin-bottom: 15px; */
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.donation-frame {
+    border: none;
+    width: 100%;
+    /* height: 505px; */
+    padding-top: 200px;
+}
+
+.donation-form-list label {
+    margin-bottom: 5px;
+    /* margin-top: 25px; */
+}
+
+.donation-error {
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* .donation-form-list li {
+
+    margin: 17px;
+    display: flex;
+    justify-content: center;
+} */
+
+.donation-submit-button {
+    font-size: 1em;
+    width: 5rem;
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 0.25em;
+    border: 2px #0F75BC solid;
+    border-radius: 10px;
+}
+
+.donation-submit-button:hover {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+}
+
+.donation-form-list {
+
+    list-style-type: none;
+    padding-left: 0px;
+    display: grid;
+    justify-content: center;
+    margin-top: 0px;
+    grid-template-areas: 
+    'donation-charity-name-input-wrapper'
+    'donation-charity-name-error-wrapper'
+    'donation-amount-input-wrapper'
+    'donation-amount-error-wrapper'
+    'donation-date-input-wrapper'
+    'donation-date-error-wrapper'
+    'donation-message-input-wrapper'
+    'donation-message-error-wrapper'
+    'donation-submit-button-wrapper';
+}
+
+.donation-charity-name-input-wrapper {
+    grid-area: donation-charity-name-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 10px; */
+}
+
+#donation-charity-name-error-wrapper {
+    grid-area: donation-charity-name-error-wrapper;
+}
+
+.donation-amount-input-wrapper {
+    grid-area: donation-amount-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#donation-amount-error-wrapper {
+    grid-area: donation-amount-error-wrapper;
+}
+
+.donation-date-input-wrapper {
+    grid-area: donation-date-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#donation-date-error-wrapper {
+    grid-area: donation-date-error-wrapper;
+}
+
+.donation-message-input-wrapper {
+    grid-area: donation-message-input-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#donation-message-error-wrapper {
+    grid-area: donation-message-error-wrapper;
+}
+
+.donation-submit-button-wrapper {
+    grid-area: donation-submit-button-wrapper;
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.donation-form-header {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.donation-form {
+    border: 2px lightgray solid;
+    border-radius: 5px
+}
 
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
