@@ -8,10 +8,10 @@ function load() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-    selectStar();
     innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
-    innerVolunteerDoc.getElementById("remove-volunteers").addEventListener("click", removeVolunteers);
+    selectStar();
     displayVolunteers();
+    removeVolunteer();
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -49,9 +49,9 @@ function load() {
 // ========================================================================== //
 
 function validateVolunteerForm(e) {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   volunteerHideErrors();
   if(volunteerFormHasErrors()) {
     e.preventDefault();
@@ -74,19 +74,19 @@ function validateVolunteerForm(e) {
 }
 
 function volunteerHideErrors() {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-    let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
-    for(let i=0; i<errorFields.length; i++) {
-        errorFields[i].style.display = "none";
-    }
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
+  for(let i=0; i<errorFields.length; i++) {
+    errorFields[i].style.display = "none";
+  }
 }
 
 function volunteerShowError(formField, errorId, errorFlag) {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 	innerVolunteerDoc.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
 		innerVolunteerDoc.getElementById(formField).focus();
@@ -97,9 +97,9 @@ function volunteerShowError(formField, errorId, errorFlag) {
 }
 
 function volunteerFormHasErrors() {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   let errorFlag = false;
   let charityName = innerVolunteerDoc.getElementById("charity-name").value;
   if(charityName == "" || charityName == null) {
@@ -126,9 +126,9 @@ function volunteerFormHasErrors() {
 }
 
 function selectStar() {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   const stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
   stars.forEach((star) => {
     star.addEventListener("click", () => {
@@ -153,7 +153,7 @@ function resetStars() {
 function displayVolunteers() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+      volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
   while(tbody.rows.length > 0) {
     tbody.deleteRow(0);
@@ -164,33 +164,40 @@ function displayVolunteers() {
     volunteerDataArray.forEach((volunteerData) => {
       let volunteerRecord = innerVolunteerDoc.createElement("tr");
       let volunteerCharity = innerVolunteerDoc.createElement("td");
-      let volunteerHours = innerVolunteerDoc.createElement("tr");
+      let volunteerHours = innerVolunteerDoc.createElement("td");
       let volunteerDate = innerVolunteerDoc.createElement("td");
       let volunteerRating = innerVolunteerDoc.createElement("td");
+      let volunteerDeleteRow = innerVolunteerDoc.createElement("button").classList.add("delete-volunteer");
 
       volunteerCharity.textContent = volunteerData.volunteerCharity;
       volunteerHours.textContent = volunteerData.volunteerHours;
       volunteerDate.textContent = volunteerData.volunteerDate;
       volunteerRating.textContent = volunteerData.volunteerRating;
+      volunteerDeleteRow.textContent = "Delete";
 
       volunteerRecord.appendChild(volunteerCharity);
       volunteerRecord.appendChild(volunteerHours);
       volunteerRecord.appendChild(volunteerDate);
       volunteerRecord.appendChild(volunteerRating);
+      volunteerRecord.appendChild(volunteerDeleteRow);
 
       tbody.appendChild(volunteerRecord);
     });
   }
 }
-function removeVolunteers() {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
-  while(tbody.rows.length > 0) {
-    tbody.deleteRow(0);
-  }
-  localStorage.removeItem("volunteerData");
+function removeVolunteer() {
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  const deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+  deleteVolunteerButtons.forEach((deleteVolunteer) => {
+    deleteVolunteer.addEventListener("click", () => {
+      volunteerDataArray.splice(index, 1);
+      localStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+      displayVolunteers();
+    });
+  });
 }
 
 // ========================================================================== //
@@ -513,8 +520,7 @@ function resetDonationTable() {
         <th>Donor's Comment</th>
         <th>Delete a Donation</th>
     </tr> 
-    `
-}
+    `}
 
 
 // ========================================================================== //
@@ -563,5 +569,5 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, removeVolunteer, displayVolunteers, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
