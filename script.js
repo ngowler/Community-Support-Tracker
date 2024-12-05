@@ -12,6 +12,7 @@ function load() {
     selectStar();
     displayVolunteers();
     removeVolunteer();
+    calculateVolunteerHours();
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -129,7 +130,7 @@ function selectStar() {
   let volunteerFrame = document.getElementById("volunteer-hours-tracker");
   let innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  const stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
   stars.forEach((star) => {
     star.addEventListener("click", () => {
       resetStars();
@@ -144,7 +145,7 @@ function resetStars() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  const stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
   stars.forEach((star) => {
     star.classList.remove("starsSelected");
   });
@@ -185,12 +186,13 @@ function displayVolunteers() {
     });
   }
 }
+
 function removeVolunteer() {
   let volunteerFrame = document.getElementById("volunteer-hours-tracker");
   let innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
-  const deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+  let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
   deleteVolunteerButtons.forEach((deleteVolunteer) => {
     deleteVolunteer.addEventListener("click", () => {
       volunteerDataArray.splice(index, 1);
@@ -198,6 +200,23 @@ function removeVolunteer() {
       displayVolunteers();
     });
   });
+}
+
+function calculateVolunteerHours() {
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let dispalyHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
+  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  let hoursToDisplay = 0
+  if(volunteerDataArray == null) {
+    dispalyHoursMessage.textContent = "You have no volunteer hours."
+  } else {
+    volunteerDataArray.forEach((volunteerData) => {
+      hoursToDisplay += volunteerData.volunteerHours
+    });
+    dispalyHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
+  }
 }
 
 // ========================================================================== //
@@ -569,5 +588,5 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, removeVolunteer, displayVolunteers, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, calculateVolunteerHours, removeVolunteer, displayVolunteers, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }

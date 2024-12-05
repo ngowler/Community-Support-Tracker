@@ -188,7 +188,6 @@ body {
     border-radius: 5px;
     padding: 2em;
     display: grid;
-    gap: 1em;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     grid-template-areas: 
@@ -298,8 +297,14 @@ body {
 }
 
 .volunteer-table th, .volunteer-table td {
-    width: 6em;
+    width: 8em;
     padding: 0.5em;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#volunteer-hours-calculator {
+    width: 100%;
     border: 1px solid #ddd;
     text-align: center;
 }
