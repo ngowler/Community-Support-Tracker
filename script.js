@@ -180,14 +180,18 @@ function displayVolunteers(volunteers) {
             let volunteerHours = innerVolunteerDoc.createElement("td");
             let volunteerDate = innerVolunteerDoc.createElement("td");
             let volunteerRating = innerVolunteerDoc.createElement("td");
-            let volunteerDeleteRow = innerVolunteerDoc.createElement("button");
+            let volunteerDeleteRow = innerVolunteerDoc.createElement("td");
+
+            let volunteerDeleteRowButton = innerVolunteerDoc.createElement("button");
+            volunteerDeleteRowButton.textContent = "Delete";
+            volunteerDeleteRowButton.classList.add("delete-volunteer");
 
             volunteerCharity.textContent = volunteerData.volunteerCharity;
             volunteerHours.textContent = volunteerData.volunteerHours;
             volunteerDate.textContent = volunteerData.volunteerDate;
             volunteerRating.textContent = volunteerData.volunteerRating;
-            volunteerDeleteRow.textContent = "Delete";
-            volunteerDeleteRow.classList.add("delete-volunteer");
+            volunteerDeleteRow.appendChild(volunteerDeleteRowButton);
+            
 
             volunteerRecord.appendChild(volunteerCharity);
             volunteerRecord.appendChild(volunteerHours);

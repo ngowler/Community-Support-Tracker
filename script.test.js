@@ -36,17 +36,16 @@ test("validateVolunteerForm is triggered on form submission",() => {
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">
@@ -80,17 +79,16 @@ test("validateVolunteerForm correctly collects form data",() => {
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">
@@ -130,20 +128,20 @@ test("validateVolunteerForm correctly collects form data",() => {
 });
 
 test("validateVolunteerForm correctly flags empty inputs",() => {
+
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">
@@ -173,20 +171,20 @@ test("validateVolunteerForm correctly flags empty inputs",() => {
 });
 
 test("validateVolunteerForm validates incorect number input",() => {
+
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">
@@ -220,20 +218,20 @@ test("validateVolunteerForm validates incorect number input",() => {
 });
 
 test("validateVolunteerForm validates incorect star input",() => {
+
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">
@@ -273,17 +271,16 @@ test("validateVolunteerForm correctly populates temporary data object",() => {
     const dom = new JSDOM (`
         <!Doctype html>
         <body>
-            <iframe id="volunteer-tracker-frame"></iframe>
+            <iframe id="volunteer-hours-tracker"></iframe>
         </body>
         `)
     
-    const volunteerFrame = dom.window.document.getElementById("volunteer-tracker-frame");
+    const volunteerFrame = dom.window.document.getElementById("volunteer-hours-tracker");
 
     const innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 
     global.document = dom.window.document;
-
 
     innerVolunteerDoc.body.innerHTML = `
         <form id="volunteer-hours-form">

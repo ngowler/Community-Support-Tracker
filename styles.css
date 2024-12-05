@@ -181,6 +181,12 @@ body {
 .volunteer-hours-tracker {
     display: flex;
     justify-content: center;
+    display: grid;
+}
+
+.volunteer-hours-form-wrapper {
+    display: flex;
+    justify-content: center;
 }
 
 .volunteer-hours-form {
@@ -291,10 +297,11 @@ body {
     display: none;
 }
 
-.volunteer-table {
+.volunteer-table-container {
     border: 2px lightgray solid;
     border-radius: 5px;
     width: 40em;
+    padding: 20px 50px 20px 50px;
 }
 
 .volunteer-table th, .volunteer-table td {
