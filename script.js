@@ -8,11 +8,13 @@ function load() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
+    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", function() {
+      validateVolunteerForm(localStorage);
+    });
     selectStar();
-    displayVolunteers();
-    removeVolunteer();
-    calculateVolunteerHours();
+    displayVolunteers(localStorage);
+    removeVolunteer(localStorage);
+    calculateVolunteerHours(localStorage);
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -49,7 +51,9 @@ function load() {
 // ========================================================================== //
 // ========================================================================== //
 
-function validateVolunteerForm(e) {
+function validateVolunteerForm(e, volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
   let volunteerFrame = document.getElementById("volunteer-hours-tracker");
   let innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
@@ -58,7 +62,7 @@ function validateVolunteerForm(e) {
     e.preventDefault();
   } else {
     let volunteerDataArray = [];
-    let curentVolunteerData = JSON.parse(localStorage.getItem("volunteerData"));
+    let curentVolunteerData = JSON.parse(volunteerStorage.getItem("volunteerData"));
     if(curentVolunteerData != null) {
       volunteerDataArray = curentVolunteerData;
     }
@@ -70,7 +74,7 @@ function validateVolunteerForm(e) {
         
     volunteerDataArray.push(volunteerData);
 
-    localStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+    volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
   }
 }
 
@@ -151,16 +155,18 @@ function resetStars() {
   });
 }
 
-function displayVolunteers() {
-    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-    let innerVolunteerDoc =
-      volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+function displayVolunteers(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
   let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
   while(tbody.rows.length > 0) {
     tbody.deleteRow(0);
   }
 
-  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
   if(volunteerDataArray != null) {
     volunteerDataArray.forEach((volunteerData) => {
       let volunteerRecord = innerVolunteerDoc.createElement("tr");
@@ -187,35 +193,39 @@ function displayVolunteers() {
   }
 }
 
-function removeVolunteer() {
+function removeVolunteer(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
   let volunteerFrame = document.getElementById("volunteer-hours-tracker");
   let innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
   let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
   deleteVolunteerButtons.forEach((deleteVolunteer) => {
     deleteVolunteer.addEventListener("click", () => {
       volunteerDataArray.splice(index, 1);
-      localStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+      volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
       displayVolunteers();
     });
   });
 }
 
-function calculateVolunteerHours() {
+function calculateVolunteerHours(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
   let volunteerFrame = document.getElementById("volunteer-hours-tracker");
   let innerVolunteerDoc =
     volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let dispalyHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
-  let volunteerDataArray = JSON.parse(localStorage.getItem("volunteerData"));
+  let displayHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
   let hoursToDisplay = 0
   if(volunteerDataArray == null) {
-    dispalyHoursMessage.textContent = "You have no volunteer hours."
+    displayHoursMessage.textContent = "You have no volunteer hours."
   } else {
     volunteerDataArray.forEach((volunteerData) => {
       hoursToDisplay += volunteerData.volunteerHours
     });
-    dispalyHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
+    displayHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
   }
 }
 

@@ -6,8 +6,16 @@ function load() {
     // =================== VOLUNTEER CODE =================== //
     // ====================================================== //
 
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", function() {
+      validateVolunteerForm(localStorage);
+    });
     selectStar();
-    window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
+    displayVolunteers(localStorage);
+    removeVolunteer(localStorage);
+    calculateVolunteerHours(localStorage);
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -31,7 +39,10 @@ function load() {
     // ================ DONATION TRACKER CODE =============== //
     // ====================================================== //
 
-    const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+    const donationSubmitButton = innerDonationDoc.getElementById('donation-submit-button')
     donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
 }
 
@@ -41,80 +52,183 @@ function load() {
 // ========================================================================== //
 // ========================================================================== //
 
-function validateVolunteerForm(e) {
-    volunteerHideErrors();
-    if(volunteerFormHasErrors()) {
-        e.preventDefault();
-    } else {
-        let volunteerData = {};
-        volunteerData.charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
-        volunteerData.hoursVolunteered = parseFloat(window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value);
-        volunteerData.date = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
-        volunteerData.stars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+function validateVolunteerForm(e, volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  volunteerHideErrors();
+  if(volunteerFormHasErrors()) {
+    e.preventDefault();
+  } else {
+    let volunteerDataArray = [];
+    let curentVolunteerData = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    if(curentVolunteerData != null) {
+      volunteerDataArray = curentVolunteerData;
     }
+    let volunteerData = {};
+    volunteerData.volunteerCharity = innerVolunteerDoc.getElementById("charity-name").value;
+    volunteerData.volunteerHours = parseFloat(innerVolunteerDoc.getElementById("hours-volunteered").value);
+    volunteerData.volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
+    volunteerData.volunteerRating = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
+        
+    volunteerDataArray.push(volunteerData);
+
+    volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+  }
 }
 
 function volunteerHideErrors() {
-    let errorFields = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("volunteer-form-error");
-    for(let i=0; i<errorFields.length; i++) {
-        errorFields[i].style.display = "none";
-    }
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
+  for(let i=0; i<errorFields.length; i++) {
+    errorFields[i].style.display = "none";
+  }
 }
 
 function volunteerShowError(formField, errorId, errorFlag) {
-	window.frames["volunteer-hours-tracker"].contentDocument.getElementById(errorId).style.display = "block";
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+	innerVolunteerDoc.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
-		window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).focus();
+		innerVolunteerDoc.getElementById(formField).focus();
 		if(formField.type == "text") {
-			window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).select();
+			innerVolunteerDoc.getElementById(formField).select();
 		}
 	}
 }
 
 function volunteerFormHasErrors() {
-    let errorFlag = false;
-    let charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
-    if(charityName == "" || charityName == null) {
-        volunteerShowError("charity-name", "charity-name_error", errorFlag);
-        errorFlag=true;
-    }
-    let hoursVolunteered = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value;
-    if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
-        volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
-        errorFlag=true;
-    }
-    let volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
-    if(volunteerDate == "" || volunteerDate == null) {
-        volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
-        errorFlag=true;
-    }
-    let numberOfStars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
-    if(numberOfStars == 0){
-        volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
-        errorFlag=true;
-    }
-    return errorFlag;
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let errorFlag = false;
+  let charityName = innerVolunteerDoc.getElementById("charity-name").value;
+  if(charityName == "" || charityName == null) {
+    volunteerShowError("charity-name", "charity-name_error", errorFlag);
+    errorFlag=true;
+  }
+  let hoursVolunteered = innerVolunteerDoc.getElementById("hours-volunteered").value;
+  if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
+    volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
+    errorFlag=true;
+  }
+  let volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
+  let today = new Date().toLocaleDateString();
+  if(volunteerDate == "" || volunteerDate == null || volunteerDate > today) {
+    volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
+    errorFlag=true;
+  }
+  let numberOfStars = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
+  if(numberOfStars == 0){
+    volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
+    errorFlag=true;
+  }
+  return errorFlag;
 }
 
 function selectStar() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
-    stars.forEach((star) => {
-        star.addEventListener("click", () => {
-            resetStars();
-            for(i=0; i<star.value; i++) {
-                stars[i].classList.add("starsSelected");
-            }
-        });
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      resetStars();
+      for(i=0; i<star.value; i++) {
+        stars[i].classList.add("starsSelected");
+      }
     });
+  });
 }
 
 function resetStars() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
-    stars.forEach((star) => {
-        star.classList.remove("starsSelected");
-    });
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+  stars.forEach((star) => {
+    star.classList.remove("starsSelected");
+  });
 }
 
+function displayVolunteers(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
+  while(tbody.rows.length > 0) {
+    tbody.deleteRow(0);
+  }
+
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+  if(volunteerDataArray != null) {
+    volunteerDataArray.forEach((volunteerData) => {
+      let volunteerRecord = innerVolunteerDoc.createElement("tr");
+      let volunteerCharity = innerVolunteerDoc.createElement("td");
+      let volunteerHours = innerVolunteerDoc.createElement("td");
+      let volunteerDate = innerVolunteerDoc.createElement("td");
+      let volunteerRating = innerVolunteerDoc.createElement("td");
+      let volunteerDeleteRow = innerVolunteerDoc.createElement("button").classList.add("delete-volunteer");
+
+      volunteerCharity.textContent = volunteerData.volunteerCharity;
+      volunteerHours.textContent = volunteerData.volunteerHours;
+      volunteerDate.textContent = volunteerData.volunteerDate;
+      volunteerRating.textContent = volunteerData.volunteerRating;
+      volunteerDeleteRow.textContent = "Delete";
+
+      volunteerRecord.appendChild(volunteerCharity);
+      volunteerRecord.appendChild(volunteerHours);
+      volunteerRecord.appendChild(volunteerDate);
+      volunteerRecord.appendChild(volunteerRating);
+      volunteerRecord.appendChild(volunteerDeleteRow);
+
+      tbody.appendChild(volunteerRecord);
+    });
+  }
+}
+
+function removeVolunteer(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+  let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+  deleteVolunteerButtons.forEach((deleteVolunteer) => {
+    deleteVolunteer.addEventListener("click", () => {
+      volunteerDataArray.splice(index, 1);
+      volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+      displayVolunteers();
+    });
+  });
+}
+
+function calculateVolunteerHours(volunteers) {
+  let volunteerStorage = volunteers || localStorage;
+
+  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+  let innerVolunteerDoc =
+    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+  let displayHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
+  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+  let hoursToDisplay = 0
+  if(volunteerDataArray == null) {
+    displayHoursMessage.textContent = "You have no volunteer hours."
+  } else {
+    volunteerDataArray.forEach((volunteerData) => {
+      hoursToDisplay += volunteerData.volunteerHours
+    });
+    displayHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
+  }
+}
 
 // ========================================================================== //
 // ========================================================================== //
@@ -197,10 +311,14 @@ function eventClearForm() {
 // ========================================================================== //
 // ========================================================================== //
 
-function donationValidateForm(e) {
+function donationValidateForm(e, donations) {
   e.preventDefault()
   donationHideErrors();
   errorFlag = false
+
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
 
   const donationInputs = [
     'donation-charity-name-',
@@ -217,41 +335,222 @@ function donationValidateForm(e) {
     }
   })
 
-  donationAmountInputValue = window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value
+  donationCharityNameInputValue = innerDonationDoc.getElementById("donation-charity-name-input").value;
+  donationAmountInputValue = innerDonationDoc.getElementById('donation-amount-input').value
+  donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
+  donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
-    window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'flex';
     errorFlag = true
   }
 
   if (!errorFlag) {
-    donationFormData['charityName'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value
+    donationFormData['charityName'] = donationCharityNameInputValue
     donationFormData['donationAmount'] = donationAmountInputValue
-    donationFormData['donationDate'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value
-    donationFormData['donationMessage'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value
+    donationFormData['donationDate'] = donationDateInputValue
+    donationFormData['donationMessage'] = donationMessageInputValue
+
+    resetDonationTable()
+    updateDonationLocalStorage(donationFormData)
+    clearDonationForm()
+    updateDonationTable();
+    updateDonationSummary(donations)
   }
 }
 
 
 function donationHideErrors() {
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-error-wrapper').style.display = 'none';
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  innerDonationDoc.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-date-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-message-error-wrapper').style.display = 'none';
 }
 
 function donationFormHasInput(input) {
-  let inputElement = window.frames["donation-tracker"].contentDocument.getElementById(input + 'input')
+
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  let inputElement = innerDonationDoc.getElementById(input + 'input')
   
 
   if (inputElement.value !== '' && inputElement.value !== null) {
     return true
   } else {
-    window.frames["donation-tracker"].contentDocument.getElementById(input + 'error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById(input + 'error-wrapper').style.display = 'flex';
     return false
   }
 }
+
+function updateDonationTable(donations) {
+    let donationStorage = donations || localStorage
+
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
+
+    if (donationStorage.donations) {
+        let donations = JSON.parse(donationStorage.donations)
+        for (let donation of donations) {
+            let tableRow = innerDonationDoc.createElement('tr')
+            let tableBody = innerDonationDoc.createElement('tbody')
+            let { charityName, donationAmount, donationDate, donationMessage } = donation
+            let [
+                donationCharityNameData,
+                donationAmountData,
+                donationDateData,
+                donationMessageData,
+                donationDeleteRow ,
+                donationDeleteButton
+            ] = [
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('button')
+            ]
+
+            donationDeleteButton.innerHTML = 'Delete'
+            donationDeleteButton.classList = 'donation-delete-button'
+            donationDeleteButton.onclick = (e) => removeDonationRow(e)
+
+            donationCharityNameData.innerHTML = charityName
+            tableRow.appendChild(donationCharityNameData)
+
+            donationAmountData.innerHTML = donationAmount
+            tableRow.appendChild(donationAmountData)
+
+            donationDateData.innerHTML = donationDate
+            tableRow.appendChild(donationDateData)
+
+            donationMessageData.innerHTML = donationMessage
+            tableRow.appendChild(donationMessageData)
+
+            donationDeleteRow.appendChild(donationDeleteButton)
+            tableRow.appendChild(donationDeleteRow)
+            donationDeleteRow.classList = 'donation-delete-button-td'
+
+            // tableBody.appendChild(tableRow)
+
+            donationTable.appendChild(tableRow)
+
+        }
+    } else {
+        console.log('no donations :(')
+    }
+    
+}
+
+function clearDonationForm() {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+    innerDonationDoc.getElementById('donation-charity-name-input').value = '';
+    innerDonationDoc.getElementById('donation-amount-input').value = '';
+    innerDonationDoc.getElementById('donation-date-input').value = '';
+    innerDonationDoc.getElementById('donation-message-input').value = '';
+}
+
+function updateDonationLocalStorage(data) {
+    if (localStorage.getItem('donations')) {
+        let donations = JSON.parse(localStorage.getItem('donations'))
+        let newDonations = [data]
+        donations.forEach((obj) => {newDonations.push(obj)})
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    } else {
+        let newDonations = [data]
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    }
+}
+
+function removeDonationRow(event, donations) {
+    let donationStorage = donations || localStorage
+
+    const button = event.currentTarget
+
+    const donationLocalStorage = JSON.parse(donationStorage.donations)
+
+    console.log(donationLocalStorage)
+
+    // const newLocalStorage = oldLocalStorage.forEach(() => {})
+
+    let tableRow = button.parentNode.parentNode
+    let tableRowChildren = tableRow.children
+
+    let currentDonation = {
+        'charityName': tableRowChildren[0].innerText,
+        'donationAmount': tableRowChildren[1].innerText,
+        'donationDate': tableRowChildren[2].innerText,
+        'donationMessage': tableRowChildren[3].innerText
+    }
+
+
+    const indexOfDonation = donationLocalStorage.findIndex(obj => {
+        return (
+            obj.charityName == currentDonation.charityName
+            && obj.donationAmount == currentDonation.donationAmount
+            && obj.donationDate == currentDonation.donationDate
+            && obj.donationMessage == currentDonation.donationMessage
+        )
+    })
+
+    donationLocalStorage.splice(indexOfDonation, 1)
+
+    localStorage.setItem('donations', JSON.stringify(donationLocalStorage))
+
+
+    button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
+
+    updateDonationSummary(donationStorage)
+}
+
+function updateDonationSummary(donations) {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTextElement = innerDonationDoc.getElementById('donation-summary-text')
+
+    let donationStorage = donations || localStorage
+
+    let donationArray = JSON.parse(donationStorage.donations)
+
+    let donationSum = 0
+    for (let i=0; i < donationArray.length; i++) {
+        donationSum += Number(donationArray[i].donationAmount)
+    }
+
+    console.log(donationSum)
+
+    donationTextElement.innerText = `The total donation amount is: $${donationSum}`
+}
+
+function resetDonationTable() {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
+
+    donationTable.innerHTML = `
+    <tr>
+        <th>Charity Name</th>
+        <th>Donation Amount</th>
+        <th>Donation Date</th>
+        <th>Donor's Comment</th>
+        <th>Delete a Donation</th>
+    </tr> 
+    `}
 
 
 // ========================================================================== //
@@ -300,6 +599,6 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, calculateVolunteerHours, removeVolunteer, displayVolunteers, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
 },{}]},{},[1]);
