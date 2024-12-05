@@ -8,13 +8,12 @@ function load() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", function() {
-      validateVolunteerForm(localStorage);
+    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        validateVolunteerForm(e, localStorage);
     });
     selectStar();
     displayVolunteers(localStorage);
-    removeVolunteer(localStorage);
-    calculateVolunteerHours(localStorage);
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -52,46 +51,53 @@ function load() {
 // ========================================================================== //
 
 function validateVolunteerForm(e, volunteers) {
-  let volunteerStorage = volunteers || localStorage;
-
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  volunteerHideErrors();
-  if(volunteerFormHasErrors()) {
     e.preventDefault();
-  } else {
-    let volunteerDataArray = [];
-    let curentVolunteerData = JSON.parse(volunteerStorage.getItem("volunteerData"));
-    if(curentVolunteerData != null) {
-      volunteerDataArray = curentVolunteerData;
-    }
-    let volunteerData = {};
-    volunteerData.volunteerCharity = innerVolunteerDoc.getElementById("charity-name").value;
-    volunteerData.volunteerHours = parseFloat(innerVolunteerDoc.getElementById("hours-volunteered").value);
-    volunteerData.volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
-    volunteerData.volunteerRating = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
-        
-    volunteerDataArray.push(volunteerData);
+    let volunteerStorage = volunteers || localStorage;
 
-    volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
-  }
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    volunteerHideErrors();
+    if(volunteerFormHasErrors()) {
+        return
+    } else {
+        let volunteerDataArray = [];
+        let curentVolunteerData = JSON.parse(volunteerStorage.getItem("volunteerData"));
+        if(curentVolunteerData != null) {
+            volunteerDataArray = curentVolunteerData;
+        }
+        let volunteerData = {};
+        volunteerData.volunteerCharity = innerVolunteerDoc.getElementById("charity-name").value;
+        volunteerData.volunteerHours = parseFloat(innerVolunteerDoc.getElementById("hours-volunteered").value);
+        volunteerData.volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
+        volunteerData.volunteerRating = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
+        
+        volunteerDataArray.push(volunteerData);
+
+        volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+
+        innerVolunteerDoc.getElementById("volunteer-hours-form").reset();
+        resetStars();
+
+        displayVolunteers(localStorage);
+        calculateVolunteerHours(localStorage);
+    }
 }
 
 function volunteerHideErrors() {
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
-  for(let i=0; i<errorFields.length; i++) {
-    errorFields[i].style.display = "none";
-  }
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
+    for(let i=0; i<errorFields.length; i++) {
+        errorFields[i].style.display = "none";
+    }
 }
 
 function volunteerShowError(formField, errorId, errorFlag) {
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
 	innerVolunteerDoc.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
 		innerVolunteerDoc.getElementById(formField).focus();
@@ -102,131 +108,135 @@ function volunteerShowError(formField, errorId, errorFlag) {
 }
 
 function volunteerFormHasErrors() {
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let errorFlag = false;
-  let charityName = innerVolunteerDoc.getElementById("charity-name").value;
-  if(charityName == "" || charityName == null) {
-    volunteerShowError("charity-name", "charity-name_error", errorFlag);
-    errorFlag=true;
-  }
-  let hoursVolunteered = innerVolunteerDoc.getElementById("hours-volunteered").value;
-  if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
-    volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
-    errorFlag=true;
-  }
-  let volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
-  let today = new Date().toLocaleDateString();
-  if(volunteerDate == "" || volunteerDate == null || volunteerDate > today) {
-    volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
-    errorFlag=true;
-  }
-  let numberOfStars = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
-  if(numberOfStars == 0){
-    volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
-    errorFlag=true;
-  }
-  return errorFlag;
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let errorFlag = false;
+    let charityName = innerVolunteerDoc.getElementById("charity-name").value;
+    if(charityName == "" || charityName == null) {
+        volunteerShowError("charity-name", "charity-name_error", errorFlag);
+        errorFlag=true;
+    }
+    let hoursVolunteered = innerVolunteerDoc.getElementById("hours-volunteered").value;
+    if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
+        volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
+        errorFlag=true;
+    }
+    let volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
+    let today = new Date().toLocaleDateString();
+    if(volunteerDate == "" || volunteerDate == null || volunteerDate > today) {
+        volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
+        errorFlag=true;
+    }
+    let numberOfStars = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
+    if(numberOfStars == 0){
+        volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
+        errorFlag=true;
+    }
+    return errorFlag;
 }
 
 function selectStar() {
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
-  stars.forEach((star) => {
-    star.addEventListener("click", () => {
-      resetStars();
-      for(i=0; i<star.value; i++) {
-        stars[i].classList.add("starsSelected");
-      }
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+    stars.forEach((star) => {
+        star.addEventListener("click", () => {
+            resetStars();
+            for(i=0; i<star.value; i++) {
+                stars[i].classList.add("starsSelected");
+            }
+        });
     });
-  });
 }
 
 function resetStars() {
     let volunteerFrame = document.getElementById("volunteer-hours-tracker");
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
-  stars.forEach((star) => {
-    star.classList.remove("starsSelected");
-  });
+    let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
+    stars.forEach((star) => {
+        star.classList.remove("starsSelected");
+    });
 }
 
 function displayVolunteers(volunteers) {
-  let volunteerStorage = volunteers || localStorage;
+    let volunteerStorage = volunteers || localStorage;
 
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
-  while(tbody.rows.length > 0) {
-    tbody.deleteRow(0);
-  }
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
+    while(tbody.rows.length > 0) {
+        tbody.deleteRow(0);
+    }
 
-  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
-  if(volunteerDataArray != null) {
-    volunteerDataArray.forEach((volunteerData) => {
-      let volunteerRecord = innerVolunteerDoc.createElement("tr");
-      let volunteerCharity = innerVolunteerDoc.createElement("td");
-      let volunteerHours = innerVolunteerDoc.createElement("td");
-      let volunteerDate = innerVolunteerDoc.createElement("td");
-      let volunteerRating = innerVolunteerDoc.createElement("td");
-      let volunteerDeleteRow = innerVolunteerDoc.createElement("button").classList.add("delete-volunteer");
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    if(volunteerDataArray != null) {
+        volunteerDataArray.forEach((volunteerData) => {
+            let volunteerRecord = innerVolunteerDoc.createElement("tr");
+            let volunteerCharity = innerVolunteerDoc.createElement("td");
+            let volunteerHours = innerVolunteerDoc.createElement("td");
+            let volunteerDate = innerVolunteerDoc.createElement("td");
+            let volunteerRating = innerVolunteerDoc.createElement("td");
+            let volunteerDeleteRow = innerVolunteerDoc.createElement("button");
 
-      volunteerCharity.textContent = volunteerData.volunteerCharity;
-      volunteerHours.textContent = volunteerData.volunteerHours;
-      volunteerDate.textContent = volunteerData.volunteerDate;
-      volunteerRating.textContent = volunteerData.volunteerRating;
-      volunteerDeleteRow.textContent = "Delete";
+            volunteerCharity.textContent = volunteerData.volunteerCharity;
+            volunteerHours.textContent = volunteerData.volunteerHours;
+            volunteerDate.textContent = volunteerData.volunteerDate;
+            volunteerRating.textContent = volunteerData.volunteerRating;
+            volunteerDeleteRow.textContent = "Delete";
+            volunteerDeleteRow.classList.add("delete-volunteer");
 
-      volunteerRecord.appendChild(volunteerCharity);
-      volunteerRecord.appendChild(volunteerHours);
-      volunteerRecord.appendChild(volunteerDate);
-      volunteerRecord.appendChild(volunteerRating);
-      volunteerRecord.appendChild(volunteerDeleteRow);
+            volunteerRecord.appendChild(volunteerCharity);
+            volunteerRecord.appendChild(volunteerHours);
+            volunteerRecord.appendChild(volunteerDate);
+            volunteerRecord.appendChild(volunteerRating);
+            volunteerRecord.appendChild(volunteerDeleteRow);
 
-      tbody.appendChild(volunteerRecord);
-    });
-  }
+            tbody.appendChild(volunteerRecord);
+        });
+        removeVolunteer(localStorage);
+        calculateVolunteerHours(localStorage);
+    }
 }
 
 function removeVolunteer(volunteers) {
-  let volunteerStorage = volunteers || localStorage;
+    let volunteerStorage = volunteers || localStorage;
 
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
-  let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
-  deleteVolunteerButtons.forEach((deleteVolunteer) => {
-    deleteVolunteer.addEventListener("click", () => {
-      volunteerDataArray.splice(index, 1);
-      volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
-      displayVolunteers();
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+    deleteVolunteerButtons.forEach((deleteVolunteer, index) => {
+        deleteVolunteer.addEventListener("click", () => {
+            volunteerDataArray.splice(index, 1);
+            volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+            displayVolunteers(localStorage);
+            calculateVolunteerHours(localStorage);
+        });
     });
-  });
 }
 
 function calculateVolunteerHours(volunteers) {
-  let volunteerStorage = volunteers || localStorage;
+    let volunteerStorage = volunteers || localStorage;
 
-  let volunteerFrame = document.getElementById("volunteer-hours-tracker");
-  let innerVolunteerDoc =
-    volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
-  let displayHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
-  let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
-  let hoursToDisplay = 0
-  if(volunteerDataArray == null) {
-    displayHoursMessage.textContent = "You have no volunteer hours."
-  } else {
-    volunteerDataArray.forEach((volunteerData) => {
-      hoursToDisplay += volunteerData.volunteerHours
-    });
-    displayHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
-  }
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let displayHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    let hoursToDisplay = 0
+    if(volunteerDataArray == null) {
+        displayHoursMessage.textContent = "You have no volunteer hours."
+    } else {
+        volunteerDataArray.forEach((volunteerData) => {
+            hoursToDisplay += volunteerData.volunteerHours
+        });
+        displayHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
+    }
 }
 
 // ========================================================================== //

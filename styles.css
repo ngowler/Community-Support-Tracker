@@ -280,7 +280,7 @@ body {
     border-radius: 10px;
 }
 
-#submit-volunteer-form:hover {
+#submit-volunteer-form:hover, .delete-volunteer:hover {
     background-color: #0F75BC;
     color: white;
     font-weight: bold;
@@ -294,6 +294,7 @@ body {
 .volunteer-table {
     border: 2px lightgray solid;
     border-radius: 5px;
+    width: 40em;
 }
 
 .volunteer-table th, .volunteer-table td {
@@ -307,6 +308,11 @@ body {
     width: 100%;
     border: 1px solid #ddd;
     text-align: center;
+}
+
+.delete-volunteer {
+    width: 8em;
+    padding: 0.5em;
 }
 
 /* ====================================================== */
