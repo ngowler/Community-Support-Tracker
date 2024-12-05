@@ -204,6 +204,70 @@ function eventClearForm() {
     innerEventDoc.getElementById('company-role-selection-input').selectedIndex = 0;
 }
 
+//ARRAYS 
+let signups = [];
+
+//Save to localStorage
+function saveSignups() {
+    localStorage.setItem('signups', JSON.stringify(signups));
+  }
+function loadSignups() {
+    const storedSignups = localStorage.getItem('signups');
+    if (storedSignups) {
+      signups = JSON.parse(storedSignups);
+      updateTable();
+    }
+  }
+
+// Function to add a new signup
+function addSignup(eventName, participantName, email, role) {
+  const signup = { eventName, participantName, email, role };
+  signups.push(signup);
+  updateTable();
+  saveSignups()
+}
+
+
+function deleteSignup(index) {
+  signups.splice(index, 1);
+  updateTable();
+  saveSignups()
+}
+
+//To call loadSignups() when page load
+window.addEventListener('load', loadSignups);
+
+
+function updateTable() {
+  const tableBody = document.getElementById('signup-table-body');
+  tableBody.innerHTML = '';
+  
+  signups.forEach((signup, index) => {
+    const row = tableBody.insertRow();
+    row.innerHTML = `
+      <td>${signup.eventName}</td>
+      <td>${signup.participantName}</td>
+      <td>${signup.email}</td>
+      <td>${signup.role}</td>
+      <td><button onclick="deleteSignup(${index})">Delete</button></td>
+    `;
+  });
+}
+
+// Modify the existing eventHandleSubmit function
+function eventHandleSubmit(event) {
+  event.preventDefault();
+  // ... (existing validation code)
+  
+  if (eventValidateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
+    addSignup(eventSignupName, repSignupName, repEmail, companyRole);
+    eventClearForm();
+  }
+}
+
+// Initial table update
+updateTable();
+
 // ========================================================================== //
 // ========================================================================== //
 // ========================== DONATION TRACKER CODE ========================= //
