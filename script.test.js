@@ -1,7 +1,7 @@
 
 const {JSDOM} = require("jsdom");
 
-const {validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load, donationValidateForm, donationHideErrors, donationFormHasInput, handleSubmit, validateForm} = require("./script");
+const {donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, calculateVolunteerHours, removeVolunteer, displayVolunteers, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load} = require("./script");
 
 const mockValidateVolunteerForm = jest.fn(validateVolunteerForm);
 
@@ -416,13 +416,6 @@ test("volunteer data is correctly stored in localStorage",() => {
         mockValidateVolunteerForm(event, global.localStorage);
     });
     form.dispatchEvent(event);
-
-    volunteerData = {
-        charityName: "My Charity",
-        hoursVolunteered: 4,
-        date: "2024-11-01",
-        stars: 5
-    }
 
     const storedVolunteerFormData = JSON.parse(localStorage.getItem("volunteerData"));
 
