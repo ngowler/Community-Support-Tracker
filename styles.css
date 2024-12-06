@@ -583,6 +583,56 @@ body {
     border-radius: 5px
 }
 
+.donation-table-wrapper {
+    margin-right: 200px;
+    margin-left: 200px;
+    margin-top: 50px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 2px lightgray solid;
+    border-radius: 5px;
+    /* width: 400px; */
+}
+
+.donation-table {
+    width: 100%;
+}
+
+.donation-table-wrapper tr td, th {
+    border: 1px black solid;
+}
+
+.donation-delete-button {
+    background-color: red;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+}
+
+.donation-delete-button-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.donation-summary-text {
+    font-size: x-large;
+    font-weight: 500;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+}
+
+.donation-summary-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
 /* ========================================================================== */
