@@ -584,18 +584,15 @@ body {
 }
 
 .donation-table-wrapper {
-    border: 2px lightgray solid;
-    border-radius: 5px;
-    width: 400px;
-}
-
-.donation-table-wrapper {
     margin-right: 200px;
     margin-left: 200px;
     margin-top: 50px;
     padding: 50px;
     padding-top: 20px;
     padding-bottom: 20px;
+    border: 2px lightgray solid;
+    border-radius: 5px;
+    /* width: 400px; */
 }
 
 .donation-table {
