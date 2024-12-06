@@ -553,11 +553,13 @@ function updateDonationSummary(donations) {
 
     let donationStorage = donations || localStorage
 
-    let donationArray = JSON.parse(donationStorage.donations)
+    let donationSum = 0;
 
-    let donationSum = 0
-    for (let i=0; i < donationArray.length; i++) {
-        donationSum += Number(donationArray[i].donationAmount)
+    if (JSON.parse(donationStorage.donations)) {
+        let donationArray = JSON.parse(donationStorage.donations);
+        for (let i = 0; i < donationArray.length; i++) {
+            donationSum += Number(donationArray[i].donationAmount);
+        }
     }
 
     donationTextElement.innerText = `The total donation amount is: $${donationSum}`
