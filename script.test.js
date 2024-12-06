@@ -413,7 +413,7 @@ test("volunteer data is correctly stored in localStorage",() => {
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
@@ -529,7 +529,7 @@ test("volunteer data is correctly retrieved from localStorage and loaded into th
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
@@ -646,7 +646,7 @@ test("volunteer summary section correctly calculates and displays the total hour
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
@@ -757,7 +757,7 @@ test("volunteer table delete button removes a record from the table",() => {
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
@@ -874,7 +874,7 @@ test("volunteer table delete button removes a record from localStorage",() => {
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
