@@ -13,7 +13,11 @@ function load() {
     // ================== EVENT SIGNUP CODE ================= //
     // ====================================================== //
 
-    window.frames["event-signup"].contentDocument.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+
+    innerEventDoc.getElementById('event-signup-form').addEventListener('submit', eventHandleSubmit);
 
     // ====================================================== //
     // ================ NAVIGATION MENU CODE ================ //
@@ -22,7 +26,7 @@ function load() {
     const hamburgerMenu = document.getElementById("hamburgerMenuSVG");
     const navbar = document.getElementById("navbar");
     hamburgerMenu.addEventListener('click', handleMenuClick);
-    let mediaQuery = window.matchMedia("(max-width: 700px");
+    let mediaQuery = window.matchMedia("(max-width: 700px)");
     mediaQuery.addEventListener('change', () => handleMediaQuery(mediaQuery));
     handleMediaQuery(mediaQuery)
     let hamburgerMenuCount = 0;
@@ -31,8 +35,17 @@ function load() {
     // ================ DONATION TRACKER CODE =============== //
     // ====================================================== //
 
-    const donationSubmitButton = window.frames["donation-tracker"].contentDocument.getElementById('donation-submit-button')
-    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e))
+
+    let donationFrame = document.getElementById('donation-tracker-frame')
+    let innerDonationDoc = donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    const donationSubmitButton = innerDonationDoc.getElementById('donation-submit-button')
+    donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e, localStorage))
+    updateDonationSummary(localStorage)
+    
+    setTimeout(() => {
+        updateDonationTable();
+    }, 100)
 }
 
 // ========================================================================== //
@@ -125,10 +138,14 @@ function resetStars() {
 function eventHandleSubmit(event) {
     event.preventDefault();
 
-    let eventSignupName = window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value;
-    let repSignupName = window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value;
-    let repEmail = window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value;
-    let companyRole = window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').value;
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+
+    let eventSignupName = innerEventDoc.getElementById('event-signup-name-input').value;
+    let repSignupName = innerEventDoc.getElementById('company-rep-name-input').value;
+    let repEmail = innerEventDoc.getElementById('company-rep-email-input').value;
+    let companyRole = innerEventDoc.getElementById('company-role-selection-input').value;
 
     if (eventValidateForm(eventSignupName, repSignupName, repEmail, companyRole)) {
         let formData = {
@@ -138,7 +155,6 @@ function eventHandleSubmit(event) {
             companyRole: companyRole
         };
 
-        console.log('Form data:', formData);
         eventClearForm();
         return formData;
     }
@@ -146,34 +162,37 @@ function eventHandleSubmit(event) {
 
 //VALIDATION
 function eventValidateForm(eventName, repName, repEmail, companyRole) {
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
     let isValid = true;
 
     if (!eventName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('event-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('event-name-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('event-name-error-wrapper').style.display = 'none';
     }
 
     if (!repName.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-rep-name-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-name-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-rep-name-error-wrapper').style.display = 'none';
     }
 
     if (!isValidEmail(repEmail)) {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-rep-email-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-rep-email-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-rep-email-error-wrapper').style.display = 'none';
     }
 
     if (!companyRole || !companyRole.trim()) {
-        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'flex';
+        innerEventDoc.getElementById('company-role-selection-error-wrapper').style.display = 'flex';
         isValid = false;
     } else {
-        window.frames["event-signup"].contentDocument.getElementById('company-role-selection-error-wrapper').style.display = 'none';
+        innerEventDoc.getElementById('company-role-selection-error-wrapper').style.display = 'none';
     }
 
     return isValid;
@@ -185,10 +204,13 @@ function isValidEmail(email) {
 }
 
 function eventClearForm() {
-    window.frames["event-signup"].contentDocument.getElementById('event-signup-name-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-rep-name-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-rep-email-input').value = '';
-    window.frames["event-signup"].contentDocument.getElementById('company-role-selection-input').selectedIndex = 0;
+    let eventFrame = document.getElementById("event-signup");
+    let innerEventDoc =
+        eventFrame.contentDocument || eventFrame.contentWindow.document;
+    innerEventDoc.getElementById('event-signup-name-input').value = '';
+    innerEventDoc.getElementById('company-rep-name-input').value = '';
+    innerEventDoc.getElementById('company-rep-email-input').value = '';
+    innerEventDoc.getElementById('company-role-selection-input').selectedIndex = 0;
 }
 
 // ========================================================================== //
@@ -197,10 +219,14 @@ function eventClearForm() {
 // ========================================================================== //
 // ========================================================================== //
 
-function donationValidateForm(e) {
+function donationValidateForm(e, donations) {
   e.preventDefault()
   donationHideErrors();
   errorFlag = false
+
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
 
   const donationInputs = [
     'donation-charity-name-',
@@ -217,42 +243,217 @@ function donationValidateForm(e) {
     }
   })
 
-  donationAmountInputValue = window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-input').value
+  donationCharityNameInputValue = innerDonationDoc.getElementById("donation-charity-name-input").value;
+  donationAmountInputValue = innerDonationDoc.getElementById('donation-amount-input').value
+  donationDateInputValue = innerDonationDoc.getElementById('donation-date-input').value
+  donationMessageInputValue = innerDonationDoc.getElementById('donation-message-input').value
 
   let numberRegexp = new RegExp(/^[0-9]+$/)
   if (!numberRegexp.test(donationAmountInputValue)) {
-    window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'flex';
     errorFlag = true
   }
 
   if (!errorFlag) {
-    donationFormData['charityName'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-input').value
+    donationFormData['charityName'] = donationCharityNameInputValue
     donationFormData['donationAmount'] = donationAmountInputValue
-    donationFormData['donationDate'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-date-input').value
-    donationFormData['donationMessage'] = window.frames["donation-tracker"].contentDocument.getElementById('donation-message-input').value
+    donationFormData['donationDate'] = donationDateInputValue
+    donationFormData['donationMessage'] = donationMessageInputValue
+
+    resetDonationTable()
+    updateDonationLocalStorage(donationFormData)
+    clearDonationForm()
+    updateDonationTable();
+    updateDonationSummary(donations)
   }
 }
 
 
 function donationHideErrors() {
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-amount-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-date-error-wrapper').style.display = 'none';
-  window.frames["donation-tracker"].contentDocument.getElementById('donation-message-error-wrapper').style.display = 'none';
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  innerDonationDoc.getElementById('donation-charity-name-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-amount-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-date-error-wrapper').style.display = 'none';
+  innerDonationDoc.getElementById('donation-message-error-wrapper').style.display = 'none';
 }
 
 function donationFormHasInput(input) {
-  let inputElement = window.frames["donation-tracker"].contentDocument.getElementById(input + 'input')
+
+  let donationFrame = document.getElementById("donation-tracker-frame");
+  let innerDonationDoc =
+      donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+  let inputElement = innerDonationDoc.getElementById(input + 'input')
   
 
   if (inputElement.value !== '' && inputElement.value !== null) {
     return true
   } else {
-    window.frames["donation-tracker"].contentDocument.getElementById(input + 'error-wrapper').style.display = 'flex';
+    innerDonationDoc.getElementById(input + 'error-wrapper').style.display = 'flex';
     return false
   }
 }
 
+function updateDonationTable(donations) {
+    let donationStorage = donations || localStorage
+
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
+
+    if (donationStorage.donations) {
+        let donations = JSON.parse(donationStorage.donations)
+        for (let donation of donations) {
+            let tableRow = innerDonationDoc.createElement('tr')
+            let tableBody = innerDonationDoc.createElement('tbody')
+            let { charityName, donationAmount, donationDate, donationMessage } = donation
+            let [
+                donationCharityNameData,
+                donationAmountData,
+                donationDateData,
+                donationMessageData,
+                donationDeleteRow ,
+                donationDeleteButton
+            ] = [
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('td'),
+                innerDonationDoc.createElement('button')
+            ]
+
+            donationDeleteButton.innerHTML = 'Delete'
+            donationDeleteButton.classList = 'donation-delete-button'
+            donationDeleteButton.onclick = (e) => removeDonationRow(e)
+
+            donationCharityNameData.innerHTML = charityName
+            tableRow.appendChild(donationCharityNameData)
+
+            donationAmountData.innerHTML = donationAmount
+            tableRow.appendChild(donationAmountData)
+
+            donationDateData.innerHTML = donationDate
+            tableRow.appendChild(donationDateData)
+
+            donationMessageData.innerHTML = donationMessage
+            tableRow.appendChild(donationMessageData)
+
+            donationDeleteRow.appendChild(donationDeleteButton)
+            tableRow.appendChild(donationDeleteRow)
+            donationDeleteRow.classList = 'donation-delete-button-td'
+
+            // tableBody.appendChild(tableRow)
+
+            donationTable.appendChild(tableRow)
+
+        }
+    }
+    
+}
+
+function clearDonationForm() {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+    innerDonationDoc.getElementById('donation-charity-name-input').value = '';
+    innerDonationDoc.getElementById('donation-amount-input').value = '';
+    innerDonationDoc.getElementById('donation-date-input').value = '';
+    innerDonationDoc.getElementById('donation-message-input').value = '';
+}
+
+function updateDonationLocalStorage(data) {
+    if (localStorage.getItem('donations')) {
+        let donations = JSON.parse(localStorage.getItem('donations'))
+        let newDonations = [data]
+        donations.forEach((obj) => {newDonations.push(obj)})
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    } else {
+        let newDonations = [data]
+        localStorage.setItem('donations', JSON.stringify(newDonations))
+    }
+}
+
+function removeDonationRow(event, donations) {
+    let donationStorage = donations || localStorage
+
+    const button = event.currentTarget
+
+    const donationLocalStorage = JSON.parse(donationStorage.donations)
+
+    // const newLocalStorage = oldLocalStorage.forEach(() => {})
+
+    let tableRow = button.parentNode.parentNode
+    let tableRowChildren = tableRow.children
+
+    let currentDonation = {
+        'charityName': tableRowChildren[0].innerText,
+        'donationAmount': tableRowChildren[1].innerText,
+        'donationDate': tableRowChildren[2].innerText,
+        'donationMessage': tableRowChildren[3].innerText
+    }
+
+
+    const indexOfDonation = donationLocalStorage.findIndex(obj => {
+        return (
+            obj.charityName == currentDonation.charityName
+            && obj.donationAmount == currentDonation.donationAmount
+            && obj.donationDate == currentDonation.donationDate
+            && obj.donationMessage == currentDonation.donationMessage
+        )
+    })
+
+    donationLocalStorage.splice(indexOfDonation, 1)
+
+    localStorage.setItem('donations', JSON.stringify(donationLocalStorage))
+
+
+    button.parentNode.parentNode.parentNode.removeChild(button.parentNode.parentNode);
+
+    updateDonationSummary(donationStorage)
+}
+
+function updateDonationSummary(donations) {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTextElement = innerDonationDoc.getElementById('donation-summary-text')
+
+    let donationStorage = donations || localStorage
+
+    let donationArray = JSON.parse(donationStorage.donations)
+
+    let donationSum = 0
+    for (let i=0; i < donationArray.length; i++) {
+        donationSum += Number(donationArray[i].donationAmount)
+    }
+
+    donationTextElement.innerText = `The total donation amount is: $${donationSum}`
+}
+
+function resetDonationTable() {
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
+
+    let donationTable = innerDonationDoc.getElementById('donation-table')
+
+    donationTable.innerHTML = `
+    <tr>
+        <th>Charity Name</th>
+        <th>Donation Amount</th>
+        <th>Donation Date</th>
+        <th>Donor's Comment</th>
+        <th>Delete a Donation</th>
+    </tr> 
+    `
+}
 
 // ========================================================================== //
 // ========================================================================== //
@@ -297,9 +498,10 @@ async function handleMediaQuery(mediaQuery) {
 if (typeof window !== "undefined") {
 
     window.onload = load;
+    // updateDonationTable();
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
-  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+  module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow, resetDonationTable, updateDonationSummary, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
 }
 },{}]},{},[1]);
