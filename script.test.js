@@ -417,6 +417,13 @@ test("volunteer data is correctly stored in localStorage",() => {
     });
     form.dispatchEvent(event);
 
+    volunteerData = {
+        charityName: "My Charity",
+        hoursVolunteered: 4,
+        date: "2024-11-01",
+        stars: 5
+    }
+
     const storedVolunteerFormData = JSON.parse(localStorage.getItem("volunteerData"));
 
     expect(storedVolunteerFormData).toEqual([{
