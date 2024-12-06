@@ -989,7 +989,7 @@ test("volunteer total volunteered hours in the summary section is updated when a
     const form = innerVolunteerDoc.getElementById("volunteer-hours-form");
     const event = new dom.window.Event("submit");
     form.addEventListener("submit", function(event) {
-        validateVolunteerForm(event, global.localStorage);
+        validateVolunteerForm(event, localStorage);
     });
     form.dispatchEvent(event);
 
