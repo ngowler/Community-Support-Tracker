@@ -549,20 +549,33 @@ function updateDonationSummary(donations) {
     let innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
 
-    let donationTextElement = innerDonationDoc.getElementById('donation-summary-text')
+    let donationTextElement = innerDonationDoc.getElementById(
+        "donation-summary-text"
+    );
 
-    let donationStorage = donations || localStorage
+    let donationStorage = donations || localStorage;
 
     let donationSum = 0;
 
-    if (JSON.parse(donationStorage.donations)) {
-        let donationArray = JSON.parse(donationStorage.donations);
+    try {
+        JSON.parse(donationStorage.donations);
+    } catch {
+        donationStorage.setItem("donations", JSON.stringify([]));
+    }
+
+    let donationArray = JSON.parse(donationStorage.donations);
         for (let i = 0; i < donationArray.length; i++) {
             donationSum += Number(donationArray[i].donationAmount);
         }
-    }
 
-    donationTextElement.innerText = `The total donation amount is: $${donationSum}`
+    // if (JSON.parse(donationStorage.donations)) {
+    //     let donationArray = JSON.parse(donationStorage.donations);
+    //     for (let i = 0; i < donationArray.length; i++) {
+    //         donationSum += Number(donationArray[i].donationAmount);
+    //     }
+    // }
+
+    donationTextElement.innerText = `The total donation amount is: $${donationSum}`;
 }
 
 function resetDonationTable() {
