@@ -586,6 +586,7 @@ body {
 .donation-table-wrapper {
     border: 2px lightgray solid;
     border-radius: 5px;
+    width: 400px;
 }
 
 .donation-table-wrapper {
