@@ -6,8 +6,15 @@ function load() {
     // =================== VOLUNTEER CODE =================== //
     // ====================================================== //
 
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    innerVolunteerDoc.getElementById("volunteer-hours-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        validateVolunteerForm(e, localStorage);
+    });
     selectStar();
-    window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-form").addEventListener("submit", validateVolunteerForm);
+    displayVolunteers(localStorage);
 
     // ====================================================== //
     // ================== EVENT SIGNUP CODE ================= //
@@ -36,8 +43,9 @@ function load() {
     // ====================================================== //
 
 
-    let donationFrame = document.getElementById('donation-tracker-frame')
-    let innerDonationDoc = donationFrame.contentDocument || donationFrame.contentWindow.document;
+    let donationFrame = document.getElementById("donation-tracker-frame");
+    let innerDonationDoc =
+        donationFrame.contentDocument || donationFrame.contentWindow.document;
 
     const donationSubmitButton = innerDonationDoc.getElementById('donation-submit-button')
     donationSubmitButton.addEventListener('click', (e) => donationValidateForm(e, localStorage))
@@ -46,6 +54,7 @@ function load() {
     setTimeout(() => {
         updateDonationTable();
     }, 100)
+
 }
 
 // ========================================================================== //
@@ -54,54 +63,84 @@ function load() {
 // ========================================================================== //
 // ========================================================================== //
 
-function validateVolunteerForm(e) {
+function validateVolunteerForm(e, volunteers) {
+    e.preventDefault();
+    let volunteerStorage = volunteers || localStorage;
+
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
     volunteerHideErrors();
     if(volunteerFormHasErrors()) {
-        e.preventDefault();
+        return
     } else {
+        let volunteerDataArray = [];
+        let curentVolunteerData = JSON.parse(volunteerStorage.getItem("volunteerData"));
+        if(curentVolunteerData != null) {
+            volunteerDataArray = curentVolunteerData;
+        }
         let volunteerData = {};
-        volunteerData.charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
-        volunteerData.hoursVolunteered = parseFloat(window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value);
-        volunteerData.date = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
-        volunteerData.stars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+        volunteerData.volunteerCharity = innerVolunteerDoc.getElementById("charity-name").value;
+        volunteerData.volunteerHours = parseFloat(innerVolunteerDoc.getElementById("hours-volunteered").value);
+        volunteerData.volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
+        volunteerData.volunteerRating = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
+        
+        volunteerDataArray.push(volunteerData);
+
+        volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+
+        innerVolunteerDoc.getElementById("volunteer-hours-form").reset();
+        resetStars();
+
+        displayVolunteers(localStorage);
+        calculateVolunteerHours(localStorage);
     }
 }
 
 function volunteerHideErrors() {
-    let errorFields = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("volunteer-form-error");
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let errorFields = innerVolunteerDoc.getElementsByClassName("volunteer-form-error");
     for(let i=0; i<errorFields.length; i++) {
         errorFields[i].style.display = "none";
     }
 }
 
 function volunteerShowError(formField, errorId, errorFlag) {
-	window.frames["volunteer-hours-tracker"].contentDocument.getElementById(errorId).style.display = "block";
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+	innerVolunteerDoc.getElementById(errorId).style.display = "block";
 	if(!errorFlag) {
-		window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).focus();
+		innerVolunteerDoc.getElementById(formField).focus();
 		if(formField.type == "text") {
-			window.frames["volunteer-hours-tracker"].contentDocument.getElementById(formField).select();
+			innerVolunteerDoc.getElementById(formField).select();
 		}
 	}
 }
 
 function volunteerFormHasErrors() {
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
     let errorFlag = false;
-    let charityName = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("charity-name").value;
+    let charityName = innerVolunteerDoc.getElementById("charity-name").value;
     if(charityName == "" || charityName == null) {
         volunteerShowError("charity-name", "charity-name_error", errorFlag);
         errorFlag=true;
     }
-    let hoursVolunteered = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("hours-volunteered").value;
+    let hoursVolunteered = innerVolunteerDoc.getElementById("hours-volunteered").value;
     if(hoursVolunteered < 0 || hoursVolunteered == "" || hoursVolunteered == null) {
         volunteerShowError("hours-volunteered", "hours-volunteered_error", errorFlag);
         errorFlag=true;
     }
-    let volunteerDate = window.frames["volunteer-hours-tracker"].contentDocument.getElementById("volunteer-hours-date").value;
+    let volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
     if(volunteerDate == "" || volunteerDate == null) {
         volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
         errorFlag=true;
     }
-    let numberOfStars = window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("starsSelected").length;
+    let numberOfStars = innerVolunteerDoc.getElementsByClassName("starsSelected").length;
     if(numberOfStars == 0){
         volunteerShowError("volunteer-experience-rating", "volunteer-experience-rating_error", errorFlag);
         errorFlag=true;
@@ -110,7 +149,10 @@ function volunteerFormHasErrors() {
 }
 
 function selectStar() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
     stars.forEach((star) => {
         star.addEventListener("click", () => {
             resetStars();
@@ -122,12 +164,96 @@ function selectStar() {
 }
 
 function resetStars() {
-    const stars = Array.from(window.frames["volunteer-hours-tracker"].contentDocument.getElementsByClassName("star"));
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let stars = Array.from(innerVolunteerDoc.getElementsByClassName("star"));
     stars.forEach((star) => {
         star.classList.remove("starsSelected");
     });
 }
 
+function displayVolunteers(volunteers) {
+    let volunteerStorage = volunteers || localStorage;
+
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let tbody = innerVolunteerDoc.getElementById("volunteer-table-body");
+    while(tbody.rows.length > 0) {
+        tbody.deleteRow(0);
+    }
+
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    if(volunteerDataArray != null) {
+        volunteerDataArray.forEach((volunteerData) => {
+            let volunteerRecord = innerVolunteerDoc.createElement("tr");
+            let volunteerCharity = innerVolunteerDoc.createElement("td");
+            let volunteerHours = innerVolunteerDoc.createElement("td");
+            let volunteerDate = innerVolunteerDoc.createElement("td");
+            let volunteerRating = innerVolunteerDoc.createElement("td");
+            let volunteerDeleteRow = innerVolunteerDoc.createElement("td");
+
+            let volunteerDeleteRowButton = innerVolunteerDoc.createElement("button");
+            volunteerDeleteRowButton.textContent = "Delete";
+            volunteerDeleteRowButton.classList.add("delete-volunteer");
+
+            volunteerCharity.textContent = volunteerData.volunteerCharity;
+            volunteerHours.textContent = volunteerData.volunteerHours;
+            volunteerDate.textContent = volunteerData.volunteerDate;
+            volunteerRating.textContent = `${volunteerData.volunteerRating}/5`;
+            volunteerDeleteRow.appendChild(volunteerDeleteRowButton);
+            
+
+            volunteerRecord.appendChild(volunteerCharity);
+            volunteerRecord.appendChild(volunteerHours);
+            volunteerRecord.appendChild(volunteerDate);
+            volunteerRecord.appendChild(volunteerRating);
+            volunteerRecord.appendChild(volunteerDeleteRow);
+
+            tbody.appendChild(volunteerRecord);
+        });
+        removeVolunteer(localStorage);
+        calculateVolunteerHours(localStorage);
+    }
+}
+
+function removeVolunteer(volunteers) {
+    let volunteerStorage = volunteers || localStorage;
+
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+    deleteVolunteerButtons.forEach((deleteVolunteer, index) => {
+        deleteVolunteer.addEventListener("click", () => {
+            volunteerDataArray.splice(index, 1);
+            volunteerStorage.setItem("volunteerData", JSON.stringify(volunteerDataArray));
+            displayVolunteers(localStorage);
+            calculateVolunteerHours(localStorage);
+        });
+    });
+}
+
+function calculateVolunteerHours(volunteers) {
+    let volunteerStorage = volunteers || localStorage;
+
+    let volunteerFrame = document.getElementById("volunteer-hours-tracker");
+    let innerVolunteerDoc =
+        volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
+    let displayHoursMessage = innerVolunteerDoc.getElementById("display-total-hours");
+    let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
+    let hoursToDisplay = 0
+    if(volunteerDataArray == null) {
+        displayHoursMessage.textContent = "You have 0 volunteer hours."
+    } else {
+        volunteerDataArray.forEach((volunteerData) => {
+            hoursToDisplay += volunteerData.volunteerHours
+        });
+        displayHoursMessage.textContent = `You have ${hoursToDisplay} volunteer hours.`
+    }
+}
 
 // ========================================================================== //
 // ========================================================================== //
@@ -353,6 +479,7 @@ function updateDonationTable(donations) {
             donationTable.appendChild(tableRow)
 
         }
+
     }
     
 }
@@ -385,7 +512,6 @@ function removeDonationRow(event, donations) {
     const button = event.currentTarget
 
     const donationLocalStorage = JSON.parse(donationStorage.donations)
-
     // const newLocalStorage = oldLocalStorage.forEach(() => {})
 
     let tableRow = button.parentNode.parentNode
@@ -452,8 +578,10 @@ function resetDonationTable() {
         <th>Donor's Comment</th>
         <th>Delete a Donation</th>
     </tr> 
-    `
-}
+
+    `}
+
+
 
 // ========================================================================== //
 // ========================================================================== //
@@ -502,6 +630,8 @@ if (typeof window !== "undefined") {
 
 } else {
   // CommonJS-style exports are used when in a Node.js environment
+
   module.exports = { donationValidateForm, donationHideErrors, donationFormHasInput, updateDonationTable, clearDonationForm, updateDonationLocalStorage, removeDonationRow, resetDonationTable, updateDonationSummary, eventHandleSubmit, eventValidateForm, validateVolunteerForm, volunteerHideErrors, volunteerShowError, volunteerFormHasErrors, selectStar, resetStars, load};
+
 }
 },{}]},{},[1]);
