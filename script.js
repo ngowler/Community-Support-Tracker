@@ -195,7 +195,7 @@ function displayVolunteers(volunteers) {
 
             let volunteerDeleteRowButton = innerVolunteerDoc.createElement("button");
             volunteerDeleteRowButton.textContent = "Delete";
-            volunteerDeleteRowButton.classList.add("delete-volunteer");
+            volunteerDeleteRowButton.classList.add("delete-button");
 
             volunteerCharity.textContent = volunteerData.volunteerCharity;
             volunteerHours.textContent = volunteerData.volunteerHours;
@@ -224,7 +224,7 @@ function removeVolunteer(volunteers) {
     let innerVolunteerDoc =
         volunteerFrame.contentDocument || volunteerFrame.contentWindow.document;
     let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
-    let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-volunteer"));
+    let deleteVolunteerButtons = Array.from(innerVolunteerDoc.getElementsByClassName("delete-button"));
     deleteVolunteerButtons.forEach((deleteVolunteer, index) => {
         deleteVolunteer.addEventListener("click", () => {
             volunteerDataArray.splice(index, 1);
@@ -429,13 +429,13 @@ function updateDonationTable(donations) {
     let innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
 
-    let donationTable = innerDonationDoc.getElementById('donation-table')
+    let donationTable = innerDonationDoc.getElementById('donation-table-body')
 
     if (donationStorage.donations) {
         let donations = JSON.parse(donationStorage.donations)
         for (let donation of donations) {
             let tableRow = innerDonationDoc.createElement('tr')
-            let tableBody = innerDonationDoc.createElement('tbody')
+            // let tableBody = innerDonationDoc.createElement('tbody')
             let { charityName, donationAmount, donationDate, donationMessage } = donation
             let [
                 donationCharityNameData,
@@ -454,7 +454,7 @@ function updateDonationTable(donations) {
             ]
 
             donationDeleteButton.innerHTML = 'Delete'
-            donationDeleteButton.classList = 'donation-delete-button'
+            donationDeleteButton.classList = 'delete-button'
             donationDeleteButton.onclick = (e) => removeDonationRow(e)
 
             donationCharityNameData.innerHTML = charityName
@@ -471,7 +471,7 @@ function updateDonationTable(donations) {
 
             donationDeleteRow.appendChild(donationDeleteButton)
             tableRow.appendChild(donationDeleteRow)
-            donationDeleteRow.classList = 'donation-delete-button-td'
+            // donationDeleteRow.classList = 'donation-delete-button-td'
 
             // tableBody.appendChild(tableRow)
 
@@ -568,18 +568,9 @@ function resetDonationTable() {
     let innerDonationDoc =
         donationFrame.contentDocument || donationFrame.contentWindow.document;
 
-    let donationTable = innerDonationDoc.getElementById('donation-table')
+    let donationTable = innerDonationDoc.getElementById('donation-table-body')
 
-    donationTable.innerHTML = `
-    <tr>
-        <th>Charity Name</th>
-        <th>Donation Amount</th>
-        <th>Donation Date</th>
-        <th>Donor's Comment</th>
-        <th>Delete a Donation</th>
-    </tr> 
-
-    `
+    donationTable.innerHTML = ``
 }
 
 

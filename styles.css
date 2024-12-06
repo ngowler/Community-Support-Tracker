@@ -292,7 +292,7 @@ body {
     border-radius: 10px;
 }
 
-#submit-volunteer-form:hover, .delete-volunteer:hover, #volunteer-table th, #volunteer-hours-calculator {
+#submit-volunteer-form:hover, .delete-button:hover, .table th, #volunteer-hours-calculator, #donation-summary-wrapper, .summary-wrapper {
     background-color: #0F75BC;
     color: white;
     font-weight: bold;
@@ -303,7 +303,7 @@ body {
     display: none;
 }
 
-.volunteer-table-container {
+.table-container {
     border: 2px lightgray solid;
     border-radius: 5px;
     width: 40em;
@@ -313,20 +313,20 @@ body {
     margin-top: 50px;
 }
 
-#volunteer-table th, #volunteer-table td {
+#volunteer-table th, #volunteer-table td, .table td, .table th {
     width: 8em;
     padding: 0.5em;
     border: 1px solid #ddd;
     text-align: center;
 }
 
-#volunteer-hours-calculator {
+.summary-wrapper {
     width: 100%;
     border: 1px solid #ddd;
     text-align: center;
 }
 
-.delete-volunteer {
+.delete-button {
     width: 8em;
     padding: 0.5em;
 }
@@ -465,6 +465,15 @@ body {
 /* ====================================================== */
 /* ================ DONATION TRACKER CODE =============== */
 /* ====================================================== */
+
+.donation-summary-container {
+    background-color: #0F75BC;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    border: 1px solid #ddd;
+    text-align: center;
+}
 
 .donation-tracker {
     display: flex;
@@ -622,7 +631,7 @@ body {
     border-radius: 5px
 }
 
-.donation-table-wrapper {
+/* .donation-table-wrapper {
     margin-right: 200px;
     margin-left: 200px;
     margin-top: 50px;
@@ -631,16 +640,15 @@ body {
     padding-bottom: 20px;
     border: 2px lightgray solid;
     border-radius: 5px;
-    /* width: 400px; */
-}
+} */
 
-.donation-table {
+/* .donation-table {
     width: 100%;
-}
+} */
 
-.donation-table-wrapper tr td, th {
+/* .donation-table-wrapper tr td, th {
     border: 1px black solid;
-}
+} */
 
 .donation-delete-button {
     background-color: red;
@@ -658,19 +666,19 @@ body {
     align-items: center;
 }
 
-.donation-summary-text {
+/* .donation-summary-text {
     font-size: x-large;
     font-weight: 500;
     margin-right: auto;
     margin-left: auto;
     margin-top: 50px;
-}
+} */
 
-.donation-summary-wrapper {
+/* .donation-summary-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 /* ========================================================================== */
 /* =============================== Footer CSS =============================== */
