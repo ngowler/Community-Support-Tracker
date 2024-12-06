@@ -123,8 +123,7 @@ function volunteerFormHasErrors() {
         errorFlag=true;
     }
     let volunteerDate = innerVolunteerDoc.getElementById("volunteer-hours-date").value;
-    let today = new Date().toLocaleDateString();
-    if(volunteerDate == "" || volunteerDate == null || volunteerDate > today) {
+    if(volunteerDate == "" || volunteerDate == null) {
         volunteerShowError("volunteer-hours-date", "volunteer-hours-date_error", errorFlag);
         errorFlag=true;
     }
