@@ -190,7 +190,7 @@ function displayVolunteers(volunteers) {
             volunteerCharity.textContent = volunteerData.volunteerCharity;
             volunteerHours.textContent = volunteerData.volunteerHours;
             volunteerDate.textContent = volunteerData.volunteerDate;
-            volunteerRating.textContent = volunteerData.volunteerRating;
+            volunteerRating.textContent = `${volunteerData.volunteerRating}/5`;
             volunteerDeleteRow.appendChild(volunteerDeleteRowButton);
             
 
@@ -235,7 +235,7 @@ function calculateVolunteerHours(volunteers) {
     let volunteerDataArray = JSON.parse(volunteerStorage.getItem("volunteerData"));
     let hoursToDisplay = 0
     if(volunteerDataArray == null) {
-        displayHoursMessage.textContent = "You have no volunteer hours."
+        displayHoursMessage.textContent = "You have 0 volunteer hours."
     } else {
         volunteerDataArray.forEach((volunteerData) => {
             hoursToDisplay += volunteerData.volunteerHours
